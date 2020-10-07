@@ -1,7 +1,7 @@
-import { Grid } from "@material-ui/core";
 import React, { useState } from "react";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import {
+  Grid,
   Card,
   Typography,
   TextField,
@@ -9,7 +9,7 @@ import {
   Divider,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import ecom from "../assets/images/ecom.jpg";
+import ecommerce from "../assets/images/ecommerce.svg";
 
 const useStyles = makeStyles({
   card: {
@@ -22,11 +22,10 @@ const useStyles = makeStyles({
     marginRight: "10px",
   },
   img: {
-    width: "20em",
-    height: "13em",
-    marginLeft: "15px",
-    marginRight: "15px",
+    width: "10em",
+    height: "8em",
     marginTop: "15px",
+    marginLeft: "5.5em",
   },
   font: {
     marginLeft: "10px",
@@ -63,20 +62,20 @@ const useStyles = makeStyles({
   },
 });
 
-const GetSubCatagories = () => {
+const GetThirdCatagories = () => {
   const classes = useStyles();
-  const [catagiories, setCatagories] = useState([
-    { name: "منتج واحد", catgname: "صنف واحد", img: ecom },
-    { name: "منتج واحد", catgname: "صنف واحد", img: ecom },
-    { name: "منتج واحد", catgname: "صنف واحد", img: ecom },
-    { name: "منتج واحد", catgname: "صنف واحد", img: ecom },
-    { name: "منتج واحد", catgname: "صنف واحد", img: ecom },
-    { name: "منتج واحد", catgname: "صنف واحد", img: ecom },
+  const [subcatagiories, setSubCatagories] = useState([
+    { name: "منتج واحد", catgname: "صنف واحد", img: ecommerce },
+    { name: "منتج واحد", catgname: "صنف واحد", img: ecommerce },
+    { name: "منتج واحد", catgname: "صنف واحد", img: ecommerce },
+    { name: "منتج واحد", catgname: "صنف واحد", img: ecommerce },
+    { name: "منتج واحد", catgname: "صنف واحد", img: ecommerce },
+    { name: "منتج واحد", catgname: "صنف واحد", img: ecommerce },
   ]);
   return (
     <React.Fragment>
       <Typography variant="h4" className={classes.head}>
-        ادخل الاصناف الفرعيه
+        ادخل الاصناف الثالثه
       </Typography>
       <form>
         <Grid container direction="column">
@@ -93,12 +92,12 @@ const GetSubCatagories = () => {
                 <Autocomplete
                   className={classes.autocomplete}
                   id="combo-box-demo"
-                  options={catagiories}
+                  options={subcatagiories}
                   getOptionLabel={(option) => option.name}
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label="اختر الصنف الرئيسى"
+                      label="اختر الصنف الفرعي"
                       variant="outlined"
                     />
                   )}
@@ -130,18 +129,22 @@ const GetSubCatagories = () => {
       </form>
       <Divider />
       <Typography variant="h4" className={classes.head}>
-        عرض الاصناف الفرعيه
+        عرض الاصناف الثالثه
       </Typography>
       <Grid container direction="row">
-        {catagiories.map((catag) => (
+        {subcatagiories.map((catag) => (
           <Grid item>
             <Grid container direction="column">
-              <Grid item>
+              <Grid item container>
                 <Card className={classes.card}>
-                  <img className={classes.img} src={catag.img} alt="subimg" />
+                  <img
+                    className={classes.img}
+                    src={catag.img}
+                    alt="third img"
+                  />
                   <Grid item>
                     <Typography variant="h4" className={classes.font}>
-                      اسم الصنف : {catag.catgname}
+                      اسم الصنف الفرعي: {catag.catgname}
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -158,4 +161,4 @@ const GetSubCatagories = () => {
     </React.Fragment>
   );
 };
-export default GetSubCatagories;
+export default GetThirdCatagories;

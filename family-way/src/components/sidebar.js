@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import clsx from "clsx";
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
@@ -65,14 +64,78 @@ const SideBar = () => {
       </List>
       <Divider />
       <List>
-        {NavData.getsubcagiories.map((item, index) => (
+        {NavData.getsubcagtiories.map((item, index) => (
           <ListItem
             onClick={(e) => handleClick(e, item.id)}
             selected={selected === item.id}
             component={Link}
             to={item.to}
             button
-            key={item.title}
+            key={item.id}
+          >
+            <ListItemIcon>{<item.icon />}</ListItemIcon>
+            <ListItemText primary={item.title} />
+          </ListItem>
+        ))}
+      </List>
+      <Divider />
+      <List>
+        {NavData.thirdcagtiories.map((item, index) => (
+          <ListItem
+            onClick={(e) => handleClick(e, item.id)}
+            selected={selected === item.id}
+            component={Link}
+            to={item.to}
+            button
+            key={item.id}
+          >
+            <ListItemIcon>{<item.icon />}</ListItemIcon>
+            <ListItemText primary={item.title} />
+          </ListItem>
+        ))}
+      </List>
+      <Divider />
+      <List>
+        {NavData.users.map((item, index) => (
+          <ListItem
+            onClick={(e) => handleClick(e, item.id)}
+            selected={selected === item.id}
+            component={Link}
+            to={item.to}
+            button
+            key={item.id}
+          >
+            <ListItemIcon>{<item.icon />}</ListItemIcon>
+            <ListItemText primary={item.title} />
+          </ListItem>
+        ))}
+      </List>
+      <Divider />
+      <List>
+        {NavData.addproducts.map((item, index) => (
+          <ListItem
+            onClick={(e) => handleClick(e, item.id)}
+            selected={selected === item.id}
+            component={Link}
+            to={item.to}
+            button
+            key={item.id}
+          >
+            <ListItemIcon>{<item.icon />}</ListItemIcon>
+            <ListItemText primary={item.title} />
+          </ListItem>
+        ))}
+      </List>
+      <Divider />
+      <List>
+        {NavData.getproducts.map((item, index) => (
+          <ListItem
+            onClick={(e) => handleClick(e, item.id)}
+            selected={selected === item.id}
+            component={Link}
+            to={item.to}
+            button
+            key={item.id}
           >
             <ListItemIcon>{<item.icon />}</ListItemIcon>
             <ListItemText primary={item.title} />
