@@ -39,7 +39,7 @@ const useStyles = makeStyles({
     marginRight: "15px",
   },
   button: {
-    width: "18em",
+    width: "22.5em",
     marginRight: "15px",
     marginLeft: "15px",
     color: "white",
@@ -60,6 +60,11 @@ const useStyles = makeStyles({
   head: {
     marginTop: "20px",
     marginLeft: "10px",
+  },
+  autocomplete2: {
+    width: "60em",
+    marginBottom: "15px",
+    marginTop: "15px",
   },
 });
 
@@ -130,13 +135,48 @@ const GetSubCatagories = () => {
       </form>
       <Divider />
       <Typography variant="h4" className={classes.head}>
+        اختر الصنف الرئيسى
+      </Typography>
+      <form>
+        <Grid container direction="column">
+          <Grid item>
+            <Autocomplete
+              className={classes.autocomplete2}
+              id="combo-box-demo"
+              options={catagiories}
+              getOptionLabel={(option) => option.name}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="اختر الصنف الرئيسى"
+                  variant="outlined"
+                />
+              )}
+            />
+          </Grid>
+          <Grid item>
+            <Grid container justify="center">
+              <Button
+                variant="contained"
+                color="secondary"
+                className={classes.button2}
+              >
+                تم
+              </Button>
+            </Grid>
+          </Grid>
+        </Grid>
+      </form>
+      <Divider />
+
+      <Typography variant="h4" className={classes.head}>
         عرض الاصناف الفرعيه
       </Typography>
       <Grid container direction="row">
         {catagiories.map((catag) => (
-          <Grid item>
+          <Grid item key={catag.name}>
             <Grid container direction="column">
-              <Grid item>
+              <Grid item key={catag.name}>
                 <Card className={classes.card}>
                   <img className={classes.img} src={catag.img} alt="subimg" />
                   <Grid item>

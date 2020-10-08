@@ -55,7 +55,7 @@ const SideBar = () => {
             component={Link}
             to={item.to}
             button
-            key={item.title}
+            key={item.id}
           >
             <ListItemIcon>{<item.icon />}</ListItemIcon>
             <ListItemText primary={item.title} />

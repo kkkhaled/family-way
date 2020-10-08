@@ -68,7 +68,7 @@ const AddProducts = () => {
             </Grid>
             <Grid item>
               <Button
-                color="secondary"
+                color="primary"
                 variant="contained"
                 className={classes.button}
               >
@@ -157,6 +157,17 @@ const AddProducts = () => {
             label="   مقدار الوحده "
             className={classes.detailsfield}
           />
+        </Grid>
+        <Grid item>
+          <Grid container justify="center">
+            <Button
+              variant="contained"
+              color="secondary"
+              className={classes.button}
+            >
+              تم
+            </Button>
+          </Grid>
         </Grid>
       </Grid>
     </form>

@@ -88,7 +88,7 @@ const AddCatagiories = () => {
       </Typography>
       <Grid container direction="row">
         {recentCatag.map((onecatag) => (
-          <Card className={classes.card}>
+          <Card className={classes.card} key={onecatag.name}>
             <Typography variant="h4">{onecatag.name}</Typography>
           </Card>
         ))}

@@ -5,7 +5,7 @@ import GetProducts from "../components/getProducts";
 
 const Getproducts = () => {
   return (
-    <BasePage pageTitle="صفحه عرض المنجات">
+    <BasePage pageTitle="صفحه عرض المنتجات">
       <Section>
         <GetProducts />
       </Section>
