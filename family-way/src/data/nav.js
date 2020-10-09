@@ -5,6 +5,8 @@ import AcUnitIcon from "@material-ui/icons/AcUnit";
 import GroupIcon from "@material-ui/icons/Group";
 import QueueIcon from "@material-ui/icons/Queue";
 import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
+import ListAltIcon from "@material-ui/icons/ListAlt";
+import TimerIcon from "@material-ui/icons/Timer";
 
 export default {
   catagiories: [
@@ -52,6 +54,22 @@ export default {
       title: " عرض منتجات ",
       icon: ShoppingBasketIcon,
       to: "/Getproducts",
+      id: shortid.generate(),
+    },
+  ],
+  constants: [
+    {
+      title: "صفحه الثوابت ",
+      icon: ListAltIcon,
+      to: "/constants",
+      id: shortid.generate(),
+    },
+  ],
+  ordertimes: [
+    {
+      title: "صفحه اوقات الطلبات ",
+      icon: TimerIcon,
+      to: "/ordertimes",
       id: shortid.generate(),
     },
   ],

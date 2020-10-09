@@ -10,6 +10,8 @@ import Getthirdcatagiories from "./pages/thirdcatagories";
 import Userstable from "./pages/userstable";
 import Addproducts from "./pages/addproducts";
 import Getproducts from "./pages/getproducts";
+import ContantsPage from "./pages/constants";
+import Ordertimes from "./pages/ordertimes";
 import RTL from "./components/rtl";
 
 const useStyles = makeStyles((theme) => ({
@@ -55,6 +57,8 @@ export default function MiniDrawer() {
                 <Route exact path="/users" component={Userstable} />
                 <Route exact path="/addproducts" component={Addproducts} />
                 <Route exact path="/getproducts" component={Getproducts} />
+                <Route exact path="/constants" component={ContantsPage} />
+                <Route exact path="/ordertimes" component={Ordertimes} />
               </Switch>
             </main>
           </RTL>
