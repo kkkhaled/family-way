@@ -12,6 +12,7 @@ import Addproducts from "./pages/addproducts";
 import Getproducts from "./pages/getproducts";
 import ContantsPage from "./pages/constants";
 import Ordertimes from "./pages/ordertimes";
+import OrdersPage from "./pages/orders";
 import RTL from "./components/rtl";
 
 const useStyles = makeStyles((theme) => ({
@@ -59,6 +60,7 @@ export default function MiniDrawer() {
                 <Route exact path="/getproducts" component={Getproducts} />
                 <Route exact path="/constants" component={ContantsPage} />
                 <Route exact path="/ordertimes" component={Ordertimes} />
+                <Route exact path="/orders" component={OrdersPage} />
               </Switch>
             </main>
           </RTL>

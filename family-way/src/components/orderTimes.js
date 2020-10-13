@@ -31,7 +31,11 @@ const OrderTimes = () => {
 
   const [state, setState] = useState({ isDisabled: false });
 
-  const date = moment().add(4, "days").calendar();
+  const date = moment().add(3, "days").calendar({
+    sameDay: "[اليوم]LTS",
+    nextDay: "غدا",
+    nextWeek: "dddd",
+  });
   console.log(date);
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: event.target.checked });

@@ -11,7 +11,7 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import ecommerce from "../assets/images/ecommerce.svg";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   card: {
     width: "22em",
     height: "22em",
@@ -55,17 +55,19 @@ const useStyles = makeStyles({
     width: "22em",
     marginTop: "12px",
     marginBottom: "22px",
+    backgroundColor: theme.palette.green.main,
   },
   head: {
     marginTop: "20px",
     marginLeft: "10px",
   },
   autocomplete2: {
-    width: "60em",
+    width: "38.5em",
     marginBottom: "15px",
     marginTop: "15px",
+    marginLeft: "50px",
   },
-});
+}));
 
 const GetThirdCatagories = () => {
   const classes = useStyles();
@@ -121,55 +123,37 @@ const GetThirdCatagories = () => {
           </Grid>
           <Grid container justify="center">
             <Grid item>
-              <Button
-                variant="contained"
-                color="secondary"
-                className={classes.button2}
-              >
+              <Button variant="contained" className={classes.button2}>
                 تم
               </Button>
             </Grid>
           </Grid>
         </Grid>
       </form>
+
       <Divider />
-      <Typography variant="h4" className={classes.head}>
-        اختر الصنف الفرعي
-      </Typography>
-      <form>
-        <Grid container direction="column">
-          <Grid item>
-            <Autocomplete
-              className={classes.autocomplete2}
-              id="combo-box-demo"
-              options={subcatagiories}
-              getOptionLabel={(option) => option.name}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="اختر الصنف الفرعي"
-                  variant="outlined"
-                />
-              )}
-            />
-          </Grid>
-          <Grid item>
-            <Grid container justify="center">
-              <Button
-                variant="contained"
-                color="secondary"
-                className={classes.button2}
-              >
-                تم
-              </Button>
-            </Grid>
-          </Grid>
+      <Grid container direction="row">
+        <Grid item>
+          <Typography variant="h4" className={classes.head}>
+            عرض الاصناف الثالثه
+          </Typography>
         </Grid>
-      </form>
-      <Divider />
-      <Typography variant="h4" className={classes.head}>
-        عرض الاصناف الثالثه
-      </Typography>
+        <Grid item>
+          <Autocomplete
+            className={classes.autocomplete2}
+            id="combo-box-demo"
+            options={subcatagiories}
+            getOptionLabel={(option) => option.name}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="اختر الصنف الفرعي"
+                variant="outlined"
+              />
+            )}
+          />
+        </Grid>
+      </Grid>
       <Grid container direction="row">
         {subcatagiories.map((catag) => (
           <Grid item key={catag.name}>

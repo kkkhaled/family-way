@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { TextField, Grid, Typography, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   font: {
     marginLeft: "10px",
     marginTop: "10px",
@@ -18,8 +18,9 @@ const useStyles = makeStyles({
     color: "white",
     width: "22em",
     marginBottom: "15px",
+    backgroundColor: theme.palette.green.main,
   },
-});
+}));
 
 const Constants = () => {
   const classes = useStyles();
@@ -99,11 +100,7 @@ const Constants = () => {
           <Grid item>
             <Grid container justify="center">
               <Grid item>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  className={classes.button}
-                >
+                <Button variant="contained" className={classes.button}>
                   تم
                 </Button>
               </Grid>

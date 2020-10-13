@@ -12,6 +12,12 @@ const AppTheme = createMuiTheme({
     background: {
       main: "#ecf0f1",
     },
+    green: { main: "#30d158", light: "#32ff7e", dark: "#05c46b" },
+    yellow: { main: "#FFEB3B" },
+    gray: "#607D8B",
+    red: {
+      light: "#ea8685",
+    },
   },
   typography: {
     tab: {
@@ -31,7 +37,7 @@ const AppTheme = createMuiTheme({
     },
     h5: {
       fontFamily: "Releway",
-      fontSize: "1.34rem",
+      fontSize: "1.44rem",
       fontWeight: 700,
     },
   },

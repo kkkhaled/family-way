@@ -4,7 +4,7 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import { makeStyles } from "@material-ui/core/styles";
 import moment from "moment";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   field: {
     width: "32em",
     marginRight: "15px",
@@ -18,12 +18,20 @@ const useStyles = makeStyles({
     marginTop: "20px",
     marginLeft: "20px",
   },
+  buttonsubmit: {
+    color: "white",
+    width: "20em",
+    border: 8,
+    marginTop: "20px",
+    marginLeft: "20px",
+    backgroundColor: theme.palette.green.main,
+  },
   detailsfield: {
     width: "65em",
     marginTop: "10px",
     marginBottom: "10px",
   },
-});
+}));
 
 const AddProducts = () => {
   const classes = useStyles();
@@ -160,11 +168,7 @@ const AddProducts = () => {
         </Grid>
         <Grid item>
           <Grid container justify="center">
-            <Button
-              variant="contained"
-              color="secondary"
-              className={classes.button}
-            >
+            <Button variant="contained" className={classes.buttonsubmit}>
               تم
             </Button>
           </Grid>

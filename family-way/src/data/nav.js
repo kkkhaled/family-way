@@ -7,6 +7,7 @@ import QueueIcon from "@material-ui/icons/Queue";
 import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import TimerIcon from "@material-ui/icons/Timer";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 
 export default {
   catagiories: [
@@ -70,6 +71,14 @@ export default {
       title: "صفحه اوقات الطلبات ",
       icon: TimerIcon,
       to: "/ordertimes",
+      id: shortid.generate(),
+    },
+  ],
+  orders: [
+    {
+      title: "صفحه عرض الطلبات ",
+      icon: ShoppingCartIcon,
+      to: "/orders",
       id: shortid.generate(),
     },
   ],

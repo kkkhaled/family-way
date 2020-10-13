@@ -176,6 +176,22 @@ const SideBar = () => {
         ))}
       </List>
       <Divider />
+
+      <List>
+        {NavData.orders.map((item, index) => (
+          <ListItem
+            onClick={(e) => handleClick(e, item.id)}
+            selected={selected === item.id}
+            component={Link}
+            to={item.to}
+            button
+            key={item.id}
+          >
+            <ListItemIcon>{<item.icon />}</ListItemIcon>
+            <ListItemText primary={item.title} />
+          </ListItem>
+        ))}
+      </List>
     </Drawer>
   );
 };

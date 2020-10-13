@@ -8,6 +8,9 @@ import {
   Divider,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import EditIcon from "@material-ui/icons/Edit";
+
 const useStyles = makeStyles((theme) => ({
   button: {
     width: "22em",
@@ -15,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
     border: 5,
     marginTop: "8px",
     marginBottom: "15px",
+    backgroundColor: theme.palette.green.main,
   },
 
   input: {
@@ -35,6 +39,19 @@ const useStyles = makeStyles((theme) => ({
     marginRight: "20px",
     marginTop: "25px",
     marginBottom: "25px",
+    width: "250px",
+  },
+  editicon: {
+    backgroundColor: theme.palette.yellow.main,
+    color: "white",
+    marginRight: "10px",
+    marginLeft: "30px",
+    marginTop: "5px",
+  },
+  delIcon: {
+    color: "white",
+    marginRight: "auto",
+    backgroundColor: theme.palette.secondary.main,
   },
 }));
 const AddCatagiories = () => {
@@ -42,7 +59,7 @@ const AddCatagiories = () => {
   const [recentCatag, setRecentcatag] = useState([
     { name: "الصنف الاول", num: 1 },
     { name: "الصنف الثاني", num: 2 },
-    { name: "الصنف الثالث", num: 3 },
+    { name: "  الصنف الثالث", num: 3 },
     { name: "الصنف الرابع", num: 4 },
     { name: "الصنف الخامس", num: 5 },
     { name: "الصنف السادس", num: 6 },
@@ -71,11 +88,7 @@ const AddCatagiories = () => {
           </Grid>
           <Grid container justify="center">
             <Grid item>
-              <Button
-                color="secondary"
-                variant="contained"
-                className={classes.button}
-              >
+              <Button variant="contained" className={classes.button}>
                 تم
               </Button>
             </Grid>
@@ -89,7 +102,15 @@ const AddCatagiories = () => {
       <Grid container direction="row">
         {recentCatag.map((onecatag) => (
           <Card className={classes.card} key={onecatag.name}>
-            <Typography variant="h4">{onecatag.name}</Typography>
+            <Grid container direction="row">
+              <Grid item>
+                <Typography variant="h4">{onecatag.name}</Typography>
+              </Grid>
+              <Grid item>
+                <EditIcon className={classes.editicon} />
+                <DeleteForeverIcon className={classes.delIcon} />
+              </Grid>
+            </Grid>
           </Card>
         ))}
       </Grid>
