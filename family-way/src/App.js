@@ -14,6 +14,7 @@ import ContantsPage from "./pages/constants";
 import Ordertimes from "./pages/ordertimes";
 import OrdersPage from "./pages/orders";
 import RTL from "./components/rtl";
+import PushNotification from "./pages/pushNotification";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -61,6 +62,7 @@ export default function MiniDrawer() {
                 <Route exact path="/constants" component={ContantsPage} />
                 <Route exact path="/ordertimes" component={Ordertimes} />
                 <Route exact path="/orders" component={OrdersPage} />
+                <Route exact path="/pushNot" component={PushNotification} />
               </Switch>
             </main>
           </RTL>

@@ -20,7 +20,7 @@ import {
 } from "@material-ui/core";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import EditIcon from "@material-ui/icons/Edit";
-import Draggable from "react-draggable";
+// import Draggable from "react-draggable";
 
 const useStyle = makeStyles((theme) => ({
   head: {
@@ -52,16 +52,16 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 
-function PaperComponent(props) {
-  return (
-    <Draggable
-      handle="#draggable-dialog-title"
-      cancel={'[class*="MuiDialogContent-root"]'}
-    >
-      <Paper {...props} />
-    </Draggable>
-  );
-}
+// function PaperComponent(props) {
+//   return (
+//     <Draggable
+//       handle="#draggable-dialog-title"
+//       cancel={'[class*="MuiDialogContent-root"]'}
+//     >
+//       <Paper {...props} />
+//     </Draggable>
+//   );
+// }
 
 const UsersTable = () => {
   const classes = useStyle();
@@ -234,7 +234,7 @@ const UsersTable = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Dialog
+      {/* <Dialog
         open={openDialog}
         onClose={handleClose}
         PaperComponent={PaperComponent}
@@ -255,7 +255,7 @@ const UsersTable = () => {
             تم
           </Button>
         </DialogActions>
-      </Dialog>
+      </Dialog> */}
     </React.Fragment>
   );
 };

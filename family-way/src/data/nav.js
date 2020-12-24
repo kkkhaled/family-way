@@ -42,6 +42,14 @@ export default {
       id: shortid.generate(),
     },
   ],
+  users: [
+    {
+      title: " ارسال الأشعارات ",
+      icon: GroupIcon,
+      to: "/pushNot",
+      id: shortid.generate(),
+    },
+  ],
   addproducts: [
     {
       title: " اضافه منتجات ",
