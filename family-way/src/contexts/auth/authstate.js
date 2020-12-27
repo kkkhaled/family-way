@@ -1,118 +1,131 @@
-import React, { useReducer, createContext } from "react";
-import authReducer from './authReducer';
-import server from '../../api/server';
+import React, { useReducer, createContext } from 'react'
+import authReducer from './authReducer'
+import server from '../../api/server'
 import setAuthToken from '../../api/setAuthToken'
 //initial State
 const initialState = {
-    phone:null,
-    token: localStorage.getItem("token"),
-    isAuthenticated: null,
-    loading: true,
-    user: null,
-    error: null,
+  phone: null,
+  token: localStorage.getItem('token'),
+  isAuthenticated: null,
+  loading: true,
+  user: null,
+  error: null,
+  code: null
 }
 
-// create context 
-export const authContext=createContext();
+// create context
+export const authContext = createContext()
 
 // create provider
-export const AuthProvider =({children })=>{
+export const AuthProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(authReducer, initialState)
 
-    const [state,dispatch]=useReducer(authReducer,initialState);
+  //actions
 
-    //actions
-
-    //confirm phone number 
-    const addPhoneNumber=async(phone)=>{
-        const config = {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          };
-          try {
-             const res = await server.post('/phonenumber',phone,config);  
-              dispatch({
-                  type :"CONFIRM_PHONE",
-                  payload:res.data
-                })
-                console.log(res);
-          } catch (err) {
-              console.log(err);
-          }
+  //confirm phone number
+  const addPhoneNumber = async phone => {
+    try {
+      const res = await server.post('/phonenumber', {
+        phone
+      })
+      dispatch({
+        type: 'CONFIRM_PHONE',
+        payload: res.data
+      })
+      alert(res.data.code)
+    } catch (err) {
+      console.log(err)
     }
-    //load user
-     const loadUser=async()=>{
-        if (localStorage.token) {
-            setAuthToken(localStorage.token);
-          }
-       try {
-            const res = await server.get("/data");
-            dispatch({
-              type: "USER_LOADED",
-              payload: res.data,
-            });
-          } catch (err) {
-            dispatch({
-              type: "AUTH_ERROR",
-            });
-          }
-        };
-     
-    //verify phone number and login
-     const login=async(formData)=>{
-        const config = {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          };
-          try {
-              const res=await server.post('phonenumber/validate',formData,config);
-              dispatch({
-                type :"LOGIN_SUCCESS",
-                payload:res.data
-              }) 
-          } catch (err) {
-              dispatch({
-                type :"LOGIN_FAIL"}
-              )
-              console.log(err);
-          }
-     }
-      
-    //logout 
+  }
 
-    //get all users
-    const getAllUsers=async()=>{
-      try {
-         const res = await server.get('/users');
-         console.log(res);
-         dispatch({
-          type :"SUCCESSFUL_USERS",
-          payload : res.data
-         }) 
-      } catch (err) {
-        console.log(err);
+  //send code
+  const addCodeNumber = async (phone, code) => {
+    console.log(phone, code)
+    try {
+      const res = await server.post('/phonenumber/validate', {
+        phone,
+        code
+      })
+      localStorage.setItem('token', res.data.token)
+      console.log(res.data)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+  //load user
+  const loadUser = async () => {
+    if (localStorage.token) {
+      setAuthToken(localStorage.token)
+    }
+    try {
+      const res = await server.get('/data')
+      dispatch({
+        type: 'USER_LOADED',
+        payload: res.data
+      })
+    } catch (err) {
+      dispatch({
+        type: 'AUTH_ERROR'
+      })
+    }
+  }
+
+  //verify phone number and login
+  const login = async formData => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
       }
     }
+    try {
+      const res = await server.post('phonenumber/validate', formData, config)
+      dispatch({
+        type: 'LOGIN_SUCCESS',
+        payload: res.data
+      })
+    } catch (err) {
+      dispatch({
+        type: 'LOGIN_FAIL'
+      })
+      console.log(err)
+    }
+  }
 
-    // clean errors
+  //logout
 
-    return(
-        <authContext.Provider value={{
-            phone :state.phone,
-            token :state.token,
-            isAuthenticated :state.isAuthenticated,
-            loading :state.loading,
-            user :state.user,
-            error :state.error,
-            addPhoneNumber,
-            login,
-            loadUser,
-            getAllUsers
-        }}>
-            {children}
-        </authContext.Provider>
-    ) 
+  //get all users
+  const getAllUsers = async () => {
+    try {
+      const res = await server.get('/users')
+      console.log(res)
+      dispatch({
+        type: 'SUCCESSFUL_USERS',
+        payload: res.data
+      })
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
+  // clean errors
+
+  return (
+    <authContext.Provider
+      value={{
+        phone: state.phone,
+        token: state.token,
+        isAuthenticated: state.isAuthenticated,
+        loading: state.loading,
+        user: state.user,
+        error: state.error,
+        addCodeNumber,
+        addPhoneNumber,
+        login,
+        loadUser,
+        getAllUsers
+      }}
+    >
+      {children}
+    </authContext.Provider>
+  )
 }
-
