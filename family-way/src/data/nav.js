@@ -8,6 +8,7 @@ import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import TimerIcon from "@material-ui/icons/Timer";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import NotificationImportantIcon from '@material-ui/icons/NotificationImportant';
 
 export default {
   catagiories: [
@@ -42,10 +43,10 @@ export default {
       id: shortid.generate(),
     },
   ],
-  users: [
+  notifcations: [
     {
       title: " ارسال الأشعارات ",
-      icon: GroupIcon,
+      icon: NotificationImportantIcon,
       to: "/pushNot",
       id: shortid.generate(),
     },

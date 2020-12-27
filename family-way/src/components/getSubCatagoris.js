@@ -68,6 +68,17 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "15px",
     marginLeft: "50px",
   },
+  itemSpace :{
+    marginTop : "12px",
+    marginBottom :"12px"
+  },
+  spacerRight :{
+    paddingRight :"8px",
+    color : theme.palette.red.light
+  },
+  spacerLeft :{
+    paddingLeft:"8px"
+  },
 }));
 
 const GetSubCatagories = () => {
@@ -80,6 +91,35 @@ const GetSubCatagories = () => {
     { name: "منتج واحد", catgname: "صنف واحد", img: ecom },
     { name: "منتج واحد", catgname: "صنف واحد", img: ecom },
   ]);
+
+  const subCatagView=(
+    <React.Fragment>
+      <Grid container direction='row'>
+        {catagiories.map((catag)=>(
+          <Card className={classes.card}>
+            <img className={classes.img} src={catag.img} alt="subimg" />
+            <Grid container justify='space-between' className={classes.itemSpace} >
+              <Grid item >
+                <Typography variant='h4' className={classes.spacerLeft}>اسم الصنف</Typography>
+              </Grid>
+              <Grid item>
+                <Typography variant='h4' className={classes.spacerRight}>{catag.catgname}</Typography>
+              </Grid>
+            </Grid>
+            <Grid container justify='space-between' className={classes.itemSpace}>
+              <Grid item >
+                <Typography variant='h4' className={classes.spacerLeft}   >اسم المنتج</Typography>
+              </Grid>
+              <Grid item>
+                <Typography variant='h4' className={classes.spacerRight}  >{catag.name}</Typography>
+              </Grid>
+            </Grid>
+          </Card>
+        ))}
+      </Grid>
+    </React.Fragment>
+  )
+
   return (
     <React.Fragment>
       <Typography variant="h4" className={classes.head}>
@@ -159,29 +199,7 @@ const GetSubCatagories = () => {
           />
         </Grid>
       </Grid>
-      <Grid container direction="row">
-        {catagiories.map((catag) => (
-          <Grid item key={catag.name}>
-            <Grid container direction="column">
-              <Grid item key={catag.name}>
-                <Card className={classes.card}>
-                  <img className={classes.img} src={catag.img} alt="subimg" />
-                  <Grid item>
-                    <Typography variant="h4" className={classes.font}>
-                      اسم الصنف : {catag.catgname}
-                    </Typography>
-                  </Grid>
-                  <Grid item>
-                    <Typography className={classes.font} variant="h4">
-                      اسم المنتج: {catag.name}
-                    </Typography>
-                  </Grid>
-                </Card>
-              </Grid>
-            </Grid>
-          </Grid>
-        ))}
-      </Grid>
+     {subCatagView}
     </React.Fragment>
   );
 };

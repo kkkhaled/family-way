@@ -15,6 +15,9 @@ import Ordertimes from "./pages/ordertimes";
 import OrdersPage from "./pages/orders";
 import RTL from "./components/rtl";
 import PushNotification from "./pages/pushNotification";
+import PhoneNumber from './components/phoneNumber'
+import PhoneVerify from './components/phoneVerify'
+import {AuthProvider} from './contexts/auth/authstate'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 
   content: {
     flexGrow: 1,
-    margin: "0px 15px 0px 15px",
+    margin: "0px 255px 0px 15px",
     // padding: "15px"
     // padding: theme.spacing(3),
   },
@@ -33,12 +36,14 @@ export default function MiniDrawer() {
   const classes = useStyles();
 
   return (
+    <AuthProvider>
     <ThemeProvider theme={AppTheme}>
+      <BrowserRouter>
+       <Route exact path="/phone" component={PhoneNumber} />
+           <Route exact path="/login" component={PhoneVerify} />
       <div className={classes.root}>
         <CssBaseline />
-        <BrowserRouter>
           <RTL>
-            <SideBar />
             <main className={classes.content}>
               <Switch>
                 <Route
@@ -66,8 +71,9 @@ export default function MiniDrawer() {
               </Switch>
             </main>
           </RTL>
-        </BrowserRouter>
-      </div>
+      </div> 
+      </BrowserRouter>
     </ThemeProvider>
+    </AuthProvider>
   );
 }

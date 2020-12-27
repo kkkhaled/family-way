@@ -12,13 +12,13 @@ import order3 from "../assets/images/order3.jpg";
 
 const useStyles = makeStyles((theme) => ({
   card: {
-    width: "22em",
+    width: "55em",
     // height: "22em",
     border: 8,
     marginTop: "20px",
     marginBottom: "20px",
-    marginLeft: "10px",
-    marginRight: "10px",
+    //marginLeft: "10px",
+    //marginRight: "10px",
   },
   head: {
     marginTop: "8px",
@@ -26,10 +26,9 @@ const useStyles = makeStyles((theme) => ({
   },
   username: {
     color: theme.palette.gray,
-    marginLeft: "11px",
-    marginTop: "8px",
-    marginBottom: "8px",
-  },
+    marginLeft: "8px",
+    marginRight :"120px"
+    },
   phone: {
     color: theme.palette.gray,
     marginLeft: "50px",
@@ -139,144 +138,60 @@ const Orders = () => {
       prices: { allproducts: 22, driver: 10, allprices: 32 },
     },
   ]);
+
+
+  const orderView=(
+    <React.Fragment>
+      <Grid container direction='column'>
+        {orders.map((order)=>(
+         <Grid item>
+          <Card className={classes.card}>
+           <Grid item>
+             <Typography variant='h4'>
+                 المستخدم
+             </Typography>
+           </Grid>
+           <Grid container justify='flex-start'>
+               <Grid item>
+                 <Typography variant='h5' className={classes.username}  >
+                    {order.user.name} 
+                 </Typography>
+                 </Grid> 
+                 <Grid item>
+                   <Typography variant='h5'>
+                      {order.user.phone}
+                   </Typography>
+                 </Grid>
+                 </Grid>
+                  <Divider />
+                <Grid item>
+                   <Typography variant='h4'>
+                     وقت الاوردر
+                   </Typography>
+                </Grid>
+               <Grid container justify='flex-start'>
+               <Grid item>
+                 <Typography variant='h5' className={classes.username}  >
+                    {order.ordertime.day} 
+                 </Typography>
+                 </Grid> 
+                 <Grid item>
+                   <Typography variant='h5'>
+                      {order.ordertime.hours}
+                   </Typography>
+                 </Grid>
+                 </Grid>
+                  <Divider />
+            </Card>
+            </Grid>
+        ))}
+      </Grid> 
+    </React.Fragment>
+  )
+
   return (
     <React.Fragment>
-      <Grid container direction="row">
-        {orders.map((order) => (
-          <Grid item>
-            <Card className={classes.card}>
-              <Grid container direction="column">
-                <Grid item>
-                  <Typography variant="h4" className={classes.head}>
-                    المستخدم
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <Grid container direction="row">
-                    <Grid item>
-                      <Typography variant="h5" className={classes.username}>
-                        {order.user.name}
-                      </Typography>
-                    </Grid>
-                    <Grid item>
-                      <Typography variant="h5" className={classes.phone}>
-                        {order.user.phone}
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                </Grid>
-                <Divider />
-                <Grid item>
-                  <Typography variant="h4" className={classes.head}>
-                    وقت الاوردر
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <Grid container direction="row">
-                    <Grid item>
-                      <Typography variant="h5" className={classes.username}>
-                        {order.ordertime.day}
-                      </Typography>
-                    </Grid>
-                    <Grid item>
-                      <Typography variant="h5" className={classes.hours}>
-                        {order.ordertime.hours}
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                </Grid>
-                <Divider />
-                <Grid item>
-                  <Typography variant="h4" className={classes.head}>
-                    طريقه الدفع
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <Typography variant="h5" className={classes.username}>
-                    {order.payment}
-                  </Typography>
-                </Grid>
-                <Divider />
-                <Grid item>
-                  <Typography variant="h4" className={classes.head}>
-                    المنتجات
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <img
-                    src={order.products.img}
-                    alt="order imgs"
-                    className={classes.img}
-                  />
-                </Grid>
-                <Divider />
-                <Grid item>
-                  <Typography variant="h4" className={classes.head}>
-                    الاسعار
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <Grid container direction="row">
-                    <Grid item>
-                      <Typography variant="h5" className={classes.username}>
-                        جميع المنتجات
-                      </Typography>
-                    </Grid>
-                    <Grid item>
-                      <Typography variant="h5" className={classes.allproducts}>
-                        {order.prices.allproducts}
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                </Grid>
-                <Grid item>
-                  <Grid container direction="row">
-                    <Grid item>
-                      <Typography variant="h5" className={classes.username}>
-                        السواق
-                      </Typography>
-                    </Grid>
-                    <Grid item>
-                      <Typography variant="h5" className={classes.driver}>
-                        {order.prices.driver}
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                </Grid>
-                <Grid item>
-                  <Grid container direction="row">
-                    <Grid item>
-                      <Typography variant="h5" className={classes.username}>
-                        الاجمالي
-                      </Typography>
-                    </Grid>
-                    <Grid item>
-                      <Typography variant="h5" className={classes.allprices}>
-                        {order.prices.allprices}
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                </Grid>
-                <Divider />
-                <Grid item>
-                  <Grid container direction="row">
-                    <Grid item>
-                      <Button variant="contained" className={classes.delbutton}>
-                        <Typography variant="h5">رفض</Typography>
-                      </Button>
-                    </Grid>
-                    <Grid item>
-                      <Button variant="contained" className={classes.button}>
-                        <Typography variant="h5"> تم التجهيز</Typography>
-                      </Button>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+       {orderView}
     </React.Fragment>
   );
 };

@@ -39,20 +39,25 @@ const useStyles = makeStyles((theme) => ({
     marginRight: "20px",
     marginTop: "25px",
     marginBottom: "25px",
-    width: "250px",
+    width: "305px",
+  },
+   name : {
+    marginLeft :"10px",
+    marginRight :"40px"
   },
   editicon: {
     backgroundColor: theme.palette.yellow.main,
     color: "white",
     marginRight: "10px",
-    marginLeft: "30px",
+    marginLeft: "10px",
     marginTop: "5px",
   },
   delIcon: {
     color: "white",
-    marginRight: "auto",
     backgroundColor: theme.palette.secondary.main,
+    marginRight :"10px"
   },
+ 
 }));
 const AddCatagiories = () => {
   const classes = useStyles();
@@ -62,12 +67,34 @@ const AddCatagiories = () => {
     { name: "  الصنف الثالث", num: 3 },
     { name: "الصنف الرابع", num: 4 },
     { name: "الصنف الخامس", num: 5 },
-    { name: "الصنف السادس", num: 6 },
+    { name: " الصنف السادس", num: 6 },
     { name: "الصنف السابع", num: 7 },
     { name: "الصنف الثامن", num: 8 },
     { name: "الصنف التاسع", num: 9 },
     { name: "الصنف الهاشر", num: 10 },
   ]);
+
+
+  const catagView=(
+    <React.Fragment>
+        <Grid container direction='row'>
+           {recentCatag.map(onecatag=>(
+             <Card className={classes.card}>
+             <Grid container justify='space-between'>
+                <Typography variant="h4"  className={classes.name}>
+                   {onecatag.name}
+                </Typography>
+                <Grid item>
+                  <EditIcon className={classes.editicon} />
+                  <DeleteForeverIcon className={classes.delIcon} />
+                </Grid>
+             </Grid>  
+              </Card>
+           ))}
+        </Grid>
+    </React.Fragment>
+  )
+
   return (
     <React.Fragment>
       <form>
@@ -99,21 +126,7 @@ const AddCatagiories = () => {
       <Typography variant="h4" color="primary">
         عرض الاصناف الرئسيه
       </Typography>
-      <Grid container direction="row">
-        {recentCatag.map((onecatag) => (
-          <Card className={classes.card} key={onecatag.name}>
-            <Grid container direction="row">
-              <Grid item>
-                <Typography variant="h4">{onecatag.name}</Typography>
-              </Grid>
-              <Grid item>
-                <EditIcon className={classes.editicon} />
-                <DeleteForeverIcon className={classes.delIcon} />
-              </Grid>
-            </Grid>
-          </Card>
-        ))}
-      </Grid>
+       {catagView}
     </React.Fragment>
   );
 };
