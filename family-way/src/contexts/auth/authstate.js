@@ -9,8 +9,8 @@ const initialState = {
   isAuthenticated: null,
   loading: true,
   user: null,
-  error: null,
-  code: null
+  code: null,
+  users :[]
 }
 
 // create context
@@ -32,33 +32,24 @@ export const AuthProvider = ({ children }) => {
         type: 'CONFIRM_PHONE',
         payload: res.data
       })
-      alert(res.data.code)
+     // alert(res.data.code)
     } catch (err) {
       console.log(err)
     }
   }
 
-  //send code
-  const addCodeNumber = async (phone, code) => {
-    console.log(phone, code)
-    try {
-      const res = await server.post('/phonenumber/validate', {
-        phone,
-        code
-      })
-      localStorage.setItem('token', res.data.token)
-      console.log(res.data)
-    } catch (err) {
-      console.log(err)
-    }
-  }
   //load user
   const loadUser = async () => {
-    if (localStorage.token) {
+   /* if (localStorage.token) {
       setAuthToken(localStorage.token)
     }
+    console.log(localStorage.token);
+    */
     try {
-      const res = await server.get('/data')
+      const res = await server.get('/data',{'headers': {
+        'Authorization': 'Bearer ' + localStorage.token
+      }})
+      
       dispatch({
         type: 'USER_LOADED',
         payload: res.data
@@ -70,44 +61,47 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
-  //verify phone number and login
-  const login = async formData => {
-    const config = {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }
+  //send code
+  const addCodeNumber = async (phone, code) => {
+   // console.log(phone, code)
     try {
-      const res = await server.post('phonenumber/validate', formData, config)
+      const res = await server.post('/phonenumber/validate', {
+        phone,
+        code
+      })
+      localStorage.setItem('token', res.data.token)
+      console.log(res.data)
       dispatch({
         type: 'LOGIN_SUCCESS',
         payload: res.data
       })
+      loadUser();
     } catch (err) {
+      console.log(err)
       dispatch({
         type: 'LOGIN_FAIL'
       })
-      console.log(err)
     }
   }
 
   //logout
-
+   const logout=()=>{
+     dispatch({
+      type:"LOGOUT"
+     })
+   }
   //get all users
   const getAllUsers = async () => {
     try {
       const res = await server.get('/users')
-      console.log(res)
       dispatch({
         type: 'SUCCESSFUL_USERS',
-        payload: res.data
+        payload: res.data.users
       })
     } catch (err) {
       console.log(err)
     }
   }
-
-  // clean errors
 
   return (
     <authContext.Provider
@@ -117,12 +111,12 @@ export const AuthProvider = ({ children }) => {
         isAuthenticated: state.isAuthenticated,
         loading: state.loading,
         user: state.user,
-        error: state.error,
+        users:state.users, 
         addCodeNumber,
         addPhoneNumber,
-        login,
         loadUser,
-        getAllUsers
+        getAllUsers,
+        logout
       }}
     >
       {children}

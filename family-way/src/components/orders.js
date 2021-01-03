@@ -15,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
     width: "55em",
     // height: "22em",
     border: 8,
+    borderColor:"#dfe6e9",
     marginTop: "20px",
     marginBottom: "20px",
     //marginLeft: "10px",
@@ -29,18 +30,14 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "8px",
     marginRight :"120px"
     },
-  phone: {
-    color: theme.palette.gray,
-    marginLeft: "50px",
-    marginTop: "8px",
-    marginBottom: "8px",
-  },
-  hours: {
-    color: theme.palette.gray,
-    marginLeft: "100px",
-    marginTop: "8px",
-    marginBottom: "8px",
-  },
+   hours: {
+    marginLeft: "55px",
+      },
+      spacer:{
+        marginLeft:"5px",
+        marginTop:"5px",
+        marginBottom :"5px"
+      },
   img: {
     marginLeft: "11px",
     marginRight: "8px",
@@ -50,39 +47,35 @@ const useStyles = makeStyles((theme) => ({
     width: "85px",
   },
   allproducts: {
-    marginTop: "8px",
-    marginBottom: "8px",
-    marginLeft: "60px",
+    marginTop: "5px",
+    marginBottom: "5px",
   },
-  driver: {
-    marginTop: "8px",
-    marginBottom: "8px",
-    marginLeft: "114px",
+    driverValue:{
+    marginLeft: "57px",
+    marginTop: "5px",
+    marginBottom: "5px",
   },
   allprices: {
-    marginTop: "8px",
-    marginBottom: "8px",
-    marginLeft: "106px",
+    marginLeft: "49px",
+    color :theme.palette.red.dark
   },
   button: {
     color: "white",
     backgroundColor: theme.palette.green.main,
     width: "10em",
     height: "2.4em",
-    marginTop: "12px",
-    marginLeft: "8px",
-    marginRight: "5px",
-    marginBottom: "8px",
+    marginRight: "15px",
+   marginBottom:"8px",
+   marginTop:"5px"
   },
   delbutton: {
     color: "white",
     backgroundColor: theme.palette.secondary.main,
     width: "10em",
     height: "2.4em",
-    marginTop: "12px",
-    marginLeft: "8px",
-    marginRight: "5px",
-    marginBottom: "8px",
+    marginBottom:"8px",
+   marginTop:"5px",
+   marginRight: "15px",
   },
 }));
 const Orders = () => {
@@ -147,7 +140,7 @@ const Orders = () => {
          <Grid item>
           <Card className={classes.card}>
            <Grid item>
-             <Typography variant='h4'>
+             <Typography variant='h4' className={classes.spacer}>
                  المستخدم
              </Typography>
            </Grid>
@@ -165,7 +158,7 @@ const Orders = () => {
                  </Grid>
                   <Divider />
                 <Grid item>
-                   <Typography variant='h4'>
+                   <Typography variant='h4' className={classes.spacer}>
                      وقت الاوردر
                    </Typography>
                 </Grid>
@@ -176,12 +169,86 @@ const Orders = () => {
                  </Typography>
                  </Grid> 
                  <Grid item>
-                   <Typography variant='h5'>
+                   <Typography variant='h5'className={classes.hours}>
                       {order.ordertime.hours}
                    </Typography>
                  </Grid>
                  </Grid>
                   <Divider />
+                  <Grid item>
+                    <Typography variant="h4" className={classes.spacer} >
+                    طريقه الدفع 
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                  <Typography variant='h5' className={classes.username}>
+                      {order.payment}
+                   </Typography> 
+                  </Grid>
+                  <Divider />
+                  <Grid item>
+                    <Typography variant="h4" className={classes.spacer} >
+                         المنتجات 
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <img src={order.products.img} alt="jg" className={classes.img}/>
+                  </Grid>
+                  <Divider />
+                  <Grid item>
+                    <Typography variant="h4" className={classes.spacer} >
+                         الاسعار 
+                    </Typography>
+                  </Grid>
+                  <Grid container>
+                  <Grid item>
+                 <Typography variant='h5' className={classes.username}  >
+                     جميع المنتجات
+                 </Typography>
+                 </Grid> 
+                 <Grid item>
+                   <Typography variant='h5'className={classes.allproducts}>
+                      {order.prices.allproducts}
+                   </Typography>
+                 </Grid>
+                  </Grid>  
+                   <Grid container>
+                  <Grid item>
+                 <Typography variant='h5' className={classes.username}  >
+                      السواق
+                 </Typography>
+                 </Grid> 
+                 <Grid item>
+                   <Typography variant='h5'className={classes.driverValue}>
+                      {order.prices.driver}
+                   </Typography>
+                 </Grid>
+                  </Grid>
+                  <Grid container>
+                  <Grid item>
+                 <Typography variant='h5' className={classes.username}  >
+                     الاجمالي
+                 </Typography>
+                 </Grid> 
+                 <Grid item>
+                   <Typography variant='h5'className={classes.allprices}>
+                      {order.prices.allprices}
+                   </Typography>
+                 </Grid>
+                  </Grid>
+               <Divider />
+               <Grid container justify='flex-end' direction="row">
+                 <Grid item>
+                   <Button variant="contained" className={classes.button}>
+                      تم التجهيز
+                   </Button>
+                   </Grid>
+                   <Grid item>
+                   <Button variant="contained" className={classes.delbutton}>
+                     رفض
+                   </Button>
+                   </Grid>
+               </Grid>
             </Card>
             </Grid>
         ))}

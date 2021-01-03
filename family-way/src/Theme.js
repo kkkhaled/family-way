@@ -17,6 +17,7 @@ const AppTheme = createMuiTheme({
     gray: "#607D8B",
     red: {
       light: "#ea8685",
+      dark:"#EA2027"
     },
   },
   typography: {

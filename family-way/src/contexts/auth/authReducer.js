@@ -11,7 +11,7 @@ export default (state, action) => {
         ...state,
         isAuthenticated: true,
         loading: false,
-        user: action.payload
+        user: action.payload.user
       }
     case 'LOGIN_SUCCESS':
       localStorage.setItem('token', action.payload.token)
@@ -22,7 +22,9 @@ export default (state, action) => {
         loading: false
       }
     case 'LOGIN_FAIL':
-    case 'AUTH_ERROR': {
+    case 'AUTH_ERROR':
+    case 'LOGOUT':   
+    {
       localStorage.removeItem('token')
       return {
         ...state,
@@ -34,6 +36,12 @@ export default (state, action) => {
         error: action.payload
       }
     }
+    case "SUCCESSFUL_USERS":
+      return{
+        ...state,
+        users : action.payload,
+        loading : false
+      }
     default:
       return state
   }

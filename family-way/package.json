@@ -13,6 +13,7 @@
     "clsx": "^1.1.1",
     "emoji-picker-react": "^3.2.4",
     "jss-rtl": "^0.3.0",
+    "material-ui-dropzone": "^3.5.0",
     "moment": "^2.29.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -22,7 +23,8 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
-    "shortid": "^2.2.15"
+    "shortid": "^2.2.15",
+    "use-state-if-mounted": "^1.0.4"
   },
   "scripts": {
     "start": "react-scripts start",

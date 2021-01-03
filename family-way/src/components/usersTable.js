@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect,useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Typography,
@@ -20,6 +20,8 @@ import {
 } from "@material-ui/core";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import EditIcon from "@material-ui/icons/Edit";
+import {authContext} from '../contexts/auth/authstate';
+
 // import Draggable from "react-draggable";
 
 const useStyle = makeStyles((theme) => ({
@@ -65,9 +67,10 @@ const useStyle = makeStyles((theme) => ({
 
 const UsersTable = () => {
   const classes = useStyle();
+  const {getAllUsers,users} = useContext(authContext);
   //for hanle pop-up
   const [openDialog, setOpenDialog] = useState(false);
-  const [users, setUsers] = useState([
+  const [userss, setUsers] = useState([
     {
       name: "khaled fathi",
       role: "ADMIN",
@@ -118,6 +121,14 @@ const UsersTable = () => {
       wallet: 0,
     },
   ]);
+
+
+  // load user data
+   useEffect(() => {
+    getAllUsers()
+      // eslint-disable-next-line
+   }, [])
+   //console.log(users);
 
   // handle dialog open
   const handleClickOpen = () => {
@@ -203,7 +214,7 @@ const UsersTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.map((row) => (
+            {userss.map((row) => (
               <TableRow key={row.name}>
                 <TableCell component="th" scope="row" align="center">
                   1

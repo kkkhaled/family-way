@@ -1,15 +1,17 @@
 import { Grid } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useState,useEffect,useContext } from "react";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import {
-  Card,
   Typography,
   TextField,
   Button,
   Divider,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import ecom from "../assets/images/ecom.jpg";
+import {catagoriesContext} from '../contexts/catagories/catagoriesState';
+import {subcatagoriesContext} from '../contexts/subcatagories/subcatagoriesState';
+import SubCatagoryView from './subcatagoriesView'
+import DroZone from "./DropZone";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -82,66 +84,90 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const GetSubCatagories = () => {
+   
+    // define component state
+    const [text,setText]=useState({name:"انتظر تحميل البيانات"})
+    const [files, setFiles] = useState([]);
+    const [dropZoneState, setDropZoneState] = useState(false);  
+    const [name,setName]=useState("")
+    const [parentId,setParentId]=useState(null)
+  // render catagories state && func
+  const {
+    getAllCatagories
+    ,catagories,
+    loading,
+    getOneCatagory
+  }=useContext(catagoriesContext);
+              
+
+  // render subcatagories state && func
+  const {
+    addNewSubCatagories} =useContext(subcatagoriesContext)
+  
+  // loading catagories
+  useEffect(()=>{
+    getAllCatagories();
+  }
+ // eslint-disable-next-line
+,[]);
+
+
   const classes = useStyles();
-  const [catagiories, setCatagories] = useState([
-    { name: "منتج واحد", catgname: "صنف واحد", img: ecom },
-    { name: "منتج واحد", catgname: "صنف واحد", img: ecom },
-    { name: "منتج واحد", catgname: "صنف واحد", img: ecom },
-    { name: "منتج واحد", catgname: "صنف واحد", img: ecom },
-    { name: "منتج واحد", catgname: "صنف واحد", img: ecom },
-    { name: "منتج واحد", catgname: "صنف واحد", img: ecom },
-  ]);
+  
+  // handle filter input
+  const handleFilter=(event,item)=>{
+    if(item){
+     getOneCatagory(item._id);
+     setParentId(item._id);
+      }
+  }
 
-  const subCatagView=(
-    <React.Fragment>
-      <Grid container direction='row'>
-        {catagiories.map((catag)=>(
-          <Card className={classes.card}>
-            <img className={classes.img} src={catag.img} alt="subimg" />
-            <Grid container justify='space-between' className={classes.itemSpace} >
-              <Grid item >
-                <Typography variant='h4' className={classes.spacerLeft}>اسم الصنف</Typography>
-              </Grid>
-              <Grid item>
-                <Typography variant='h4' className={classes.spacerRight}>{catag.catgname}</Typography>
-              </Grid>
-            </Grid>
-            <Grid container justify='space-between' className={classes.itemSpace}>
-              <Grid item >
-                <Typography variant='h4' className={classes.spacerLeft}   >اسم المنتج</Typography>
-              </Grid>
-              <Grid item>
-                <Typography variant='h4' className={classes.spacerRight}  >{catag.name}</Typography>
-              </Grid>
-            </Grid>
-          </Card>
-        ))}
-      </Grid>
-    </React.Fragment>
-  )
+  // handle dropzone state
+  const SelectFilesButtonHandler = () => {
+    setDropZoneState(true);
+  };
 
+  const handleDropZoneSave = (files) => {
+    setFiles(files);
+  };
+
+   const handleSubmit=(e)=>{
+     e.preventDefault();
+      if(parentId === null){
+        console.log("err");
+      }else if(name === ""){
+          console.log("errr");
+      }else {
+        addNewSubCatagories(files,name,parentId,true);
+      }
+   }
+ 
+    
   return (
     <React.Fragment>
       <Typography variant="h4" className={classes.head}>
         ادخل الاصناف الفرعيه
       </Typography>
-      <form>
+      <form onSubmit={handleSubmit}>
         <Grid container direction="column">
           <Grid item>
             <TextField
               variant="outlined"
               label="ادخل الاسم"
+              onChange={(e)=>setName(e.target.value)}
               className={classes.field}
             />
           </Grid>
           <Grid item>
             <Grid container direction="row">
               <Grid item>
+                {catagories.length >0 && ! loading ?
                 <Autocomplete
                   className={classes.autocomplete}
                   id="combo-box-demo"
-                  options={catagiories}
+                  options={catagories}
                   getOptionLabel={(option) => option.name}
+                  onChange={handleFilter}
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -149,12 +175,26 @@ const GetSubCatagories = () => {
                       variant="outlined"
                     />
                   )}
-                />
+                />:  
+                  <Autocomplete
+                className={classes.autocomplete}
+                id="combo-box-demo"
+                options={text}
+                getOptionLabel={(option) => option.name}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="اختر الصنف الرئيسى"
+                    variant="outlined"
+                  />
+                )}
+              /> }
               </Grid>
               <Grid item>
                 <Button
                   variant="contained"
                   color="primary"
+                  onClick={SelectFilesButtonHandler}
                   className={classes.button}
                 >
                   ادخل صوره الصنف
@@ -168,6 +208,7 @@ const GetSubCatagories = () => {
                 variant="contained"
                 color="secondary"
                 className={classes.button2}
+                type="submit"
               >
                 تم
               </Button>
@@ -175,31 +216,13 @@ const GetSubCatagories = () => {
           </Grid>
         </Grid>
       </form>
-
       <Divider />
-      <Grid container direction="row">
-        <Grid item>
-          <Typography variant="h4" className={classes.head}>
-            عرض الاصناف الفرعيه
-          </Typography>
-        </Grid>
-        <Grid item>
-          <Autocomplete
-            className={classes.autocomplete2}
-            id="combo-box-demo"
-            options={catagiories}
-            getOptionLabel={(option) => option.name}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="اختر الصنف الرئيسى"
-                variant="outlined"
-              />
-            )}
-          />
-        </Grid>
-      </Grid>
-     {subCatagView}
+       <DroZone
+        open={dropZoneState}
+        setOpen={setDropZoneState}
+        handleSave={handleDropZoneSave}
+      />
+      <SubCatagoryView />
     </React.Fragment>
   );
 };

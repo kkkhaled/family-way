@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect,useContext } from "react";
 import {
   Grid,
   TextField,
@@ -10,6 +10,12 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import EditIcon from "@material-ui/icons/Edit";
+import {authContext} from '../contexts/auth/authstate';
+import {catagoriesContext} from '../contexts/catagories/catagoriesState';
+//import {useAsync} from '../hooks/useAsync';
+import Animations from './loader';
+//import { useStateIfMounted } from "use-state-if-mounted";
+
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -57,32 +63,51 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
     marginRight :"10px"
   },
- 
+  
 }));
 const AddCatagiories = () => {
   const classes = useStyles();
-  const [recentCatag, setRecentcatag] = useState([
-    { name: "الصنف الاول", num: 1 },
-    { name: "الصنف الثاني", num: 2 },
-    { name: "  الصنف الثالث", num: 3 },
-    { name: "الصنف الرابع", num: 4 },
-    { name: "الصنف الخامس", num: 5 },
-    { name: " الصنف السادس", num: 6 },
-    { name: "الصنف السابع", num: 7 },
-    { name: "الصنف الثامن", num: 8 },
-    { name: "الصنف التاسع", num: 9 },
-    { name: "الصنف الهاشر", num: 10 },
-  ]);
+
+  const [name,setName] =useState('');
+  const [sort,setSort]=useState('') 
+   
+
+  const {loadUser} = useContext(authContext);
+  const {getAllCatagories,addNewCategories,removeOne,catagories,loading}=useContext(catagoriesContext);
+ 
+
+  
+ useEffect(()=>{
+     getAllCatagories();
+    }
+   // eslint-disable-next-line
+  ,[]);
+
+ //load user data
+  useEffect(() => {
+    loadUser();
+    // eslint-disable-next-line
+  }, []);
+
+  
+  // handle add new catagories
+  const handleSubmit=(e)=>{
+     e.preventDefault();
+     addNewCategories(name,sort);
+    };
+
 
 
   const catagView=(
     <React.Fragment>
+      {console.log(catagories)}
         <Grid container direction='row'>
-           {recentCatag.map(onecatag=>(
-             <Card className={classes.card}>
-             <Grid container justify='space-between'>
+           {(catagories.length >1  && !loading) ? 
+              catagories.map((catag)=>(
+              <Card className={classes.card} key={catag._id}  >
+              <Grid container justify='space-between' >
                 <Typography variant="h4"  className={classes.name}>
-                   {onecatag.name}
+                   {catag.name}
                 </Typography>
                 <Grid item>
                   <EditIcon className={classes.editicon} />
@@ -90,20 +115,22 @@ const AddCatagiories = () => {
                 </Grid>
              </Grid>  
               </Card>
-           ))}
+           )):<Animations />  
+         }
         </Grid>
     </React.Fragment>
   )
 
   return (
     <React.Fragment>
-      <form>
+      <form onSubmit={handleSubmit}>
         <Grid container direction="column">
           <Grid item>
             <TextField
               className={classes.input}
               variant="outlined"
               label="ادخال اسم الصنف"
+              onChange={(e)=>setName(e.target.value)}
             />
           </Grid>
           <Grid item>
@@ -111,11 +138,12 @@ const AddCatagiories = () => {
               className={classes.input2}
               variant="outlined"
               label="  الترتيب"
+              onChange={(e)=>setSort(e.target.value)}
             />
           </Grid>
           <Grid container justify="center">
             <Grid item>
-              <Button variant="contained" className={classes.button}>
+              <Button variant="contained" className={classes.button} type="submit">
                 تم
               </Button>
             </Grid>

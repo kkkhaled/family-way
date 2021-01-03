@@ -3,7 +3,6 @@ import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
 import { ThemeProvider, makeStyles } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import AppTheme from './Theme'
-import SideBar from './components/sidebar'
 import Addcatagiories from './pages/addcatagiories'
 import Getsubcatagiories from './pages/getsubCatagories'
 import Getthirdcatagiories from './pages/thirdcatagories'
@@ -16,8 +15,14 @@ import OrdersPage from './pages/orders'
 import RTL from './components/rtl'
 import PushNotification from './pages/pushNotification'
 import PhoneNumber from './components/phoneNumber'
-import PhoneVerify from './components/phoneVerify'
 import { AuthProvider } from './contexts/auth/authstate'
+import {CatagoriesProvider} from './contexts/catagories/catagoriesState'
+import {SubCatagoriesProvider} from './contexts/subcatagories/subcatagoriesState'
+import{ThirdCatagoriesProvider} from './contexts/thirdcatagories/thirdState'
+import setAuthToken from './api/setAuthToken'
+import PrivateRoute from './routing/privateRoute'
+ 
+
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -31,22 +36,29 @@ const useStyles = makeStyles(theme => ({
     // padding: theme.spacing(3),
   }
 }))
+ 
+if (localStorage.token) {
+  setAuthToken(localStorage.token);
+}
 
 export default function MiniDrawer () {
   const classes = useStyles()
   return (
-    <AuthProvider>
+  <AuthProvider>
+  <CatagoriesProvider>
+    <SubCatagoriesProvider>
+      <ThirdCatagoriesProvider>
       <ThemeProvider theme={AppTheme}>
         <BrowserRouter>
-          <Route exact path='/phone' component={PhoneNumber} />
+          <Route exact path='/login' component={PhoneNumber} />
           <div className={classes.root}>
             <CssBaseline />
             <RTL>
               <main className={classes.content}>
                 <Switch>
-                  <Route
+                  <PrivateRoute
                     exact
-                    path='/Addcatagiories'
+                    path='/'
                     component={Addcatagiories}
                   />
                   <Route
@@ -72,6 +84,10 @@ export default function MiniDrawer () {
           </div>
         </BrowserRouter>
       </ThemeProvider>
-    </AuthProvider>
+      </ThirdCatagoriesProvider>
+      </SubCatagoriesProvider>
+      </CatagoriesProvider>
+ </AuthProvider>
+  
   )
 }

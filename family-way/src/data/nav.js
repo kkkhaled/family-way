@@ -15,7 +15,7 @@ export default {
     {
       title: "اضافه الاصناف",
       icon: AddCircleRoundedIcon,
-      to: "/Addcatagiories",
+      to: "/",
       id: shortid.generate(),
     },
   ],

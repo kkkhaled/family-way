@@ -6,7 +6,6 @@ import {
   Typography,
   TextField,
   Button,
-  Divider,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import ecom from "../assets/images/ecom.jpg";
