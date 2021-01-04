@@ -1,47 +1,47 @@
-import { createMuiTheme } from "@material-ui/core/styles";
+import { createMuiTheme } from '@material-ui/core/styles'
 
 const AppTheme = createMuiTheme({
-  direction: "rtl",
+  direction: 'rtl',
   palette: {
     primary: {
-      main: "#03A9F4",
+      main: '#03A9F4'
     },
     secondary: {
-      main: "#E91E63",
+      main: '#E91E63'
     },
     background: {
-      main: "#ecf0f1",
+      main: '#ecf0f1'
     },
-    green: { main: "#30d158", light: "#32ff7e", dark: "#05c46b" },
-    yellow: { main: "#FFEB3B" },
-    gray: "#607D8B",
+    green: { main: '#30d158', light: '#32ff7e', dark: '#05c46b' },
+    yellow: { main: '#FFEB3B' },
+    gray: '#607D8B',
     red: {
-      light: "#ea8685",
-      dark:"#EA2027"
-    },
+      light: '#ea8685',
+      dark: '#EA2027'
+    }
   },
   typography: {
     tab: {
       // fontFamily: "Raleway",
-      textTransform: "none",
+      textTransform: 'none',
       fontWeight: 700,
-      fontSize: "1rem",
+      fontSize: '1rem'
     },
     h3: {
-      fontFamily: "Pacifico",
-      fontSize: "2.5rem",
+      fontFamily: 'Pacifico',
+      fontSize: '2.5rem'
     },
     h4: {
-      fontFamily: "Releway",
-      fontSize: "1.85rem",
-      fontWeight: 700,
+      fontFamily: 'Releway',
+      fontSize: '1.85rem',
+      fontWeight: 700
     },
     h5: {
-      fontFamily: "Releway",
-      fontSize: "1.44rem",
-      fontWeight: 700,
-    },
-  },
-});
+      fontFamily: 'Releway',
+      fontSize: '1.44rem',
+      fontWeight: 700
+    }
+  }
+})
 
-export default AppTheme;
+export default AppTheme

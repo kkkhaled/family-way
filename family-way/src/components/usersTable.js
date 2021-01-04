@@ -1,5 +1,5 @@
-import React, { useState,useEffect,useContext } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import React, { useState, useEffect, useContext } from 'react'
+import { makeStyles } from '@material-ui/core/styles'
 import {
   Typography,
   Table,
@@ -16,160 +16,173 @@ import {
   DialogTitle,
   TextField,
   Button,
-  IconButton,
-} from "@material-ui/core";
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
-import EditIcon from "@material-ui/icons/Edit";
-import {authContext} from '../contexts/auth/authstate';
+  IconButton
+} from '@material-ui/core'
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
+import EditIcon from '@material-ui/icons/Edit'
+import { authContext } from '../contexts/auth/authstate'
+import { Switch } from '@material-ui/core'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Draggable from 'react-draggable'
 
-// import Draggable from "react-draggable";
-
-const useStyle = makeStyles((theme) => ({
+const useStyle = makeStyles(theme => ({
   head: {
-    backgroundColor: "#fafafa",
+    backgroundColor: '#fafafa'
   },
   editicon: {
     backgroundColor: theme.palette.yellow.main,
-    color: "white",
-    marginRight: "5px",
+    color: 'white',
+    marginRight: '5px'
   },
   delIcon: {
-    color: "white",
-    backgroundColor: theme.palette.secondary.main,
+    color: 'white',
+    backgroundColor: theme.palette.secondary.main
   },
   buttondialogsubmit: {
-    color: "white",
+    color: 'white',
     backgroundColor: theme.palette.green.main,
-    border: 5,
+    border: 5
   },
   field: {
-    width: "22em",
-    marginTop: "8px",
-    marginBottom: "8px",
+    width: '22em',
+    marginTop: '8px',
+    marginBottom: '8px'
   },
   formButton: {
-    color: "white",
+    color: 'white',
     border: 5,
-    marginTop: "8px",
-  },
-}));
+    marginTop: '8px'
+  }
+}))
 
-// function PaperComponent(props) {
-//   return (
-//     <Draggable
-//       handle="#draggable-dialog-title"
-//       cancel={'[class*="MuiDialogContent-root"]'}
-//     >
-//       <Paper {...props} />
-//     </Draggable>
-//   );
-// }
+function PaperComponent (props) {
+  return (
+    <Draggable
+      handle='#draggable-dialog-title'
+      cancel={'[class*="MuiDialogContent-root"]'}
+    >
+      <Paper {...props} />
+    </Draggable>
+  )
+}
 
 const UsersTable = () => {
-  const classes = useStyle();
-  const {getAllUsers,users} = useContext(authContext);
+  const classes = useStyle()
+  const [isBlocked, setIsBlocked] = useState(false)
+  const { getAllUsers, users } = useContext(authContext)
   //for hanle pop-up
-  const [openDialog, setOpenDialog] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false)
   const [userss, setUsers] = useState([
     {
-      name: "khaled fathi",
-      role: "ADMIN",
+      name: 'khaled fathi',
+      role: 'ADMIN',
       spins: 100,
       points: 150,
-      wallet: 0,
+      wallet: 0
     },
     {
-      name: "khaled fathi",
-      role: "ADMIN",
+      name: 'khaled fathi',
+      role: 'ADMIN',
       spins: 100,
       points: 150,
-      wallet: 0,
+      wallet: 0
     },
     {
-      name: "khaled fathi",
-      role: "ADMIN",
+      name: 'khaled fathi',
+      role: 'ADMIN',
       spins: 100,
       points: 150,
-      wallet: 0,
+      wallet: 0
     },
     {
-      name: "khaled fathi",
-      role: "ADMIN",
+      name: 'khaled fathi',
+      role: 'ADMIN',
       spins: 100,
       points: 150,
-      wallet: 0,
+      wallet: 0
     },
     {
-      name: "khaled fathi",
-      role: "ADMIN",
+      name: 'khaled fathi',
+      role: 'ADMIN',
       spins: 100,
       points: 150,
-      wallet: 0,
+      wallet: 0
     },
     {
-      name: "khaled fathi",
-      role: "ADMIN",
+      name: 'khaled fathi',
+      role: 'ADMIN',
       spins: 100,
       points: 150,
-      wallet: 0,
+      wallet: 0
     },
     {
-      name: "khaled fathi",
-      role: "ADMIN",
+      name: 'khaled fathi',
+      role: 'ADMIN',
       spins: 100,
       points: 150,
-      wallet: 0,
-    },
-  ]);
-
+      wallet: 0
+    }
+  ])
 
   // load user data
-   useEffect(() => {
+  useEffect(() => {
     getAllUsers()
-      // eslint-disable-next-line
-   }, [])
-   //console.log(users);
+    // eslint-disable-next-line
+  }, [])
+  //console.log(users);
 
   // handle dialog open
   const handleClickOpen = () => {
-    setOpenDialog(true);
-  };
+    setOpenDialog(true)
+  }
 
   // handle dialog closed
   const handleClose = () => {
-    setOpenDialog(false);
-  };
+    setOpenDialog(false)
+  }
 
   const dialogContent = (
     <React.Fragment>
       <form>
-        <Grid container direction="column">
+        <Grid container direction='column'>
           <Grid item>
             <TextField
-              variant="outlined"
-              label=" المحظه"
+              variant='outlined'
+              label=' المحظه'
               className={classes.field}
             />
           </Grid>
           <Grid item>
             <TextField
-              variant="outlined"
-              label=" النقاط"
+              variant='outlined'
+              label=' النقاط'
               className={classes.field}
             />
           </Grid>
           <Grid item>
             <TextField
-              variant="outlined"
-              label=" المحاولات المتاحه"
+              variant='outlined'
+              label=' المحاولات المتاحه'
               className={classes.field}
             />
           </Grid>
-          <Grid container justify="center">
+          <Grid item>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={isBlocked}
+                  onChange={() => setIsBlocked(value => !value)}
+                  name='checkedA'
+                />
+              }
+              label='محظور ؟'
+            />
+          </Grid>
+          <Grid container justify='center'>
             <Grid item>
               <Button
-                variant="contained"
-                color="primary"
+                variant='contained'
+                color='primary'
                 className={classes.formButton}
               >
                 حفظ
@@ -179,81 +192,69 @@ const UsersTable = () => {
         </Grid>
       </form>
     </React.Fragment>
-  );
+  )
 
   return (
     <React.Fragment>
-      
       <TableContainer elevation={0} component={Paper}>
-        <Table aria-label="simple table">
+        <Table aria-label='simple table'>
           <TableHead className={classes.head}>
             <TableRow>
-              <TableCell align="center">
-                <Typography variant="h5">الترتيب</Typography>
+              <TableCell align='center'>
+                <Typography variant='h5'>الترتيب</Typography>
               </TableCell>
-              <TableCell align="center">
-                <Typography variant="h5">الاسم</Typography>
+              <TableCell align='center'>
+                <Typography variant='h5'>الاسم</Typography>
               </TableCell>
-              <TableCell align="center">
-                <Typography variant="h5">الدور</Typography>
+              <TableCell align='center'>
+                <Typography variant='h5'>الدور</Typography>
               </TableCell>
-              <TableCell align="center">
-                <Typography variant="h5">المحفظه</Typography>
+              <TableCell align='center'>
+                <Typography variant='h5'>المحفظه</Typography>
               </TableCell>
               <TableCell>
-                <Typography variant="h5" align="center">
+                <Typography variant='h5' align='center'>
                   المحاولات المتاحه
                 </Typography>
               </TableCell>
-              <TableCell align="center">
-                <Typography variant="h5">النقاط</Typography>
+              <TableCell align='center'>
+                <Typography variant='h5'>النقاط</Typography>
               </TableCell>
-              <TableCell align="center">
-                <Typography variant="h5">التعديل</Typography>
+              <TableCell align='center'>
+                <Typography variant='h5'>التعديل</Typography>
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {userss.map((row) => (
+            {userss.map(row => (
               <TableRow key={row.name}>
-                <TableCell component="th" scope="row" align="center">
+                <TableCell component='th' scope='row' align='center'>
                   1
                 </TableCell>
-                <TableCell align="center"> {row.name}</TableCell>
-                <TableCell align="center"> {row.role}</TableCell>
-                <TableCell align="center"> {row.wallet}</TableCell>
-                <TableCell align="center"> {row.spins}</TableCell>
-                <TableCell align="center"> {row.points}</TableCell>
-                <TableCell align="center">
-                  <Grid container direction="row" justify="center">
-                    <Grid item>
-                      <IconButton>
-                        <EditIcon
-                          className={classes.editicon}
-                          onClick={handleClickOpen}
-                        />
-                      </IconButton>
-                    </Grid>
-                    <Grid item>
-                      <IconButton>
-                        <DeleteForeverIcon className={classes.delIcon} />
-                      </IconButton>
-                    </Grid>
-                  </Grid>
+                <TableCell align='center'> {row.name}</TableCell>
+                <TableCell align='center'> {row.role}</TableCell>
+                <TableCell align='center'> {row.wallet}</TableCell>
+                <TableCell align='center'> {row.spins}</TableCell>
+                <TableCell align='center'> {row.points}</TableCell>
+                <TableCell align='center'>
+                  <EditIcon
+                    className={classes.editicon}
+                    onClick={handleClickOpen}
+                  />
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-      {/* <Dialog
+      <Dialog
         open={openDialog}
         onClose={handleClose}
         PaperComponent={PaperComponent}
-        aria-labelledby="draggable-dialog-title"
+        aria-labelledby='draggable-dialog-title'
       >
-        <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
-          <Typography variant="h5" color="primary">
+        <DialogTitle style={{ cursor: 'move' }} id='draggable-dialog-title'>
+          <Typography variant='h5' color='primary'>
             تعديل بيانات المستخدم
           </Typography>
         </DialogTitle>
@@ -261,14 +262,14 @@ const UsersTable = () => {
         <DialogActions>
           <Button
             onClick={handleClose}
-            variant="contained"
+            variant='contained'
             className={classes.buttondialogsubmit}
           >
             تم
           </Button>
         </DialogActions>
-      </Dialog> */}
+      </Dialog>
     </React.Fragment>
-  );
-};
-export default UsersTable;
+  )
+}
+export default UsersTable

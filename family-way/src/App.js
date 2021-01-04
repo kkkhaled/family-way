@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import './App.css'
 import { ThemeProvider, makeStyles } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import AppTheme from './Theme'
@@ -16,15 +17,13 @@ import RTL from './components/rtl'
 import PushNotification from './pages/pushNotification'
 import PhoneNumber from './components/phoneNumber'
 import { AuthProvider } from './contexts/auth/authstate'
-import {CatagoriesProvider} from './contexts/catagories/catagoriesState'
-import {SubCatagoriesProvider} from './contexts/subcatagories/subcatagoriesState'
-import{ThirdCatagoriesProvider} from './contexts/thirdcatagories/thirdState'
-import {ProductProvider} from './contexts/products/productState'
-import {ConstantProvider} from './contexts/constants/constantState'
+import { CatagoriesProvider } from './contexts/catagories/catagoriesState'
+import { SubCatagoriesProvider } from './contexts/subcatagories/subcatagoriesState'
+import { ThirdCatagoriesProvider } from './contexts/thirdcatagories/thirdState'
+import { ProductProvider } from './contexts/products/productState'
+import { ConstantProvider } from './contexts/constants/constantState'
 import setAuthToken from './api/setAuthToken'
 import PrivateRoute from './routing/privateRoute'
- 
-
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -38,62 +37,93 @@ const useStyles = makeStyles(theme => ({
     // padding: theme.spacing(3),
   }
 }))
- 
-if (localStorage.token) {
-  setAuthToken(localStorage.token);
-}
 
 export default function MiniDrawer () {
+  useEffect(() => {
+    const isAuth = async () => {
+      var token = await localStorage.token
+      if (token) {
+        setAuthToken(token)
+        console.log('isAuthed')
+      } else {
+        console.log('is not Authed')
+      }
+    }
+    isAuth()
+  }, [])
   const classes = useStyles()
   return (
-  <AuthProvider>
-   <ConstantProvider>
-  <ProductProvider>  
-  <CatagoriesProvider>
-    <SubCatagoriesProvider>
-      <ThirdCatagoriesProvider>
-      <ThemeProvider theme={AppTheme}>
-        <BrowserRouter>
-          <Route exact path='/login' component={PhoneNumber} />
-          <div className={classes.root}>
-            <CssBaseline />
-            <RTL>
-              <main className={classes.content}>
-                <Switch>
-                  <PrivateRoute
-                    exact
-                    path='/'
-                    component={Addcatagiories}
-                  />
-                  <Route
-                    exact
-                    path='/Getsubcatagiories'
-                    component={Getsubcatagiories}
-                  />
-                  <Route
-                    exact
-                    path='/Getthirdcatagiories'
-                    component={Getthirdcatagiories}
-                  />
-                  <Route exact path='/users' component={Userstable} />
-                  <Route exact path='/addproducts' component={Addproducts} />
-                  <Route exact path='/getproducts' component={Getproducts} />
-                  <Route exact path='/constants' component={ContantsPage} />
-                  <Route exact path='/ordertimes' component={Ordertimes} />
-                  <Route exact path='/orders' component={OrdersPage} />
-                  <Route exact path='/pushNot' component={PushNotification} />
-                </Switch>
-              </main>
-            </RTL>
-          </div>
-        </BrowserRouter>
-      </ThemeProvider>
-      </ThirdCatagoriesProvider>
-      </SubCatagoriesProvider>
-      </CatagoriesProvider>
-      </ProductProvider>
+    <AuthProvider>
+      <ConstantProvider>
+        <ProductProvider>
+          <CatagoriesProvider>
+            <SubCatagoriesProvider>
+              <ThirdCatagoriesProvider>
+                <ThemeProvider theme={AppTheme}>
+                  <BrowserRouter>
+                    <Route exact path='/login' component={PhoneNumber} />
+                    <div className={classes.root}>
+                      <CssBaseline />
+                      <RTL>
+                        <main className={classes.content}>
+                          <Switch>
+                            <PrivateRoute
+                              exact
+                              path='/'
+                              component={Addcatagiories}
+                            />
+                            <Route
+                              exact
+                              path='/Getsubcatagiories'
+                              component={Getsubcatagiories}
+                            />
+                            <Route
+                              exact
+                              path='/Getthirdcatagiories'
+                              component={Getthirdcatagiories}
+                            />
+                            <Route exact path='/users' component={Userstable} />
+                            <Route
+                              exact
+                              path='/addproducts'
+                              component={Addproducts}
+                            />
+                            <Route
+                              exact
+                              path='/getproducts'
+                              component={Getproducts}
+                            />
+                            <Route
+                              exact
+                              path='/constants'
+                              component={ContantsPage}
+                            />
+                            <Route
+                              exact
+                              path='/ordertimes'
+                              component={Ordertimes}
+                            />
+                            <Route
+                              exact
+                              path='/orders'
+                              component={OrdersPage}
+                            />
+                            <Route
+                              exact
+                              path='/pushNot'
+                              component={PushNotification}
+                            />
+                          </Switch>
+                        </main>
+                      </RTL>
+                    </div>
+                  </BrowserRouter>
+                </ThemeProvider>
+              </ThirdCatagoriesProvider>
+            </SubCatagoriesProvider>
+          </CatagoriesProvider>
+        </ProductProvider>
       </ConstantProvider>
- </AuthProvider>
-  
+    </AuthProvider>
   )
 }

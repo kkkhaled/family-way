@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const PhoneNumber = (props) => {
+const PhoneNumber = props => {
   const classes = useStyles()
   // define state for numbers
   const [phoneNumber, setPhoneNumber] = useState('')
@@ -42,18 +42,20 @@ const PhoneNumber = (props) => {
     message: 'من فضلك ادخل رقم الهاتف و كود التفعيل'
   })
   //getting function from context
-  const { addPhoneNumber, phone, addCodeNumber,isAuthenticated } = useContext(authContext)
+  const { addPhoneNumber, phone, addCodeNumber, isAuthenticated } = useContext(
+    authContext
+  )
 
   //loadphone
   useEffect(() => {
-    if(isAuthenticated){
+    if (isAuthenticated) {
       props.history.push('/')
     }
     if (phone !== null) {
       console.log(phone)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authContext, phone,isAuthenticated,props.history])
+  }, [authContext, phone, isAuthenticated, props.history])
 
   // handle phone state and addPhone func
   const handleSubmit = e => {
@@ -76,13 +78,13 @@ const PhoneNumber = (props) => {
         >
           <Grid item>
             {phone ? (
-              <Alert severity="success" className={classes.alert}>
-                 <Typography variant="h5"> كود التفعيل {phone.code}</Typography>
-            </Alert>
-            ):(
-            <Alert severity={alertData.type} className={classes.alert}>
-              {alertData.message}
-            </Alert>
+              <Alert severity='success' className={classes.alert}>
+                <Typography variant='h5'> كود التفعيل {phone.code}</Typography>
+              </Alert>
+            ) : (
+              <Alert severity={alertData.type} className={classes.alert}>
+                {alertData.message}
+              </Alert>
             )}
           </Grid>
           {phone ? (

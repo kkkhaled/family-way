@@ -18,27 +18,27 @@
   background: #555;
 }
 
-.MuiList-root.MuiList-padding .MuiTypography-body1 {
-  font-size: 14px !important;
-}
+.MuiList-root.MuiList-padding {
+  .MuiTypography-body1 {
+    font-size: 14px !important;
+  }
 
-.MuiList-root.MuiList-padding .MuiSvgIcon-root {
-  font-size: 19px !important;
+  .MuiSvgIcon-root {
+    font-size: 19px !important;
+  }
 }
 
 h1 {
   font-size: 25px;
 }
 
-h4 {
+h4{
   font-size: 19px !important;
 }
 
-h5 {
+h5{
   font-size: 16px !important;
 }
-
 .MuiInputBase-input.MuiOutlinedInput-input {
-  height: 10px;
+  height:10px
 }
-/*# sourceMappingURL=App.css.map */
