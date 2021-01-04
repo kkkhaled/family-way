@@ -55,7 +55,7 @@ export const ProductProvider =({children})=>{
             const res = await server.get(`/products/${id}`)
             dispatch({
                 type :"GET_THIRD_PRODUCTS",
-                payload : res.data
+                payload : res.data.products
             })
         } catch (err) {
             console.log(err);
@@ -82,12 +82,12 @@ export const ProductProvider =({children})=>{
     }
 
        // delete
-       const removeProducts=async(id)=>{
+       const removeProducts=async(_id)=>{
         try {
-            const res = await server.delete(`/oneProduct/${id}`)
+            const res = await server.delete(`/oneProduct/${_id}`)
             dispatch({
                 type :"REMOVE_PRODUCTS",
-                payload : id 
+                payload : _id 
             })
         } catch (err) {
             console.log(err);
@@ -102,7 +102,7 @@ export const ProductProvider =({children})=>{
             updateProducts,
             removeProducts 
          }}>
-
+            {children}
          </productContext.Provider>
      )
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect,useContext } from "react";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import {
   Grid,
@@ -8,12 +8,14 @@ import {
   Button,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import ecom from "../assets/images/ecom.jpg";
+import {productContext} from '../contexts/products/productState'
+import {thirdcatagoriesContext} from '../contexts/thirdcatagories/thirdState';
+
 
 const useStyles = makeStyles((theme) => ({
   card: {
     width: "22em",
-    height: "30em",
+     //height: "30em",
     border: 8,
     marginTop: "20px",
     marginBottom: "20px",
@@ -50,6 +52,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "12px",
     marginLeft: "8px",
     marginRight: "5px",
+    marginBottom:"8px"
   },
   delbutton: {
     color: "red",
@@ -59,66 +62,32 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "12px",
     marginLeft: "8px",
     marginRight: "5px",
+    marginBottom:"8px"
   },
 }));
 
 const GetProducts = () => {
   const classes = useStyles();
-  const [third, setThird] = useState([
-    { id: 1, name: "صنف ثالث" },
-    { id: 2, name: "صنف ثالث" },
-    { id: 3, name: "صنف ثالث" },
-    { id: 4, name: "صنف ثالث" },
-    { id: 5, name: "صنف ثالث" },
-    { id: 6, name: "صنف ثالث" },
-  ]);
-  const [products, setProducts] = useState([
-    {
-      name: "منتج واحد",
-      catgname: "صنف واحد",
-      img: ecom,
-      price: "20$",
-      details: "منتج جيد جدا ",
-    },
-    {
-      name: "منتج واحد",
-      catgname: "صنف واحد",
-      img: ecom,
-      price: "20$",
-      details: "منتج جيد جدا ",
-    },
-    {
-      name: "منتج واحد",
-      catgname: "صنف واحد",
-      img: ecom,
-      price: "20$",
-      details:
-        " لدرجه غريبه حقا انه يقضي علي الصلع  يا له من منتج منتج جيد جدا ",
-    },
-    {
-      name: "منتج واحد",
-      catgname: "صنف واحد",
-      img: ecom,
-      price: "20$",
-      details:
-        " hkjgghgjgj لدرجه غريبه حقا انه يقضي علي الصلع  يا له من منتج منتج جيد جدا ",
-    },
-    {
-      name: "منتج واحد",
-      catgname: "صنف واحد",
-      img: ecom,
-      price: "20$",
-      details: "منتج جيد جدا ",
-    },
-    {
-      name: "منتج واحد",
-      catgname: "صنف واحد",
-      img: ecom,
-      price: "20$",
-      details: "منتج جيد جدا ",
-    },
-  ]);
 
+  const {getAllThirdCatagories,thirdcatagories}= useContext(thirdcatagoriesContext);
+  const {GetProductThird,removeProducts,products}=useContext(productContext);
+  
+  useEffect(()=>{
+    getAllThirdCatagories();
+      },
+    // eslint-disable-next-line
+  [])
+ 
+
+     // handle filter input
+     const handleFilter=(event,item)=>{
+      if(item){
+        GetProductThird(item._id);
+        }
+      }
+
+      console.log(products);
+ 
   return (
     <React.Fragment>
       <Grid container direction="row">
@@ -126,10 +95,12 @@ const GetProducts = () => {
           <Typography variant="h4">اختر الصنف الثالث</Typography>
         </Grid>
         <Grid item>
+          {thirdcatagories.length >0 ? 
           <Autocomplete
             className={classes.autocomplete}
             id="combo-box-demo"
-            options={third}
+            onChange={handleFilter}
+            options={thirdcatagories}
             getOptionLabel={(option) => option.name}
             renderInput={(params) => (
               <TextField
@@ -138,17 +109,18 @@ const GetProducts = () => {
                 variant="outlined"
               />
             )}
-          />
+          /> : null}
         </Grid>
       </Grid>
 
       <Grid container direction="row">
-        {products.map((product) => (
+        {products.length > 0 ? 
+        products.map((product) => (
           <Grid item key={product.name}>
             <Grid container direction="column">
               <Grid item>
                 <Card className={classes.card}>
-                  <img className={classes.img} src={product.img} alt="subimg" />
+                  <img className={classes.img} src={`https://familyway.sa/uploads/products/${product.images}`} alt="subimg" />
                   <Grid container direction="column">
                     <Typography
                       variant="h5"
@@ -159,7 +131,7 @@ const GetProducts = () => {
                     </Typography>
                     <Grid item>
                       <Typography variant="h4" className={classes.name}>
-                        {product.name}
+                        {product.title}
                       </Typography>
                     </Grid>
                     <Grid item>
@@ -175,6 +147,7 @@ const GetProducts = () => {
                         <Button
                           variant="contained"
                           className={classes.delbutton}
+                          onClick={()=>removeProducts(product._id)}
                         >
                           <Typography variant="h5"> مسح</Typography>
                         </Button>
@@ -185,7 +158,7 @@ const GetProducts = () => {
               </Grid>
             </Grid>
           </Grid>
-        ))}
+        )):null}
       </Grid>
     </React.Fragment>
   );

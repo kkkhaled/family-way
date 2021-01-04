@@ -21,10 +21,10 @@ const initialState = {
        //get all third catagories
        const getAllThirdCatagories=async()=>{
         try {
-           const res =await server.get('/subCategory');  
+           const res =await server.get('/thirdCategory');  
              dispatch({
                type :"GET_ALL_THIRD_CATAGORIES",
-               payload: res.data
+               payload: res.data.categories
            }) 
           }
          catch (err) {
@@ -61,7 +61,7 @@ const initialState = {
 
           };
           try {
-             const res = await server.post("/subCategory",formData,config);
+             const res = await server.post("/thirdCategory",formData,config);
              alert('done');
              dispatch({
                 type:"ADD_THIRD_IMAGES",

@@ -6,6 +6,7 @@ import {
   Typography,
   Card,
   Divider,
+  IconButton,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
@@ -49,19 +50,18 @@ const useStyles = makeStyles((theme) => ({
   },
    name : {
     marginLeft :"10px",
-    marginRight :"40px"
+    marginRight :"15px"
   },
   editicon: {
     backgroundColor: theme.palette.yellow.main,
     color: "white",
-    marginRight: "10px",
-    marginLeft: "10px",
-    marginTop: "5px",
+    //marginRight: "5px",
+    //marginTop: "5px",
   },
   delIcon: {
     color: "white",
     backgroundColor: theme.palette.secondary.main,
-    marginRight :"10px"
+    //marginRight :"5px"
   },
   
 }));
@@ -96,7 +96,7 @@ const AddCatagiories = () => {
      addNewCategories(name,sort);
     };
 
-
+   
 
   const catagView=(
     <React.Fragment>
@@ -110,8 +110,12 @@ const AddCatagiories = () => {
                    {catag.name}
                 </Typography>
                 <Grid item>
+                  <IconButton>
                   <EditIcon className={classes.editicon} />
-                  <DeleteForeverIcon className={classes.delIcon} />
+                  </IconButton>
+                 <IconButton>
+                    <DeleteForeverIcon className={classes.delIcon}  onClick={()=>{removeOne(catag._id)}} />
+                 </IconButton>
                 </Grid>
              </Grid>  
               </Card>

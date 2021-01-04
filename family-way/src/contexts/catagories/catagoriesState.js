@@ -65,7 +65,7 @@ export const CatagoriesProvider =({children})=>{
     //delete catagories
        const removeOne=async(_id)=>{
            try {
-               const res = await server.delete(`/category/${_id}`);
+               const res = await server.delete(`/categories/${_id}`);
                dispatch({
                   type :"REMOVE_ONE",
                   payload:_id 

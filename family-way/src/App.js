@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { ThemeProvider, makeStyles } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import AppTheme from './Theme'
@@ -19,6 +19,8 @@ import { AuthProvider } from './contexts/auth/authstate'
 import {CatagoriesProvider} from './contexts/catagories/catagoriesState'
 import {SubCatagoriesProvider} from './contexts/subcatagories/subcatagoriesState'
 import{ThirdCatagoriesProvider} from './contexts/thirdcatagories/thirdState'
+import {ProductProvider} from './contexts/products/productState'
+import {ConstantProvider} from './contexts/constants/constantState'
 import setAuthToken from './api/setAuthToken'
 import PrivateRoute from './routing/privateRoute'
  
@@ -45,6 +47,8 @@ export default function MiniDrawer () {
   const classes = useStyles()
   return (
   <AuthProvider>
+   <ConstantProvider>
+  <ProductProvider>  
   <CatagoriesProvider>
     <SubCatagoriesProvider>
       <ThirdCatagoriesProvider>
@@ -87,6 +91,8 @@ export default function MiniDrawer () {
       </ThirdCatagoriesProvider>
       </SubCatagoriesProvider>
       </CatagoriesProvider>
+      </ProductProvider>
+      </ConstantProvider>
  </AuthProvider>
   
   )

@@ -1,7 +1,7 @@
 import React, { useReducer, createContext } from 'react'
 import authReducer from './authReducer'
 import server from '../../api/server'
-import setAuthToken from '../../api/setAuthToken'
+//import setAuthToken from '../../api/setAuthToken'
 //initial State
 const initialState = {
   phone: null,
