@@ -14,6 +14,16 @@ export default (state, action) => {
               ...state,
               products: state.products.filter((product) => product._id !== action.payload),
             }
+            case "SET_CURRENT_PRODUCT":
+              return{
+                ...state,
+                currentProduct: action.payload,
+              }
+             case "SEARCH_DATA":
+                return{
+                  ...state,
+                  filterProducts : action.payload
+                }  
       default:
         return state;
     }

@@ -16,13 +16,13 @@ import {
   DialogTitle,
   TextField,
   Button,
-  IconButton
 } from '@material-ui/core'
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
+import Pagination from "@material-ui/lab/Pagination";
 import EditIcon from '@material-ui/icons/Edit'
 import { authContext } from '../contexts/auth/authstate'
 import { Switch } from '@material-ui/core'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Animations from './loader'
 import Draggable from 'react-draggable'
 
 const useStyle = makeStyles(theme => ({
@@ -52,7 +52,12 @@ const useStyle = makeStyles(theme => ({
     color: 'white',
     border: 5,
     marginTop: '8px'
-  }
+  },
+  pagenation: {
+    paddingTop: "35px",
+    width: "max-content",
+    margin: "auto"
+  },
 }))
 
 function PaperComponent (props) {
@@ -68,61 +73,16 @@ function PaperComponent (props) {
 
 const UsersTable = () => {
   const classes = useStyle()
-  const [isBlocked, setIsBlocked] = useState(false)
-  const { getAllUsers, users } = useContext(authContext)
+  const [isBlocked, setIsBlocked] = useState(false);
+  const [wallet,setWallet]=useState('');
+  const [spin,setSpins]=useState('');
+  const [points,setPoints]=useState('');
+  const { getAllUsers,EditUsers,users } = useContext(authContext);
+  const [userId,setUserId]=useState(''); 
   //for hanle pop-up
   const [openDialog, setOpenDialog] = useState(false)
-  const [userss, setUsers] = useState([
-    {
-      name: 'khaled fathi',
-      role: 'ADMIN',
-      spins: 100,
-      points: 150,
-      wallet: 0
-    },
-    {
-      name: 'khaled fathi',
-      role: 'ADMIN',
-      spins: 100,
-      points: 150,
-      wallet: 0
-    },
-    {
-      name: 'khaled fathi',
-      role: 'ADMIN',
-      spins: 100,
-      points: 150,
-      wallet: 0
-    },
-    {
-      name: 'khaled fathi',
-      role: 'ADMIN',
-      spins: 100,
-      points: 150,
-      wallet: 0
-    },
-    {
-      name: 'khaled fathi',
-      role: 'ADMIN',
-      spins: 100,
-      points: 150,
-      wallet: 0
-    },
-    {
-      name: 'khaled fathi',
-      role: 'ADMIN',
-      spins: 100,
-      points: 150,
-      wallet: 0
-    },
-    {
-      name: 'khaled fathi',
-      role: 'ADMIN',
-      spins: 100,
-      points: 150,
-      wallet: 0
-    }
-  ])
+  // for pagenate
+  //const [pages, setPages] = useState(0);
 
   // load user data
   useEffect(() => {
@@ -130,26 +90,38 @@ const UsersTable = () => {
     // eslint-disable-next-line
   }, [])
   //console.log(users);
-
+   
+ /* const loadPagenate=(page)=>{
+    getAllUsers()
+     }
+  */
   // handle dialog open
-  const handleClickOpen = () => {
-    setOpenDialog(true)
+  const handleClickOpen = (id) => {
+    setOpenDialog(true);
+    setUserId(id);
   }
+  console.log(userId);
 
   // handle dialog closed
   const handleClose = () => {
     setOpenDialog(false)
   }
 
+  const handleUpate=(e)=>{
+    e.preventDefault();
+    EditUsers(userId,wallet,points,spin,isBlocked);
+  }
+
   const dialogContent = (
     <React.Fragment>
-      <form>
+      <form onSubmit={handleUpate}>
         <Grid container direction='column'>
           <Grid item>
             <TextField
               variant='outlined'
-              label=' المحظه'
+              label=' المحفظه'
               className={classes.field}
+              onChange={(e)=>{setWallet(e.target.value)}}
             />
           </Grid>
           <Grid item>
@@ -157,6 +129,7 @@ const UsersTable = () => {
               variant='outlined'
               label=' النقاط'
               className={classes.field}
+              onChange={(e)=>{setPoints(e.target.value)}}
             />
           </Grid>
           <Grid item>
@@ -164,6 +137,7 @@ const UsersTable = () => {
               variant='outlined'
               label=' المحاولات المتاحه'
               className={classes.field}
+              onChange={(e)=>{setSpins(e.target.value)}}
             />
           </Grid>
           <Grid item>
@@ -184,6 +158,7 @@ const UsersTable = () => {
                 variant='contained'
                 color='primary'
                 className={classes.formButton}
+                type="submit"
               >
                 حفظ
               </Button>
@@ -226,10 +201,11 @@ const UsersTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {userss.map(row => (
+            {users !== null ?
+             users.users.map((row,i) => (
               <TableRow key={row.name}>
                 <TableCell component='th' scope='row' align='center'>
-                  1
+                  {i+1}
                 </TableCell>
                 <TableCell align='center'> {row.name}</TableCell>
                 <TableCell align='center'> {row.role}</TableCell>
@@ -239,14 +215,27 @@ const UsersTable = () => {
                 <TableCell align='center'>
                   <EditIcon
                     className={classes.editicon}
-                    onClick={handleClickOpen}
+                    onClick={()=>handleClickOpen(row._id)}
                   />
                 </TableCell>
-              </TableRow>
-            ))}
+              </TableRow>  
+            )): <Animations />}
           </TableBody>
         </Table>
       </TableContainer>
+      {/*
+      {users !== null ?
+        <Pagination
+          onChange={(i, page) => {
+              
+          }}
+          count={pages}
+          color="primary"
+          className={classes.pagenation}
+        />
+      :
+      ""
+      }*/}
       <Dialog
         open={openDialog}
         onClose={handleClose}

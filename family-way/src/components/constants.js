@@ -1,7 +1,8 @@
 import React, { useState,useEffect,useContext } from "react";
 import { TextField, Grid, Typography, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import {constantsContext} from '../contexts/constants/constantState'
+import {constantsContext} from '../contexts/constants/constantState';
+import Animations from './loader'
 
 const useStyles = makeStyles((theme) => ({
   font: {
@@ -25,25 +26,32 @@ const useStyles = makeStyles((theme) => ({
 
 const Constants = () => {
   const classes = useStyles();
-  
+   const {AddConstants , getConstant , constants}= useContext(constantsContext);
+   
   const [high,setHigh]=useState('');
   const [low,setLow]=useState('');
   const [freeOrder,setfreeOrder]=useState('');
   const [midOrder,setMidOrder]=useState('');
   const [minimum,setMinimum]=useState('');
   const [pointsToMoney,setPointsToMoney]=useState('');
+  const [mobile,setMobile]=useState('')
+  const [daysForReturns,setdaysForReturns]=useState('')
+
+  useEffect(() => {
+     getConstant();
+     // eslint-disable-next-line
+  }, [])
 
 
-  const {AddConstants}= useContext(constantsContext); 
-  
   // handle submit
   const handleSubmit=(e)=>{
      e.preventDefault();
-     AddConstants(high,low,freeOrder,midOrder,minimum,pointsToMoney);
+     AddConstants(high,low,freeOrder,midOrder,minimum,pointsToMoney,daysForReturns,mobile);
   }
 
   return (
     <React.Fragment>
+      {constants !== null ?
       <form onSubmit={handleSubmit} >
         <Grid container direction="column">
           <Grid item>
@@ -55,7 +63,7 @@ const Constants = () => {
             <Grid container direction="row">
               <TextField
                 className={classes.field}
-                value={high}
+                value={constants.deliveryPrice.high}
                 onChange={(e)=>setHigh(e.target.value)}
                 variant="outlined"
                 label="السعر الاعلي"
@@ -77,22 +85,23 @@ const Constants = () => {
           <Grid item>
             <Grid container direction="row">
               <TextField
+                placeholder={constants.order.freeOrder}
                 className={classes.field}
-                value={freeOrder}
+                value={constants.order.freeOrder}
                 onChange={(e)=>setfreeOrder(e.target.value)}
                 variant="outlined"
                 label="الاوردر المجاني "
               />
               <TextField
                 className={classes.field}
-                value={midOrder}
+                value={constants.order.midOrder}
                 onChange={(e)=>setMidOrder(e.target.value)}
                 variant="outlined"
                 label=" متوسط سعر لل اوردر"
               />
               <TextField
                 className={classes.field}
-                value={minimum}
+                value={constants.order.minimum}
                 onChange={(e)=>setMinimum(e.target.value)}
                 variant="outlined"
                 label=" اقل سعر لل اوردر   "
@@ -107,10 +116,28 @@ const Constants = () => {
           <Grid item>
             <TextField
               className={classes.field}
-              value={pointsToMoney}
+              value={constants.convertorMoney.pointsToMoney}
               onChange={(e)=>setPointsToMoney(e.target.value)}
               variant="outlined"
               label=" قيمه النقط "
+            />
+          </Grid>
+          <Grid item>
+            <TextField
+              className={classes.field}
+              value={constants.mobileNumber}
+              onChange={(e)=>setMobile(e.target.value)}
+              variant="outlined"
+              label="  رقم الهاتف "
+            />
+          </Grid>
+          <Grid item>
+            <TextField
+              className={classes.field}
+              value={constants.daysForReturns}
+              onChange={(e)=>setdaysForReturns(e.target.value)}
+              variant="outlined"
+              label="  ايام الرجوع "
             />
           </Grid>
           <Grid item>
@@ -123,7 +150,9 @@ const Constants = () => {
             </Grid>
           </Grid>
         </Grid>
-      </form>
+      </form> :
+      <Animations />
+      }
     </React.Fragment>
   );
 };

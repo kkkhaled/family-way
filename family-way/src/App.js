@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect,useContext } from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import './App.css'
 import { ThemeProvider, makeStyles } from '@material-ui/core/styles'
@@ -22,6 +22,7 @@ import { SubCatagoriesProvider } from './contexts/subcatagories/subcatagoriesSta
 import { ThirdCatagoriesProvider } from './contexts/thirdcatagories/thirdState'
 import { ProductProvider } from './contexts/products/productState'
 import { ConstantProvider } from './contexts/constants/constantState'
+import { OrdertimesProvider } from './contexts/orderTimes/ordertimeState'
 import setAuthToken from './api/setAuthToken'
 import PrivateRoute from './routing/privateRoute'
 
@@ -39,6 +40,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default function MiniDrawer () {
+ 
   useEffect(() => {
     const isAuth = async () => {
       var token = await localStorage.token
@@ -54,6 +56,7 @@ export default function MiniDrawer () {
   const classes = useStyles()
   return (
     <AuthProvider>
+      <OrdertimesProvider>
       <ConstantProvider>
         <ProductProvider>
           <CatagoriesProvider>
@@ -112,7 +115,7 @@ export default function MiniDrawer () {
                               exact
                               path='/pushNot'
                               component={PushNotification}
-                            />
+                            /> 
                           </Switch>
                         </main>
                       </RTL>
@@ -124,6 +127,7 @@ export default function MiniDrawer () {
           </CatagoriesProvider>
         </ProductProvider>
       </ConstantProvider>
+      </OrdertimesProvider>
     </AuthProvider>
   )
 }

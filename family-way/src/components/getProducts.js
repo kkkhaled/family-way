@@ -7,6 +7,7 @@ import {
   TextField,
   Button,
 } from "@material-ui/core";
+import Alert from '@material-ui/lab/Alert';
 import { makeStyles } from "@material-ui/core/styles";
 import {productContext} from '../contexts/products/productState'
 import {thirdcatagoriesContext} from '../contexts/thirdcatagories/thirdState';
@@ -46,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     color: theme.palette.green.dark,
-    backgroundColor: theme.palette.green.light,
+    backgroundColor: "white",
     width: "10em",
     height: "2.6em",
     marginTop: "12px",
@@ -56,13 +57,19 @@ const useStyles = makeStyles((theme) => ({
   },
   delbutton: {
     color: "red",
-    backgroundColor: theme.palette.red.light,
+    backgroundColor:"white" ,
     width: "10em",
     height: "2.6em",
     marginTop: "12px",
     marginLeft: "8px",
     marginRight: "5px",
     marginBottom:"8px"
+  },
+  root: {
+    width: '67%',
+    '& > * + *': {
+      marginTop: theme.spacing(10),
+    },
   },
 }));
 
@@ -71,7 +78,7 @@ const GetProducts = () => {
 
   const {getAllThirdCatagories,thirdcatagories}= useContext(thirdcatagoriesContext);
   const {GetProductThird,removeProducts,products}=useContext(productContext);
-  
+  const [text,setText]=useState([{name :"تحميل !!"}])
   useEffect(()=>{
     getAllThirdCatagories();
       },
@@ -86,8 +93,6 @@ const GetProducts = () => {
         }
       }
 
-      console.log(products);
- 
   return (
     <React.Fragment>
       <Grid container direction="row">
@@ -109,7 +114,19 @@ const GetProducts = () => {
                 variant="outlined"
               />
             )}
-          /> : null}
+          /> :<Autocomplete
+          className={classes.autocomplete}
+          id="combo-box-demo"
+          options={text}
+          getOptionLabel={(option) => option.name}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="اختر الصنف الثالث"
+              variant="outlined"
+            />
+          )}
+        /> }
         </Grid>
       </Grid>
 
@@ -158,7 +175,12 @@ const GetProducts = () => {
               </Grid>
             </Grid>
           </Grid>
-        )):null}
+        )):<div className={classes.root}><Alert severity="info">
+        <Typography variant='h5'>
+        ادخل الصنف الثالث من فضلك
+        </Typography>
+        </Alert>
+        </div>}
       </Grid>
     </React.Fragment>
   );

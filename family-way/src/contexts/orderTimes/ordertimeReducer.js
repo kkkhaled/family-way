@@ -1,13 +1,13 @@
 export default (state, action) => {
     switch (action.type) {
-        case "ADD_CONSTANTS":
+        case "CREATE_NEW_TIME":
             return {
                 ...state,
             };
-            case "GET_CONTANT":
+            case "GET_TIMES":
            return {
              ...state,
-             constants: action.payload
+             ordertimes: action.payload
            }
             default:
         return state;

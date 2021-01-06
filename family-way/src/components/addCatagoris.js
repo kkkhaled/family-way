@@ -6,16 +6,13 @@ import {
   Typography,
   Card,
   Divider,
-  IconButton
-} from '@material-ui/core'
+  } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
-import EditIcon from '@material-ui/icons/Edit'
+//import EditIcon from '@material-ui/icons/Edit'
 import { authContext } from '../contexts/auth/authstate'
 import { catagoriesContext } from '../contexts/catagories/catagoriesState'
-//import {useAsync} from '../hooks/useAsync';
 import Animations from './loader'
-//import { useStateIfMounted } from "use-state-if-mounted";
 import { Switch } from '@material-ui/core'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 
@@ -44,7 +41,7 @@ const useStyles = makeStyles(theme => ({
   },
   card: {
     margin: '8px',
-    width: '305px',
+    width: '260px',
     padding:"6px"
   },
   name: {
@@ -102,7 +99,8 @@ const AddCatagiories = () => {
 
   const catagView = (
     <React.Fragment>
-      {console.log(catagories)}
+      {//console.log(catagories)
+      }
       <Grid container direction='row'>
         {catagories.length > 1 && !loading ? (
           catagories.map(catag => (
@@ -112,7 +110,6 @@ const AddCatagiories = () => {
                   {catag.name}
                 </Typography>
                 <Grid item>
-                <EditIcon className={classes.editicon} />
                 <DeleteForeverIcon
                       className={classes.delIcon}
                       onClick={() => {

@@ -10,7 +10,7 @@ const initialState = {
   loading: true,
   user: null,
   code: null,
-  users :[]
+  users :null
 }
 
 // create context
@@ -93,14 +93,28 @@ export const AuthProvider = ({ children }) => {
   //get all users
   const getAllUsers = async () => {
     try {
-      const res = await server.get('/users')
+      const res = await server.get('/users');
+    //  console.log(res);
       dispatch({
         type: 'SUCCESSFUL_USERS',
-        payload: res.data.users
+        payload: res.data
       })
     } catch (err) {
       console.log(err)
     }
+  }
+
+  // edit users
+  const EditUsers=async(id,wallet,points,spins,isBlocked)=>{
+        const data={wallet,points,spins,isBlocked}
+        try {
+          const res = await server.put(`updateUser/${id}`,data,{'headers': {
+            'Authorization': 'Bearer ' + localStorage.token
+          }})
+          console.log(res);
+        } catch (err) {
+          console.log(err);
+        }
   }
 
   return (
@@ -116,6 +130,7 @@ export const AuthProvider = ({ children }) => {
         addPhoneNumber,
         loadUser,
         getAllUsers,
+        EditUsers,
         logout
       }}
     >

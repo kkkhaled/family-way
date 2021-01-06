@@ -5,6 +5,8 @@ import server from '../../api/server';
 //initial State
 const initialState = {
     products : [],
+    currentProduct: null,
+    filterProducts: []  
   }
   // create context
 export const productContext = createContext();
@@ -16,21 +18,25 @@ export const ProductProvider =({children})=>{
      //actions
 
      // create products
-     const addProducts=async(barCode,files,title,details,categories,price,increaseCount,unit,userMax,inStock,boxUnit)=>{
+     const addProducts=async(barCode,files,title,details,categories,price,increaseCount,unit,userMax,inStock,discount,sold,variationId,discountEnds)=>{
         const formData = new FormData();
         Array.from(files).forEach((file) => {
             formData.append("file", file);
           });
           formData.append('barCode',barCode);
           formData.append('title',title);
-          formData.details('details',details);
+          formData.append('details',details);
           formData.append('categories',categories);
           formData.append('price',price);
           formData.append('increaseCount',increaseCount);
           formData.append('unit',unit);
           formData.append('userMax',userMax);
           formData.append('inStock',inStock);
-          formData.append('boxUnit',boxUnit);
+         // formData.append('boxUnit',boxUnit);
+          formData.append('discount',discount);
+          formData.append('sold',sold);
+          formData.append('variationId',variationId)
+          formData.append('discountEnds',discountEnds)
 
           const config = {
             headers: {
@@ -81,6 +87,27 @@ export const ProductProvider =({children})=>{
         }
     }
 
+      // set currentproduct
+    const setCurrentProduct = (product) => {
+    dispatch({
+      type: "Set_Current",
+      payload: product,
+    });
+    };
+    
+    //case search data
+    const searchProducts=async(name)=>{
+        try {
+            const res = await server.post(`/products/search?${name}`);
+            dispatch({
+                type :"SEARCH_DATA",
+                payload : res.data
+            })
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
        // delete
        const removeProducts=async(_id)=>{
         try {
@@ -97,10 +124,14 @@ export const ProductProvider =({children})=>{
      return(
          <productContext.Provider value={{
              products:state.products,
+             currentProduct:state.currentProduct,
+             filterProducts :state.filterProducts,
             addProducts,
             GetProductThird,
             updateProducts,
-            removeProducts 
+            setCurrentProduct,
+            removeProducts,
+            searchProducts 
          }}>
             {children}
          </productContext.Provider>

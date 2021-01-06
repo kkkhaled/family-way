@@ -4,7 +4,7 @@ import server from '../../api/server';
 
 //initial State
 const initialState = {
-    constants : [],
+    constants : null,
   }
   // create context
 export const constantsContext = createContext();
@@ -15,15 +15,31 @@ export const ConstantProvider =({children})=>{
 
     // actions
 
+    //get constants
+    const getConstant=async()=>{
+        try {
+            const res = await server.get('/constants',{'headers': {
+                'Authorization': 'Bearer ' + localStorage.token }})
+            console.log(res);
+            dispatch({
+                type:"GET_CONTANT",
+                payload :res.data
+            });
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     // add constants
-    const AddConstants=async(high,low,freeOrder,midOrder,minimum,pointsToMoney)=>{
+    const AddConstants=async(high,low,freeOrder,midOrder,minimum,pointsToMoney,daysForReturns,mobileNumber)=>{
           const data = {
             deliveryPrice:{high,low},
             order : {freeOrder,midOrder,minimum},
-            convertorMoney :{pointsToMoney} 
+            convertorMoney :{pointsToMoney},
+            daysForReturns,mobileNumber 
         }
          try {
-            const res = await server.post('/constants',data,{'headers': {
+            const res = await server.put('/constants',data,{'headers': {
                 'Authorization': 'Bearer ' + localStorage.token }});
             console.log(res);
             dispatch({
@@ -37,7 +53,8 @@ export const ConstantProvider =({children})=>{
     return(
         <constantsContext.Provider value={{
             constants:state.constants,
-            AddConstants
+            AddConstants,
+            getConstant
         }} >
             {children}
         </constantsContext.Provider>
