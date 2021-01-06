@@ -75,7 +75,6 @@ export const ProductProvider =({children})=>{
               "Content-Type": "application/json",
             },
           };
-      
         try {
             const res = await server.put(`/oneProduct/${product._id}`,config)
             dispatch({

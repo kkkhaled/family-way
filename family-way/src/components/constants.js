@@ -2,7 +2,8 @@ import React, { useState,useEffect,useContext } from "react";
 import { TextField, Grid, Typography, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import {constantsContext} from '../contexts/constants/constantState';
-import Animations from './loader'
+//import Animations from './loader'
+import server from '../api/server'
 
 const useStyles = makeStyles((theme) => ({
   font: {
@@ -26,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Constants = () => {
   const classes = useStyles();
-   const {AddConstants , getConstant , constants}= useContext(constantsContext);
+   const {AddConstants}= useContext(constantsContext);
    
   const [high,setHigh]=useState('');
   const [low,setLow]=useState('');
@@ -38,7 +39,19 @@ const Constants = () => {
   const [daysForReturns,setdaysForReturns]=useState('')
 
   useEffect(() => {
-     getConstant();
+     server.get('/constants',{'headers': {
+      'Authorization': 'Bearer ' + localStorage.token }}).then(res =>{
+        //console.log(res.data)
+        setHigh(res.data.deliveryPrice.high)
+        setLow(res.data.deliveryPrice.low)
+        setfreeOrder(res.data.order.freeOrder)
+        setMidOrder(res.data.order.midOrder)
+        setMinimum(res.data.order.minimum)
+        setPointsToMoney(res.data.convertorMoney.pointsToMoney)
+        setMobile(res.data.mobileNumber)
+        setdaysForReturns(res.data.daysForReturns)
+        }
+        ).catch(err => console.log(err))
      // eslint-disable-next-line
   }, [])
 
@@ -51,7 +64,6 @@ const Constants = () => {
 
   return (
     <React.Fragment>
-      {constants !== null ?
       <form onSubmit={handleSubmit} >
         <Grid container direction="column">
           <Grid item>
@@ -63,7 +75,7 @@ const Constants = () => {
             <Grid container direction="row">
               <TextField
                 className={classes.field}
-                value={constants.deliveryPrice.high}
+                value={high}
                 onChange={(e)=>setHigh(e.target.value)}
                 variant="outlined"
                 label="السعر الاعلي"
@@ -85,23 +97,22 @@ const Constants = () => {
           <Grid item>
             <Grid container direction="row">
               <TextField
-                placeholder={constants.order.freeOrder}
                 className={classes.field}
-                value={constants.order.freeOrder}
+                value={freeOrder}
                 onChange={(e)=>setfreeOrder(e.target.value)}
                 variant="outlined"
                 label="الاوردر المجاني "
               />
               <TextField
                 className={classes.field}
-                value={constants.order.midOrder}
+                value={midOrder}
                 onChange={(e)=>setMidOrder(e.target.value)}
                 variant="outlined"
                 label=" متوسط سعر لل اوردر"
               />
               <TextField
                 className={classes.field}
-                value={constants.order.minimum}
+                value={minimum}
                 onChange={(e)=>setMinimum(e.target.value)}
                 variant="outlined"
                 label=" اقل سعر لل اوردر   "
@@ -116,7 +127,7 @@ const Constants = () => {
           <Grid item>
             <TextField
               className={classes.field}
-              value={constants.convertorMoney.pointsToMoney}
+              value={pointsToMoney}
               onChange={(e)=>setPointsToMoney(e.target.value)}
               variant="outlined"
               label=" قيمه النقط "
@@ -125,7 +136,7 @@ const Constants = () => {
           <Grid item>
             <TextField
               className={classes.field}
-              value={constants.mobileNumber}
+              value={mobile}
               onChange={(e)=>setMobile(e.target.value)}
               variant="outlined"
               label="  رقم الهاتف "
@@ -134,7 +145,7 @@ const Constants = () => {
           <Grid item>
             <TextField
               className={classes.field}
-              value={constants.daysForReturns}
+              value={daysForReturns}
               onChange={(e)=>setdaysForReturns(e.target.value)}
               variant="outlined"
               label="  ايام الرجوع "
@@ -150,9 +161,8 @@ const Constants = () => {
             </Grid>
           </Grid>
         </Grid>
-      </form> :
-      <Animations />
-      }
+      </form> 
+     
     </React.Fragment>
   );
 };

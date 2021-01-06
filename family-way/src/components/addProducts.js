@@ -57,7 +57,7 @@ const AddProducts = () => {
   const [inStock, setinStock] = useState('');
   //const [boxUnit, setboxUnit] = useState('');
   const [discount, setDiscount] = useState('');
-  // const [sold, setSold] = useState(''); 
+  const [sold, setSold] = useState(''); 
   const [variationId, setVariationId] = useState('');
   const [discountEnds, setDiscountEnds] = useState('2020-12-26T18:42:46.236Z'); 
   
@@ -110,7 +110,7 @@ const AddProducts = () => {
            setDiscount(null);
            setDiscountEnds(null);
         }
-        addProducts(barCode,files,title,details,categories,price,increaseCount,unit,userMax,inStock,discount,variationId)
+        addProducts(barCode,files,title,details,categories,price,increaseCount,unit,userMax,inStock,discount,sold,variationId,discountEnds)
       }
 
   return (
