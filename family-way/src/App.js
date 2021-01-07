@@ -23,6 +23,7 @@ import { ThirdCatagoriesProvider } from './contexts/thirdcatagories/thirdState'
 import { ProductProvider } from './contexts/products/productState'
 import { ConstantProvider } from './contexts/constants/constantState'
 import { OrdertimesProvider } from './contexts/orderTimes/ordertimeState'
+import {OrdersProvider} from './contexts/ordres/orderState'
 import setAuthToken from './api/setAuthToken'
 import PrivateRoute from './routing/privateRoute'
 
@@ -56,6 +57,7 @@ export default function MiniDrawer () {
   const classes = useStyles()
   return (
     <AuthProvider>
+      <OrdersProvider>
       <OrdertimesProvider>
       <ConstantProvider>
         <ProductProvider>
@@ -128,6 +130,7 @@ export default function MiniDrawer () {
         </ProductProvider>
       </ConstantProvider>
       </OrdertimesProvider>
+      </OrdersProvider>
     </AuthProvider>
   )
 }
