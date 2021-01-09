@@ -3,7 +3,9 @@ import { MenuItem, Select, TextField } from '@material-ui/core'
 import InputEmoji from 'react-input-emoji'
 import Axios from 'axios'
 import { url } from '../constants/constants'
-import SideBar from '../components/sidebar'
+import BasePage from "./basePage";
+import Section from "../components/section";
+//import SideBar from '../components/sidebar'
 
 const PushNotification = () => {
   const [chosenEmoji, setChosenEmoji] = useState(null)
@@ -36,8 +38,9 @@ const PushNotification = () => {
     }
   }
   return (
+    <BasePage pageTitle="ارسال الاشعارات ">
+    <Section>
     <div className='push-notification'>
-      <SideBar />
       <h1></h1>
       <div style={{ width: '50%', marginTop: 400 }}>
         <Select
@@ -88,6 +91,8 @@ const PushNotification = () => {
         </button>
       </div>
     </div>
+    </Section>
+    </BasePage>
   )
 }
 export default PushNotification

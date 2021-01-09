@@ -70,12 +70,27 @@ export const OrdertimesProvider =({children})=>{
             console.log(err);
         }   
      } 
+     
+     // remove order times
+     const removetime = async(_id)=>{
+        try {
+            const res = await server.delete(`/orderTimes/${_id}`)
+            dispatch({
+                type :"REMOVE_TIME",
+                payload : _id 
+            })
+        } catch (err) {
+            console.log(err);
+        }
+     }
+
     return(
         <ordertimesContext.Provider value={{
             ordertimes : state.ordertimes,
             getOrderstime,
             addNewtime,
-            EditOrdertime
+            EditOrdertime,
+            removetime
         }} >
             {children}
         </ordertimesContext.Provider>

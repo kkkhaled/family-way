@@ -9,6 +9,8 @@ import ListAltIcon from "@material-ui/icons/ListAlt";
 import TimerIcon from "@material-ui/icons/Timer";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import NotificationImportantIcon from '@material-ui/icons/NotificationImportant';
+import LibraryAddCheckIcon from '@material-ui/icons/LibraryAddCheck';
+import AddIcon from '@material-ui/icons/Add';
 
 export default {
   catagiories: [
@@ -91,4 +93,20 @@ export default {
       id: shortid.generate(),
     },
   ],
+  addcoupons: [
+    {
+      title: "صفحه انشاء الكوبونات ",
+      icon: AddIcon,
+      to: "/create-coupons",
+      id: shortid.generate(),
+    },
+  ],
+  getcoupons: [
+    {
+      title: "صفحه عرض الكوبونات ",
+      icon: LibraryAddCheckIcon,
+      to: "/view-coupons",
+      id: shortid.generate(),
+    },
+  ]
 };

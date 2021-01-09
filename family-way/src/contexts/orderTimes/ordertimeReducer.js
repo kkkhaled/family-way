@@ -8,7 +8,12 @@ export default (state, action) => {
            return {
              ...state,
              ordertimes: action.payload
-           }
+           };
+           case "REMOVE_TIME":
+            return {
+              ...state,
+              ordertimes: state.ordertimes.filter((time) => time._id !== action.payload),
+            }
             default:
         return state;
     }

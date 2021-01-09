@@ -4,7 +4,6 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import { makeStyles } from "@material-ui/core/styles";
 import { Switch } from '@material-ui/core'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
-import moment from "moment";
 import DroZone from './DropZone'
 import {productContext} from '../contexts/products/productState'
 import {thirdcatagoriesContext} from '../contexts/thirdcatagories/thirdState';
@@ -42,7 +41,7 @@ const AddProducts = () => {
   const classes = useStyles();
 
   const {getAllThirdCatagories,thirdcatagories}= useContext(thirdcatagoriesContext);
-  const {addProducts,updateProducts,currentProduct}=useContext(productContext);
+  const {addProducts,updateProducts,currentProduct,setCurrentProduct}=useContext(productContext);
 
   //const [thirdId,setThirdId]=useState('');
   const [barCode,setBarCode]=useState('');
@@ -82,7 +81,7 @@ const AddProducts = () => {
     getAllThirdCatagories();
       },
     // eslint-disable-next-line
-  [])
+  [currentProduct,productContext]);
 
      // handle filter input
      const handleFilter=(event,item)=>{
@@ -92,6 +91,11 @@ const AddProducts = () => {
         }
       }
       
+      const handleUnit=(event,item)=>{
+        if (item) {
+          setUnit(item.name)
+        }
+      }
 
         // handle dropzone state
      const SelectFilesButtonHandler = () => {
@@ -109,6 +113,23 @@ const AddProducts = () => {
         if (switchtwo === false) {
            setDiscount(null);
            setDiscountEnds(null);
+        }
+        if(currentProduct !== null){
+           const product ={
+             _id : currentProduct._id,
+            categories:[categories],
+            discount,
+            increaseCount,
+            sold,
+            title,
+            price,
+            barCode,
+            unit,
+            userMax,
+            inStock
+           }
+           updateProducts(product);
+           setCurrentProduct(null);
         }
         addProducts(barCode,files,title,details,categories,price,increaseCount,unit,userMax,inStock,discount,sold,variationId,discountEnds)
       }
@@ -271,7 +292,7 @@ const AddProducts = () => {
             className={classes.detailsfield}
             id="combo-box-demo"
             options={units}
-            onChange={(e)=>setUnit(e.target.value)}
+            onChange={handleUnit}
             getOptionLabel={(option) => option.name}
             renderInput={(params) => (
               <TextField {...params} label="   الوحده" variant="outlined" />

@@ -81,9 +81,13 @@ const useStyles = makeStyles(theme=>(({
 const OrderTimes = () => {
   const classes = useStyles();
   // define context with state and func
-   const {ordertimes,getOrderstime,addNewtime,EditOrdertime} = useContext(ordertimesContext)
+   const {ordertimes,getOrderstime,addNewtime,EditOrdertime,removetime} = useContext(ordertimesContext)
    
   const [state, setState] = useState({ isDisabled: false });
+  const [from,setFrom] = useState("");
+  const [to,setTo]=useState("");
+  const [day,setDay]= useState("");
+  const [maxCount, setMaxCount] = useState("");
   const [data,setData]=useState([
     {
       value: {
@@ -175,6 +179,10 @@ const OrderTimes = () => {
     setState({ ...state, [event.target.name]: event.target.checked });
   };
 
+  const handleSubmit=(e)=>{
+    e.preventDefault();
+    addNewtime(from,to,day,state.isDisabled,maxCount);
+  }
   
   const ordertimesView=(
     <React.Fragment>
@@ -253,13 +261,14 @@ const OrderTimes = () => {
 
   return (
     <React.Fragment>
-      <form>
+      <form onSubmit={handleSubmit}>
         <Grid container direction="column">
           <Grid item>
             <TextField
               variant="outlined"
               label="من"
               className={classes.field}
+              onChange={(e)=> setFrom(e.target.value)}
             />
           </Grid>
           <Grid item>
@@ -267,6 +276,7 @@ const OrderTimes = () => {
               variant="outlined"
               label="الي"
               className={classes.field}
+              onChange={(e)=> setTo(e.target.value)}
             />
           </Grid>
           <Grid item>
@@ -274,6 +284,7 @@ const OrderTimes = () => {
               variant="outlined"
               label="اليوم"
               className={classes.field}
+              onChange={(e)=>setDay(e.target.value)}
             />
           </Grid>
           <Grid container direction="row" justify="center">
@@ -298,6 +309,7 @@ const OrderTimes = () => {
               variant="outlined"
               label="الحد المسموح في هذا الوقت "
               className={classes.field}
+              onChange={(e)=>setMaxCount(e.target.value)}
             />
           </Grid>
           <Grid container justify='center'>

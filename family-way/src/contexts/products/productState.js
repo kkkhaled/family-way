@@ -73,10 +73,11 @@ export const ProductProvider =({children})=>{
         const config = {
             headers: {
               "Content-Type": "application/json",
+              'Authorization': 'Bearer ' + localStorage.token
             },
           };
         try {
-            const res = await server.put(`/oneProduct/${product._id}`,config)
+            const res = await server.put(`/oneProduct/${product._id}`,product,config)
             dispatch({
                 type :"UPATE_PRODUCTS",
                 payload : res.data

@@ -8,8 +8,9 @@ import {
   Button,
 } from "@material-ui/core";
 import Alert from '@material-ui/lab/Alert';
+import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import {productContext} from '../contexts/products/productState'
+import {productContext} from '../contexts/products/productState';
 import {thirdcatagoriesContext} from '../contexts/thirdcatagories/thirdState';
 
 
@@ -77,7 +78,7 @@ const GetProducts = () => {
   const classes = useStyles();
 
   const {getAllThirdCatagories,thirdcatagories}= useContext(thirdcatagoriesContext);
-  const {GetProductThird,removeProducts,products}=useContext(productContext);
+  const {GetProductThird,removeProducts,products,setCurrentProduct}=useContext(productContext);
   const [text,setText]=useState([{name :"تحميل !!"}])
   useEffect(()=>{
     getAllThirdCatagories();
@@ -158,7 +159,12 @@ const GetProducts = () => {
                     </Grid>
                     <Grid item>
                       <Grid container direction="row">
-                        <Button variant="contained" className={classes.button}>
+                        <Button variant="contained"
+                         className={classes.button} 
+                           component={Link}
+                            to="/addproducts"
+                            onClick={()=>setCurrentProduct(product)}
+                            >
                           <Typography variant="h5">تعديل</Typography>
                         </Button>
                         <Button

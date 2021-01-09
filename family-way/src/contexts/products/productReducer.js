@@ -14,7 +14,7 @@ export default (state, action) => {
               ...state,
               products: state.products.filter((product) => product._id !== action.payload),
             }
-            case "SET_CURRENT_PRODUCT":
+            case "Set_Current":
               return{
                 ...state,
                 currentProduct: action.payload,
@@ -23,7 +23,11 @@ export default (state, action) => {
                 return{
                   ...state,
                   filterProducts : action.payload
-                }  
+                };   
+                case "UPATE_PRODUCTS":
+                return {
+                  ...state,
+                }; 
       default:
         return state;
     }

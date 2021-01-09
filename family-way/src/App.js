@@ -16,6 +16,7 @@ import OrdersPage from './pages/orders'
 import RTL from './components/rtl'
 import PushNotification from './pages/pushNotification'
 import PhoneNumber from './components/phoneNumber'
+import CreateCoupons from './pages/createCoupons'
 import { AuthProvider } from './contexts/auth/authstate'
 import { CatagoriesProvider } from './contexts/catagories/catagoriesState'
 import { SubCatagoriesProvider } from './contexts/subcatagories/subcatagoriesState'
@@ -117,6 +118,11 @@ export default function MiniDrawer () {
                               exact
                               path='/pushNot'
                               component={PushNotification}
+                            /> 
+                             <Route
+                              exact
+                              path='/create-coupons'
+                              component={CreateCoupons}
                             /> 
                           </Switch>
                         </main>
