@@ -42,6 +42,13 @@ export default (state, action) => {
         users : action.payload,
         loading : false
       }
+    case "PHONE_SEARCH":
+    case "Name_SEARCH":
+      return{
+        ...state,
+        searchuser : action.payload,
+        loading : false
+      }
     default:
       return state
   }

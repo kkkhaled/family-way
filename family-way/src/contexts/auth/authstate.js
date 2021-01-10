@@ -10,7 +10,8 @@ const initialState = {
   loading: true,
   user: null,
   code: null,
-  users :null
+  users :null,
+  searchuser:null
 }
 
 // create context
@@ -91,9 +92,9 @@ export const AuthProvider = ({ children }) => {
      })
    }
   //get all users
-  const getAllUsers = async () => {
+  const getAllUsers = async (page,limit) => {
     try {
-      const res = await server.get('/users');
+      const res = await server.get(`/users?page=${page}&limit=${limit}`);
     //  console.log(res);
       dispatch({
         type: 'SUCCESSFUL_USERS',
@@ -117,6 +118,34 @@ export const AuthProvider = ({ children }) => {
         }
   }
 
+  // search users
+  const searchviaPhone=async(phone)=>{
+     try {
+      const res = await server.get(`/users?phoneSearch=${phone}`);
+      dispatch({
+        type:"PHONE_SEARCH",
+        payload : res.data
+      })
+     } catch (err) {
+       console.log(err);
+     }
+  }
+
+  const searchviaName=async(name)=>{
+    try {
+     const res = await server.get(`/users?nameSearch=${name}`);
+     dispatch({
+       type:"Name_SEARCH",
+       payload : res.data
+     })
+    } catch (err) {
+      console.log(err);
+    }
+ }
+
+
+
+
   return (
     <authContext.Provider
       value={{
@@ -126,11 +155,14 @@ export const AuthProvider = ({ children }) => {
         loading: state.loading,
         user: state.user,
         users:state.users, 
+        searchuser: state.searchuser,
         addCodeNumber,
         addPhoneNumber,
         loadUser,
         getAllUsers,
         EditUsers,
+        searchviaName,
+        searchviaPhone,
         logout
       }}
     >

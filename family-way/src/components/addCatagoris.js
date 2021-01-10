@@ -64,7 +64,6 @@ const useStyles = makeStyles(theme => ({
 }))
 const AddCatagiories = () => {
   const classes = useStyles()
-
   const [name, setName] = useState('')
   const [sort, setSort] = useState('')
   const [isCompany, setIsCompany] = useState(false)

@@ -18,10 +18,10 @@ export const ProductProvider =({children})=>{
      //actions
 
      // create products
-     const addProducts=async(barCode,files,title,details,categories,price,increaseCount,unit,userMax,inStock,discount,sold,variationId,discountEnds)=>{
+     const addProducts=async(barCode,files,title,details,categories,price,increaseCount,unit,discount,sold,variationId,discountEnds)=>{
         const formData = new FormData();
         Array.from(files).forEach((file) => {
-            formData.append("file", file);
+            formData.append("files", file);
           });
           formData.append('barCode',barCode);
           formData.append('title',title);
@@ -30,8 +30,8 @@ export const ProductProvider =({children})=>{
           formData.append('price',price);
           formData.append('increaseCount',increaseCount);
           formData.append('unit',unit);
-          formData.append('userMax',userMax);
-          formData.append('inStock',inStock);
+          //formData.append('userMax',userMax);
+          //formData.append('inStock',inStock);
          // formData.append('boxUnit',boxUnit);
           formData.append('discount',discount);
           formData.append('sold',sold);

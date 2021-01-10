@@ -82,19 +82,19 @@ const UsersTable = () => {
   //for hanle pop-up
   const [openDialog, setOpenDialog] = useState(false)
   // for pagenate
-  //const [pages, setPages] = useState(0);
+  const [limit,setLimit]=useState(12)
 
   // load user data
   useEffect(() => {
-    getAllUsers()
+    loadPagenate()
     // eslint-disable-next-line
   }, [])
   //console.log(users);
    
- /* const loadPagenate=(page)=>{
-    getAllUsers()
+  const loadPagenate=(page)=>{
+    getAllUsers(page,limit)
      }
-  */
+  
   // handle dialog open
   const handleClickOpen = (id) => {
     setOpenDialog(true);
@@ -176,7 +176,7 @@ const UsersTable = () => {
           <TableHead className={classes.head}>
             <TableRow>
               <TableCell align='center'>
-                <Typography variant='h5'>الترتيب</Typography>
+                <Typography variant='h5'>العدد</Typography>
               </TableCell>
               <TableCell align='center'>
                 <Typography variant='h5'>الاسم</Typography>
@@ -196,6 +196,9 @@ const UsersTable = () => {
                 <Typography variant='h5'>النقاط</Typography>
               </TableCell>
               <TableCell align='center'>
+                <Typography variant='h5'>نوع الهاتف</Typography>
+              </TableCell>
+              <TableCell align='center'>
                 <Typography variant='h5'>التعديل</Typography>
               </TableCell>
             </TableRow>
@@ -212,6 +215,7 @@ const UsersTable = () => {
                 <TableCell align='center'> {row.wallet}</TableCell>
                 <TableCell align='center'> {row.spins}</TableCell>
                 <TableCell align='center'> {row.points}</TableCell>
+                <TableCell align='center'> اندرويد</TableCell>
                 <TableCell align='center'>
                   <EditIcon
                     className={classes.editicon}
@@ -223,19 +227,16 @@ const UsersTable = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      {/*
       {users !== null ?
         <Pagination
-          onChange={(i, page) => {
-              
+          onChange={(i,page) => {
+             loadPagenate(page);  
           }}
-          count={pages}
+          count={Math.ceil(users.pagination.totalItems/limit)}
           color="primary"
           className={classes.pagenation}
         />
-      :
-      ""
-      }*/}
+      :""}
       <Dialog
         open={openDialog}
         onClose={handleClose}

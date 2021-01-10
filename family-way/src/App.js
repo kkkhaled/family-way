@@ -1,8 +1,9 @@
 import React, { useEffect,useContext } from 'react'
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { BrowserRouter, Link, Route, Switch } from 'react-router-dom'
 import './App.css'
 import { ThemeProvider, makeStyles } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
+import Alert from '@material-ui/lab/Alert';
 import AppTheme from './Theme'
 import Addcatagiories from './pages/addcatagiories'
 import Getsubcatagiories from './pages/getsubCatagories'
@@ -27,6 +28,8 @@ import { OrdertimesProvider } from './contexts/orderTimes/ordertimeState'
 import {OrdersProvider} from './contexts/ordres/orderState'
 import setAuthToken from './api/setAuthToken'
 import PrivateRoute from './routing/privateRoute'
+import { useState } from 'react'
+import { Typography } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -38,16 +41,22 @@ const useStyles = makeStyles(theme => ({
     margin: '0px 255px 0px 15px'
     // padding: "15px"
     // padding: theme.spacing(3),
-  }
+  },
+  // root2: {
+  //   width: '80%',
+  //   marginTop :"50px",
+  //   marginLeft:"190px"
+  // },
 }))
 
 export default function MiniDrawer () {
- 
+  //const [Authed,setAuthed]=useState(null)
   useEffect(() => {
     const isAuth = async () => {
       var token = await localStorage.token
       if (token) {
         setAuthToken(token)
+       // setAuthed(1);
         console.log('isAuthed')
       } else {
         console.log('is not Authed')
@@ -121,11 +130,11 @@ export default function MiniDrawer () {
                             /> 
                              <Route
                               exact
-                              path='/create-coupons'
+                              path='/create-coupons' 
                               component={CreateCoupons}
                             /> 
                           </Switch>
-                        </main>
+                           </main>
                       </RTL>
                     </div>
                   </BrowserRouter>

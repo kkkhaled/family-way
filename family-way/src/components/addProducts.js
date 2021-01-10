@@ -52,8 +52,8 @@ const AddProducts = () => {
   const [price, setPrice] = useState('');
   const [increaseCount, setincreaseCount] = useState('');
   const [unit, setUnit] = useState('');
-  const [userMax, setUserMax] = useState('');
-  const [inStock, setinStock] = useState('');
+  //const [userMax, setUserMax] = useState('');
+  //const [inStock, setinStock] = useState('');
   //const [boxUnit, setboxUnit] = useState('');
   const [discount, setDiscount] = useState('');
   const [sold, setSold] = useState(''); 
@@ -69,9 +69,9 @@ const AddProducts = () => {
   const [switchtwo, setISwitchtwo] = useState(false);
 
     const [units, setUnits] = useState([
-    { id: 1, name: "كيلو" },
-    { id: 2, name: "حبه" },
-    { id: 3, name: "كرتونه" },
+    { id: 0, name: "كيلو" },
+    { id: 1, name: "حبه" },
+    { id: 2, name: "كرتونه" },
   ]);
   
   useEffect(()=>{
@@ -93,7 +93,7 @@ const AddProducts = () => {
       
       const handleUnit=(event,item)=>{
         if (item) {
-          setUnit(item.name)
+          setUnit(item.id)
         }
       }
 
@@ -125,13 +125,12 @@ const AddProducts = () => {
             price,
             barCode,
             unit,
-            userMax,
-            inStock
            }
            updateProducts(product);
            setCurrentProduct(null);
+        }else {
+          addProducts(barCode,files,title,details,categories,price,increaseCount,unit,discount,sold,variationId,discountEnds)
         }
-        addProducts(barCode,files,title,details,categories,price,increaseCount,unit,userMax,inStock,discount,sold,variationId,discountEnds)
       }
 
   return (
@@ -262,7 +261,6 @@ const AddProducts = () => {
               id="datetime-local"
               label="موعد انتهاء التخفيض"
               type="datetime-local"
-              defaultValue="2017-05-24T10:30"
               className={classes.textField}
               onChange={(e)=>setDiscountEnds(e.target.value)}
               InputLabelProps={{
@@ -279,6 +277,8 @@ const AddProducts = () => {
             className={classes.detailsfield}
           />
         </Grid>
+        {/*
+        
         <Grid item>
           <TextField
             variant="outlined"
@@ -286,7 +286,7 @@ const AddProducts = () => {
             onChange={(e)=>setUserMax(e.target.value)}
             className={classes.detailsfield}
           />
-        </Grid>
+        </Grid>*/ }
         <Grid item>
           <Autocomplete
             className={classes.detailsfield}
@@ -299,6 +299,7 @@ const AddProducts = () => {
             )}
           />
         </Grid>
+        {/* 
         <Grid item>
           <TextField
             variant="outlined"
@@ -307,6 +308,7 @@ const AddProducts = () => {
             className={classes.detailsfield}
           />
         </Grid>
+        */}
         {/*
         <Grid item>
           <TextField
