@@ -1,5 +1,5 @@
 import React,{useReducer,createContext} from 'react';
-import couponReducer from './ordertimeReducer';
+import couponReducer from './couponReducer';
 import server from '../../api/server';
 
 //initial State
@@ -20,7 +20,7 @@ export const CouponsProvider =({children})=>{
         const res = await server.get('/coupon')
         dispatch({
             type:"GET_COUPONS",
-            payload :res.data
+            payload :res.data.coupons
         })
       } catch (err) {
           console.log(err);

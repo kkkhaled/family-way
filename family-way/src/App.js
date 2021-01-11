@@ -18,6 +18,7 @@ import RTL from './components/rtl'
 import PushNotification from './pages/pushNotification'
 import PhoneNumber from './components/phoneNumber'
 import CreateCoupons from './pages/createCoupons'
+import CouponsPage from './pages/couponview'
 import { AuthProvider } from './contexts/auth/authstate'
 import { CatagoriesProvider } from './contexts/catagories/catagoriesState'
 import { SubCatagoriesProvider } from './contexts/subcatagories/subcatagoriesState'
@@ -26,6 +27,7 @@ import { ProductProvider } from './contexts/products/productState'
 import { ConstantProvider } from './contexts/constants/constantState'
 import { OrdertimesProvider } from './contexts/orderTimes/ordertimeState'
 import {OrdersProvider} from './contexts/ordres/orderState'
+import {CouponsProvider} from './contexts/coupons/couponState'
 import setAuthToken from './api/setAuthToken'
 import PrivateRoute from './routing/privateRoute'
 import { useState } from 'react'
@@ -67,6 +69,7 @@ export default function MiniDrawer () {
   const classes = useStyles()
   return (
     <AuthProvider>
+      <CouponsProvider>
       <OrdersProvider>
       <OrdertimesProvider>
       <ConstantProvider>
@@ -133,6 +136,11 @@ export default function MiniDrawer () {
                               path='/create-coupons' 
                               component={CreateCoupons}
                             /> 
+                                <Route
+                              exact
+                              path='/view-coupons' 
+                              component={CouponsPage}
+                            />
                           </Switch>
                            </main>
                       </RTL>
@@ -146,6 +154,7 @@ export default function MiniDrawer () {
       </ConstantProvider>
       </OrdertimesProvider>
       </OrdersProvider>
+      </CouponsProvider>
     </AuthProvider>
   )
 }
