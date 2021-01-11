@@ -98,10 +98,10 @@ export const ProductProvider =({children})=>{
     //case search data
     const searchProducts=async(name)=>{
         try {
-            const res = await server.post(`/products/search?${name}`);
+            const res = await server.post(`/products/search?search=${name}`);
             dispatch({
                 type :"SEARCH_DATA",
-                payload : res.data
+                payload : res.data.products
             })
         } catch (err) {
             console.log(err);

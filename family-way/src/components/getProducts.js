@@ -6,13 +6,34 @@ import {
   Typography,
   TextField,
   Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Paper,
+  Divider
 } from "@material-ui/core";
 import Alert from '@material-ui/lab/Alert';
-import { Link } from "react-router-dom";
+import SearchIcon from '@material-ui/icons/Search';
 import { makeStyles } from "@material-ui/core/styles";
 import {productContext} from '../contexts/products/productState';
 import {thirdcatagoriesContext} from '../contexts/thirdcatagories/thirdState';
+import EditProduct from './editproduct'
+import FilterProduct from './filterProduct'
+import Draggable from 'react-draggable'
 
+
+
+function PaperComponent (props) {
+  return (
+    <Draggable
+      handle='#draggable-dialog-title'
+      cancel={'[class*="MuiDialogContent-root"]'}
+    >
+      <Paper {...props} />
+    </Draggable>
+  )
+}
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -72,21 +93,58 @@ const useStyles = makeStyles((theme) => ({
       marginTop: theme.spacing(10),
     },
   },
+  buttondialogsubmit: {
+    color: 'white',
+    backgroundColor: theme.palette.green.main,
+    border: 5
+  },
+  search :{
+    marginBottom :"20px",
+    width :"22em"
+  },
+  divider :{
+    marginBottom:"10px"
+  }
 }));
 
 const GetProducts = () => {
   const classes = useStyles();
+   // for pop up
+  const [openDialog, setOpenDialog] = useState(false)
 
   const {getAllThirdCatagories,thirdcatagories}= useContext(thirdcatagoriesContext);
-  const {GetProductThird,removeProducts,products,setCurrentProduct}=useContext(productContext);
+  
+  const {GetProductThird,
+       removeProducts,
+       products,
+       setCurrentProduct,
+       searchProducts,
+       filterProducts}=useContext(productContext);
+
   const [text,setText]=useState([{name :"تحميل !!"}])
   useEffect(()=>{
     getAllThirdCatagories();
       },
     // eslint-disable-next-line
-  [])
+      [])
  
+      // handle dialog open
+       const handleOpen=(product)=>{
+        setOpenDialog(true)
+         setCurrentProduct(product)
+       } 
 
+       // handle dialog closed
+  const handleClose = () => {
+    setOpenDialog(false)
+  }
+   
+
+    // handle search via name
+    const handlenameSearch =(e)=>{
+      searchProducts(e.target.value);
+    } 
+    console.log(filterProducts);
      // handle filter input
      const handleFilter=(event,item)=>{
       if(item){
@@ -96,6 +154,63 @@ const GetProducts = () => {
 
   return (
     <React.Fragment>
+         <Typography variant="h4">
+        بحث المنتجات
+      </Typography>
+      <TextField label="بحث عن طريق الاسم"
+       className={classes.search}
+      onChange={handlenameSearch}>
+        <SearchIcon />
+      </TextField>
+      <Divider className={classes.divider} />
+      <Grid container direction="row">
+      {filterProducts.length>0 ? 
+           filterProducts.map((product)=>
+                             <Grid item>
+                <Card className={classes.card}>
+                  <img className={classes.img} 
+                  src={`https://familyway.sa/uploads/products/${product.images}`}
+                   alt="subimg" />
+                  <Grid container direction="column">
+                    <Typography
+                      variant="h5"
+                      align="right"
+                      className={classes.font}
+                    >
+                      {product.price}
+                    </Typography>
+                    <Grid item>
+                      <Typography variant="h4" className={classes.name}>
+                        {product.title}
+                      </Typography>
+                    </Grid>
+                    <Grid item>
+                      <Typography variant="h5" className={classes.details}>
+                        {product.details}
+                      </Typography>
+                    </Grid>
+                    <Grid item>
+                      <Grid container direction="row">
+                        <Button variant="contained"
+                         className={classes.button} 
+                         onClick={()=>handleOpen(product)}
+                        >
+                          <Typography variant="h5">تعديل</Typography>
+                        </Button>
+                        <Button
+                          variant="contained"
+                          className={classes.delbutton}
+                          onClick={()=>removeProducts(product._id)}
+                        >
+                          <Typography variant="h5"> مسح</Typography>
+                        </Button>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                </Card>
+              </Grid>
+           ):
+      <div>
       <Grid container direction="row">
         <Grid item>
           <Typography variant="h4">اختر الصنف الثالث</Typography>
@@ -161,10 +276,8 @@ const GetProducts = () => {
                       <Grid container direction="row">
                         <Button variant="contained"
                          className={classes.button} 
-                           component={Link}
-                            to="/addproducts"
-                            onClick={()=>setCurrentProduct(product)}
-                            >
+                         onClick={()=>handleOpen(product)}
+                        >
                           <Typography variant="h5">تعديل</Typography>
                         </Button>
                         <Button
@@ -187,7 +300,33 @@ const GetProducts = () => {
         </Typography>
         </Alert>
         </div>}
-      </Grid>
+        </Grid>
+      </div>}
+        </Grid>
+      <Dialog
+        open={openDialog}
+        onClose={handleClose}
+        PaperComponent={PaperComponent}
+        aria-labelledby='draggable-dialog-title'
+      >
+        <DialogTitle style={{ cursor: 'move' }} id='draggable-dialog-title'>
+          <Typography variant='h5' color='primary'>
+            تعديل بيانات المنتج
+          </Typography>
+        </DialogTitle>
+        <DialogContent>
+          <EditProduct />
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleClose}
+            variant='contained'
+            className={classes.buttondialogsubmit}
+          >
+            تم
+          </Button>
+        </DialogActions>
+      </Dialog>
     </React.Fragment>
   );
 };

@@ -89,10 +89,8 @@ const GetSubCatagories = () => {
   const [name, setName] = useState('')
   const [parentId, setParentId] = useState(null)
   // render catagories state && func
-  const { getAllCatagories, catagories, loading, getOneCatagory } = useContext(
-    catagoriesContext
-  )
-
+  const { getAllCatagories, catagories, loading, getOneCatagory } = useContext(catagoriesContext)
+  
   // render subcatagories state && func
   const { addNewSubCatagories } = useContext(subcatagoriesContext)
 

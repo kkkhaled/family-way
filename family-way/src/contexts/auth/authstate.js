@@ -106,10 +106,10 @@ export const AuthProvider = ({ children }) => {
   }
 
   // edit users
-  const EditUsers=async(id,wallet,points,spins,isBlocked)=>{
+  const EditUsers=async(phone,wallet,points,spins,isBlocked)=>{
         const data={wallet,points,spins,isBlocked}
         try {
-          const res = await server.put(`updateUser/${id}`,data,{'headers': {
+          const res = await server.put(`updateUser/${phone}`,data,{'headers': {
             'Authorization': 'Bearer ' + localStorage.token
           }})
           console.log(res);
@@ -122,6 +122,7 @@ export const AuthProvider = ({ children }) => {
   const searchviaPhone=async(phone)=>{
      try {
       const res = await server.get(`/users?phoneSearch=${phone}`);
+      console.log(res);
       dispatch({
         type:"PHONE_SEARCH",
         payload : res.data
@@ -134,6 +135,7 @@ export const AuthProvider = ({ children }) => {
   const searchviaName=async(name)=>{
     try {
      const res = await server.get(`/users?nameSearch=${name}`);
+     console.log(res);
      dispatch({
        type:"Name_SEARCH",
        payload : res.data

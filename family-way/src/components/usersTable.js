@@ -19,6 +19,7 @@ import {
 } from '@material-ui/core'
 import Pagination from "@material-ui/lab/Pagination";
 import EditIcon from '@material-ui/icons/Edit'
+import SearchIcon from '@material-ui/icons/Search';
 import { authContext } from '../contexts/auth/authstate'
 import { Switch } from '@material-ui/core'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
@@ -58,6 +59,10 @@ const useStyle = makeStyles(theme => ({
     width: "max-content",
     margin: "auto"
   },
+  search :{
+    marginBottom :"20px",
+    width :"22em"
+  }
 }))
 
 function PaperComponent (props) {
@@ -77,8 +82,8 @@ const UsersTable = () => {
   const [wallet,setWallet]=useState('');
   const [spin,setSpins]=useState('');
   const [points,setPoints]=useState('');
-  const { getAllUsers,EditUsers,users } = useContext(authContext);
-  const [userId,setUserId]=useState(''); 
+  const { getAllUsers,EditUsers,users,searchviaName,searchviaPhone,searchuser } = useContext(authContext);
+  const [userPhone,setUserPhone]=useState(''); 
   //for hanle pop-up
   const [openDialog, setOpenDialog] = useState(false)
   // for pagenate
@@ -89,18 +94,19 @@ const UsersTable = () => {
     loadPagenate()
     // eslint-disable-next-line
   }, [])
-  //console.log(users);
+  
+  console.log(users);
    
   const loadPagenate=(page)=>{
     getAllUsers(page,limit)
      }
   
   // handle dialog open
-  const handleClickOpen = (id) => {
+  const handleClickOpen = (phone) => {
     setOpenDialog(true);
-    setUserId(id);
+    setUserPhone(phone);
   }
-  console.log(userId);
+ // console.log(userPhone);
 
   // handle dialog closed
   const handleClose = () => {
@@ -109,10 +115,22 @@ const UsersTable = () => {
 
   const handleUpate=(e)=>{
     e.preventDefault();
-    EditUsers(userId,wallet,points,spin,isBlocked);
+    EditUsers(userPhone,wallet,points,spin,isBlocked);
   }
+  
+  // handle search via name
+  const handlenameSearch =(e)=>{
+    searchviaName(e.target.value);
+  } 
+ console.log(searchuser);
 
-  const dialogContent = (
+   // handle search via name
+   const handlenamephone =(e)=>{
+    searchviaPhone(e.target.value);
+  } 
+
+
+   const dialogContent = (
     <React.Fragment>
       <form onSubmit={handleUpate}>
         <Grid container direction='column'>
@@ -171,6 +189,83 @@ const UsersTable = () => {
 
   return (
     <React.Fragment>
+      <Typography variant="h4">
+        بحث المستخدمين
+      </Typography>
+      <Grid container direction="row" justify="space-between">
+        <Grid item>
+      <TextField label="بحث عن طريق الاسم"
+       className={classes.search}
+       onChange={handlenameSearch}>
+        <SearchIcon />
+      </TextField>
+      </Grid>
+      <Grid item>
+      <TextField 
+      onChange={handlenamephone}
+      label="بحث عن طريق رقم الهاتف"
+       className={classes.search}>
+        <SearchIcon />
+      </TextField>
+      </Grid>
+      </Grid>
+      {searchuser !== null ?
+        <TableContainer elevation={0} component={Paper}>
+        <Table aria-label='simple table'>
+          <TableHead className={classes.head}>
+            <TableRow>
+              <TableCell align='center'>
+                <Typography variant='h5'>العدد</Typography>
+              </TableCell>
+              <TableCell align='center'>
+                <Typography variant='h5'>الاسم</Typography>
+              </TableCell>
+              <TableCell align='center'>
+                <Typography variant='h5'>الدور</Typography>
+              </TableCell>
+              <TableCell align='center'>
+                <Typography variant='h5'>المحفظه</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant='h5' align='center'>
+                  المحاولات المتاحه
+                </Typography>
+              </TableCell>
+              <TableCell align='center'>
+                <Typography variant='h5'>النقاط</Typography>
+              </TableCell>
+              <TableCell align='center'>
+                <Typography variant='h5'>نوع الهاتف</Typography>
+              </TableCell>
+              <TableCell align='center'>
+                <Typography variant='h5'>التعديل</Typography>
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+          {searchuser !== null ?
+             searchuser.users.map((row,i) => (
+              <TableRow key={row.name}>
+                <TableCell component='th' scope='row' align='center'>
+                  {i+1}
+                </TableCell>
+                <TableCell align='center'> {row.name}</TableCell>
+                <TableCell align='center'> {row.role}</TableCell>
+                <TableCell align='center'> {row.wallet}</TableCell>
+                <TableCell align='center'> {row.spins}</TableCell>
+                <TableCell align='center'> {row.points}</TableCell>
+                <TableCell align='center'> اندرويد</TableCell>
+                <TableCell align='center'>
+                  <EditIcon
+                    className={classes.editicon}
+                    onClick={()=>handleClickOpen(row.phone)}
+                  />
+                </TableCell>
+              </TableRow>  
+            )): <Animations />}
+          </TableBody>
+        </Table>
+      </TableContainer> : 
       <TableContainer elevation={0} component={Paper}>
         <Table aria-label='simple table'>
           <TableHead className={classes.head}>
@@ -219,15 +314,15 @@ const UsersTable = () => {
                 <TableCell align='center'>
                   <EditIcon
                     className={classes.editicon}
-                    onClick={()=>handleClickOpen(row._id)}
+                    onClick={()=>handleClickOpen(row.phone)}
                   />
                 </TableCell>
               </TableRow>  
             )): <Animations />}
           </TableBody>
         </Table>
-      </TableContainer>
-      {users !== null ?
+      </TableContainer>}
+      {users !== null && searchuser === null?
         <Pagination
           onChange={(i,page) => {
              loadPagenate(page);  

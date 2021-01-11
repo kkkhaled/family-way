@@ -41,7 +41,7 @@ const AddProducts = () => {
   const classes = useStyles();
 
   const {getAllThirdCatagories,thirdcatagories}= useContext(thirdcatagoriesContext);
-  const {addProducts,updateProducts,currentProduct,setCurrentProduct}=useContext(productContext);
+  const {addProducts}=useContext(productContext);
 
   //const [thirdId,setThirdId]=useState('');
   const [barCode,setBarCode]=useState('');
@@ -58,7 +58,7 @@ const AddProducts = () => {
   const [discount, setDiscount] = useState('');
   const [sold, setSold] = useState(''); 
   const [variationId, setVariationId] = useState('');
-  const [discountEnds, setDiscountEnds] = useState('2020-12-26T18:42:46.236Z'); 
+  const [discountEnds, setDiscountEnds] = useState(''); 
   
   const [dropZoneState, setDropZoneState] = useState(false)
 
@@ -69,19 +69,16 @@ const AddProducts = () => {
   const [switchtwo, setISwitchtwo] = useState(false);
 
     const [units, setUnits] = useState([
-    { id: 0, name: "كيلو" },
-    { id: 1, name: "حبه" },
-    { id: 2, name: "كرتونه" },
+    { id: "1", name: "كيلو" },
+    { id: "2", name: "حبه" },
+    { id: "3", name: "كرتونه" },
   ]);
   
   useEffect(()=>{
-    if(currentProduct !== null){
-      console.log(currentProduct);
-    }
     getAllThirdCatagories();
       },
     // eslint-disable-next-line
-  [currentProduct,productContext]);
+  []);
 
      // handle filter input
      const handleFilter=(event,item)=>{
@@ -114,23 +111,7 @@ const AddProducts = () => {
            setDiscount(null);
            setDiscountEnds(null);
         }
-        if(currentProduct !== null){
-           const product ={
-             _id : currentProduct._id,
-            categories:[categories],
-            discount,
-            increaseCount,
-            sold,
-            title,
-            price,
-            barCode,
-            unit,
-           }
-           updateProducts(product);
-           setCurrentProduct(null);
-        }else {
-          addProducts(barCode,files,title,details,categories,price,increaseCount,unit,discount,sold,variationId,discountEnds)
-        }
+        addProducts(barCode,files,title,details,categories,price,increaseCount,unit,discount,sold,variationId,discountEnds)
       }
 
   return (
