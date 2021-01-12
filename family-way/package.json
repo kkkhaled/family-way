@@ -20,6 +20,7 @@
     "react-draggable": "^4.4.3",
     "react-input-emoji": "^2.1.1",
     "react-moment": "^1.0.0",
+    "react-multi-select-component": "^3.0.8",
     "react-multiple-select-dropdown-lite": "^2.0.4",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
