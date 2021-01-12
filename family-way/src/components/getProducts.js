@@ -13,13 +13,13 @@ import {
   Paper,
   Divider
 } from "@material-ui/core";
+import Pagination from "@material-ui/lab/Pagination";
 import Alert from '@material-ui/lab/Alert';
 import SearchIcon from '@material-ui/icons/Search';
 import { makeStyles } from "@material-ui/core/styles";
 import {productContext} from '../contexts/products/productState';
 import {thirdcatagoriesContext} from '../contexts/thirdcatagories/thirdState';
 import EditProduct from './editproduct'
-import FilterProduct from './filterProduct'
 import Draggable from 'react-draggable'
 
 
@@ -104,7 +104,12 @@ const useStyles = makeStyles((theme) => ({
   },
   divider :{
     marginBottom:"10px"
-  }
+  },
+  pagenation: {
+    paddingTop: "35px",
+    width: "max-content",
+    margin: "auto"
+  },
 }));
 
 const GetProducts = () => {
@@ -114,20 +119,24 @@ const GetProducts = () => {
 
   const {getAllThirdCatagories,thirdcatagories}= useContext(thirdcatagoriesContext);
   
-  const {GetProductThird,
+  const {
+       GetProductThird,
        removeProducts,
        products,
        setCurrentProduct,
        searchProducts,
        filterProducts}=useContext(productContext);
-
-  const [text,setText]=useState([{name :"تحميل !!"}])
+  const [id,setId]=useState(null); 
+  const [text,setText]=useState([{name :"تحميل !!"}]);
+  const [page,setPage]=useState(1);
+  const [limit,setLimit]=useState(11);
   useEffect(()=>{
     getAllThirdCatagories();
       },
     // eslint-disable-next-line
-      [])
- 
+   [])
+
+
       // handle dialog open
        const handleOpen=(product)=>{
         setOpenDialog(true)
@@ -138,7 +147,6 @@ const GetProducts = () => {
   const handleClose = () => {
     setOpenDialog(false)
   }
-   
 
     // handle search via name
     const handlenameSearch =(e)=>{
@@ -148,9 +156,11 @@ const GetProducts = () => {
      // handle filter input
      const handleFilter=(event,item)=>{
       if(item){
-        GetProductThird(item._id);
+        setId(item._id);
+        GetProductThird(item._id,page,limit);
         }
       }
+      console.log(products);
 
   return (
     <React.Fragment>
@@ -247,8 +257,8 @@ const GetProducts = () => {
       </Grid>
 
       <Grid container direction="row">
-        {products.length > 0 ? 
-        products.map((product) => (
+        {products !== null ? 
+        products.products.map((product) => (
           <Grid item key={product.name}>
             <Grid container direction="column">
               <Grid item>
@@ -303,6 +313,16 @@ const GetProducts = () => {
         </Grid>
       </div>}
         </Grid>
+        {products !==null && filterProducts.length === 0 ?
+        <Pagination
+          onChange={(i,page) => {
+            GetProductThird(id,page,limit);
+          }}
+          count={Math.ceil(products.pagination.totalItems/limit)}
+          color="primary"
+          className={classes.pagenation}
+        />
+      :""}
       <Dialog
         open={openDialog}
         onClose={handleClose}

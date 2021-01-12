@@ -58,7 +58,6 @@ const initialState = {
               "Content-Type": "multipart/form-data",
               'Authorization': 'Bearer ' + localStorage.token
             },
-
           };
           try {
              const res = await server.post("/thirdCategory",formData,config);

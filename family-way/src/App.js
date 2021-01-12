@@ -19,6 +19,8 @@ import PushNotification from './pages/pushNotification'
 import PhoneNumber from './components/phoneNumber'
 import CreateCoupons from './pages/createCoupons'
 import CouponsPage from './pages/couponview'
+import AddSliders from './pages/addslider'
+import SliderPage from './pages/getSlider'
 import { AuthProvider } from './contexts/auth/authstate'
 import { CatagoriesProvider } from './contexts/catagories/catagoriesState'
 import { SubCatagoriesProvider } from './contexts/subcatagories/subcatagoriesState'
@@ -28,10 +30,10 @@ import { ConstantProvider } from './contexts/constants/constantState'
 import { OrdertimesProvider } from './contexts/orderTimes/ordertimeState'
 import {OrdersProvider} from './contexts/ordres/orderState'
 import {CouponsProvider} from './contexts/coupons/couponState'
+import {SliderProvider} from './contexts/sliders/sliderstate'
 import setAuthToken from './api/setAuthToken'
 import PrivateRoute from './routing/privateRoute'
-import { useState } from 'react'
-import { Typography } from '@material-ui/core'
+
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -69,6 +71,7 @@ export default function MiniDrawer () {
   const classes = useStyles()
   return (
     <AuthProvider>
+      <SliderProvider>
       <CouponsProvider>
       <OrdersProvider>
       <OrdertimesProvider>
@@ -136,10 +139,20 @@ export default function MiniDrawer () {
                               path='/create-coupons' 
                               component={CreateCoupons}
                             /> 
-                                <Route
+                              <Route
                               exact
                               path='/view-coupons' 
                               component={CouponsPage}
+                            />
+                              <Route
+                              exact
+                              path='/add-slider' 
+                              component={AddSliders}
+                            />
+                              <Route
+                              exact
+                              path='/sliders-view' 
+                              component={SliderPage}
                             />
                           </Switch>
                            </main>
@@ -155,6 +168,7 @@ export default function MiniDrawer () {
       </OrdertimesProvider>
       </OrdersProvider>
       </CouponsProvider>
+      </SliderProvider>
     </AuthProvider>
   )
 }

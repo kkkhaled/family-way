@@ -11,7 +11,8 @@ import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import NotificationImportantIcon from '@material-ui/icons/NotificationImportant';
 import LibraryAddCheckIcon from '@material-ui/icons/LibraryAddCheck';
 import AddIcon from '@material-ui/icons/Add';
-
+import AddRoundedIcon from '@material-ui/icons/AddRounded';
+import ViewWeekIcon from '@material-ui/icons/ViewWeek';
 export default {
   catagiories: [
     {
@@ -95,7 +96,7 @@ export default {
   ],
   addcoupons: [
     {
-      title: "صفحه انشاء الكوبونات ",
+      title: " انشاء الكوبونات ",
       icon: AddIcon,
       to: "/create-coupons",
       id: shortid.generate(),
@@ -103,10 +104,27 @@ export default {
   ],
   getcoupons: [
     {
-      title: "صفحه عرض الكوبونات ",
+      title: " عرض الكوبونات ",
       icon: LibraryAddCheckIcon,
       to: "/view-coupons",
       id: shortid.generate(),
     },
+  ],
+  addslider: [
+    {
+      title: " انشاء السلايدر ",
+      icon: AddRoundedIcon,
+      to: "/add-slider",
+      id: shortid.generate(),
+    },
+  ],
+  getslider: [
+    {
+      title: " عرض السلايدر ",
+      icon: ViewWeekIcon ,
+      to: "/sliders-view", 
+      id: shortid.generate(),
+    },
   ]
+ 
 };

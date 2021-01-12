@@ -4,7 +4,8 @@ import server from '../../api/server';
 
 //initial State
 const initialState = {
-    products : [],
+    nonPagenateProducts:[],
+    products : null,
     currentProduct: null,
     filterProducts: []  
   }
@@ -56,18 +57,31 @@ export const ProductProvider =({children})=>{
      }
 
      // get product by third
-     const GetProductThird=async(id)=>{
+     const GetProductThird=async(id,page,limit)=>{
         try {
-            const res = await server.get(`/products/${id}`)
+            const res = await server.get(`/products/${id}?page=${page}&limit=${limit}`)
             dispatch({
                 type :"GET_THIRD_PRODUCTS",
-                payload : res.data.products
+                payload : res.data
             })
         } catch (err) {
             console.log(err);
         }
      } 
-
+  
+        // get product by third
+        const GetProductViaCat=async(id)=>{
+            try {
+                const res = await server.get(`/products/${id}`)
+                dispatch({
+                    type :"GET_CAT_PRODUCTS",
+                    payload : res.data.products
+                })
+            } catch (err) {
+                console.log(err);
+            }
+         } 
+    
      // update
     const updateProducts=async(product)=>{
         const config = {
@@ -123,6 +137,7 @@ export const ProductProvider =({children})=>{
 
      return(
          <productContext.Provider value={{
+            nonPagenateProducts:state.nonPagenateProducts,
              products:state.products,
              currentProduct:state.currentProduct,
              filterProducts :state.filterProducts,
@@ -131,7 +146,8 @@ export const ProductProvider =({children})=>{
             updateProducts,
             setCurrentProduct,
             removeProducts,
-            searchProducts 
+            searchProducts,
+            GetProductViaCat 
          }}>
             {children}
          </productContext.Provider>

@@ -14,9 +14,8 @@ import {
     FormControl,
     ListItemText
     } from '@material-ui/core';
-
     import Autocomplete from "@material-ui/lab/Autocomplete";
-     import { makeStyles } from '@material-ui/core/styles';
+     import { makeStyles,useTheme } from '@material-ui/core/styles';
     import { authContext } from '../contexts/auth/authstate';
     import {thirdcatagoriesContext} from '../contexts/thirdcatagories/thirdState';
 
@@ -35,14 +34,14 @@ import {
            width :"190px"
       },
        formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-    maxWidth: 300,
-  },
-  chips: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
+       margin: theme.spacing(1),
+       minWidth: 120,
+       maxWidth: 300,
+     },
+     chips: {
+      display: 'flex',
+      flexWrap: 'wrap',
+     },
   chip: {
     margin: 2,
   },
@@ -59,10 +58,22 @@ const MenuProps = {
   },
 };
 
+function getStyles(name, personName, theme) {
+  return {
+    fontWeight:
+      personName.indexOf(name) === -1
+        ? theme.typography.fontWeightRegular
+        : theme.typography.fontWeightMedium
+  };
+}
+
  const CreateCoupon = () => {
      const  classes = useStyles();
+     const theme = useTheme();
      const { getAllUsers,users } = useContext(authContext);
      const {getAllThirdCatagories,thirdcatagories}= useContext(thirdcatagoriesContext);
+     const [personName, setPersonName] = useState([]);
+
       
      const [options, setoptions] = useState(
          [
@@ -80,6 +91,11 @@ const MenuProps = {
            getAllThirdCatagories();
         // eslint-disable-next-line
         }, [])
+
+        const handleChange = (event) => {
+          setPersonName(event.target.value);
+        };
+      
      
           
     return (
@@ -110,7 +126,37 @@ const MenuProps = {
                                />
                         </Grid>
                         <Grid item>
-                   
+                        <FormControl className={classes.formControl}>
+        <InputLabel id="demo-mutiple-chip-label">Chip</InputLabel>
+        <Select
+          labelId="demo-mutiple-chip-label"
+          id="demo-mutiple-chip"
+          multiple
+          value={personName}
+          onChange={handleChange}
+          input={<Input id="select-multiple-chip" />}
+          renderValue={(selected) => (
+            <div className={classes.chips}>
+              {selected.map((value) => (
+                <Chip key={value} label={value} className={classes.chip} />
+              ))}
+            </div>
+          )}
+          MenuProps={MenuProps}
+        >
+          {thirdcatagories.length > 0
+            ? thirdcatagories.map((name) => (
+                <MenuItem
+                  key={thirdcatagories.name}
+                  value={thirdcatagories.name}
+                  style={getStyles(thirdcatagories.name, personName, theme)}
+                >
+                  {thirdcatagories.name}
+                </MenuItem>
+              ))
+            : ""}
+        </Select>
+      </FormControl>
                         </Grid>
                     </Grid>
             </form>

@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: "5px",
   },
   allprices: {
-    marginLeft: "49px",
+    marginLeft: "52px",
     color :theme.palette.red.dark
   },
   button: {

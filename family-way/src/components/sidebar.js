@@ -71,6 +71,7 @@ const CustomizedButton = withStyles(theme => ({
 
 const SideBar = () => {
   const [subOrderList, setSideOrderList] = useState([
+    'جميع الطلبات',
     'تم استلام الطلب',
     'مرحلة المراجعه',
     'جاري التجهيز',
@@ -259,6 +260,42 @@ const SideBar = () => {
       <Divider className={classes.Divider} />
       <List>
         {NavData.getcoupons.map((item, index) => (
+          <ListItem
+            onClick={e => handleClick(e, item.id)}
+            selected={selected === item.id}
+            component={Link}
+            to={item.to}
+            button
+            key={item.id}
+          >
+            <ListItemIcon className={classes.sideIcon}>
+              {<item.icon />}
+            </ListItemIcon>
+            <ListItemText className={classes.sideText} primary={item.title} />
+          </ListItem>
+        ))}
+      </List>
+      <Divider className={classes.Divider} />
+      <List>
+        {NavData.addslider.map((item, index) => (
+          <ListItem
+            onClick={e => handleClick(e, item.id)}
+            selected={selected === item.id}
+            component={Link}
+            to={item.to}
+            button
+            key={item.id}
+          >
+            <ListItemIcon className={classes.sideIcon}>
+              {<item.icon />}
+            </ListItemIcon>
+            <ListItemText className={classes.sideText} primary={item.title} />
+          </ListItem>
+        ))}
+      </List>
+      <Divider className={classes.Divider} />
+      <List>
+        {NavData.getslider.map((item, index) => (
           <ListItem
             onClick={e => handleClick(e, item.id)}
             selected={selected === item.id}
