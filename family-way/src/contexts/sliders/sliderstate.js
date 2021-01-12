@@ -99,7 +99,7 @@ export const SliderProvider =({children})=>{
         try {
             const res = await server.delete(`/homeSlider/${_id}`)
             dispatch({
-                type :"REMOVE_sLIDER",
+                type :"REMOVE_SLIDER",
                 payload : _id 
             })
         } catch (err) {

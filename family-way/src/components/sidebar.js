@@ -184,7 +184,8 @@ const SideBar = () => {
             <ListItemText className={classes.sideText} primary={item.title} />
           </ListItem>
         ))}
-      </List>
+      </List> 
+      {/* 
       <Divider className={classes.Divider} />
       <List>
         {NavData.notifcations.map((item, index) => (
@@ -203,6 +204,7 @@ const SideBar = () => {
           </ListItem>
         ))}
       </List>
+      */}
       <Divider className={classes.Divider} />
       <List>
         {NavData.addproducts.map((item, index) => (
@@ -239,6 +241,7 @@ const SideBar = () => {
           </ListItem>
         ))}
       </List>
+      {/* 
       <Divider className={classes.Divider} />
       <List>
         {NavData.addcoupons.map((item, index) => (
@@ -257,6 +260,7 @@ const SideBar = () => {
           </ListItem>
         ))}
       </List>
+      */}
       <Divider className={classes.Divider} />
       <List>
         {NavData.getcoupons.map((item, index) => (
@@ -349,7 +353,7 @@ const SideBar = () => {
         ))}
       </List>
       <Divider className={classes.Divider} />
-
+        {/* 
       <List>
         {NavData.orders.map((item, index) => (
           <ListItem
@@ -381,7 +385,7 @@ const SideBar = () => {
             })}
           </List>
         </Collapse>
-      </List>
+      </List>*/}
       <CustomizedButton component={Link} to='/login' onClick={handleLogout}>
         تسجيل الخروج
       </CustomizedButton>

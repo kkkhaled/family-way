@@ -3,9 +3,9 @@ export default (state, action) => {
          case "GET_SLIDER":
            return {
              ...state,
-             sliders: action.payload
+             sliders: action.payload,
            };
-           case "REMOVE_sLIDER":
+           case "REMOVE_SLIDER":
             return {
               ...state,
               sliders: state.sliders.filter((slider) => slider._id !== action.payload),
