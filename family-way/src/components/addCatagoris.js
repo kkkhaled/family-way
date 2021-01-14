@@ -9,6 +9,7 @@ import {
   } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
+import { Alert } from "@material-ui/lab";
 //import EditIcon from '@material-ui/icons/Edit'
 import { authContext } from '../contexts/auth/authstate'
 import { catagoriesContext } from '../contexts/catagories/catagoriesState'
@@ -61,12 +62,13 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.secondary.main
     //marginRight :"5px"
   }
-}))
+}))  
 const AddCatagiories = () => {
-  const classes = useStyles()
-  const [name, setName] = useState('')
-  const [sort, setSort] = useState('')
-  const [isCompany, setIsCompany] = useState(false)
+  const classes = useStyles();
+  const [name, setName] = useState('');
+  const [sort, setSort] = useState('');
+  const [isCompany, setIsCompany] = useState(false);
+  const [alertData, setAlertData] = useState({ open: false });
   const { loadUser } = useContext(authContext)
   const {
     getAllCatagories,
@@ -93,7 +95,21 @@ const AddCatagiories = () => {
   // handle add new catagories
   const handleSubmit = e => {
     e.preventDefault()
-    addNewCategories(name, sort, isCompany)
+    if (name === '' || sort === '') {
+      setAlertData({
+        open: true,
+        message: "تاكد من ادخال البيانات بشكل صحيح",
+        type: "error",
+      });
+    } else {
+      addNewCategories(name, sort, isCompany);
+      setAlertData({
+        open: true,
+        message: "تم اضافه الصنف  ",
+        type: "success"
+      });
+    }
+    
   }
 
   const catagView = (
@@ -128,6 +144,9 @@ const AddCatagiories = () => {
 
   return (
     <React.Fragment>
+       {alertData.open ? (
+        <Alert severity={alertData.type}>{alertData.message}</Alert>
+      ) : null}
       <form onSubmit={handleSubmit}>
         <Grid container direction='column'>
           <Grid item>

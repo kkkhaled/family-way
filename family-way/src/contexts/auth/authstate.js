@@ -145,9 +145,6 @@ export const AuthProvider = ({ children }) => {
     }
  }
 
-
-
-
   return (
     <authContext.Provider
       value={{

@@ -19,6 +19,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import { makeStyles } from "@material-ui/core/styles";
 import {productContext} from '../contexts/products/productState';
 import {thirdcatagoriesContext} from '../contexts/thirdcatagories/thirdState';
+import { authContext } from '../contexts/auth/authstate'
 import EditProduct from './editproduct'
 import Draggable from 'react-draggable'
 
@@ -116,7 +117,8 @@ const GetProducts = () => {
   const classes = useStyles();
    // for pop up
   const [openDialog, setOpenDialog] = useState(false)
-
+  
+  const { loadUser } = useContext(authContext)
   const {getAllThirdCatagories,thirdcatagories}= useContext(thirdcatagoriesContext);
   
   const {
@@ -131,6 +133,7 @@ const GetProducts = () => {
   const [page,setPage]=useState(1);
   const [limit,setLimit]=useState(11);
   useEffect(()=>{
+    loadUser();
     getAllThirdCatagories();
       },
     // eslint-disable-next-line

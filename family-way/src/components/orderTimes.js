@@ -10,8 +10,10 @@ import {
   Card,
   IconButton
 } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
 import EditIcon from '@material-ui/icons/Edit';
 import moment from "moment";
+import { authContext } from '../contexts/auth/authstate'
 import {ordertimesContext} from '../contexts/orderTimes/ordertimeState'
 
 const useStyles = makeStyles(theme=>(({
@@ -82,7 +84,10 @@ const OrderTimes = () => {
   const classes = useStyles();
   // define context with state and func
    const {ordertimes,getOrderstime,addNewtime,EditOrdertime,removetime} = useContext(ordertimesContext)
-   
+   const { loadUser } = useContext(authContext)
+ 
+  const [alertData, setAlertData] = useState({ open: false });
+
   const [state, setState] = useState({ isDisabled: false });
   const [from,setFrom] = useState("");
   const [to,setTo]=useState("");
@@ -169,6 +174,7 @@ const OrderTimes = () => {
   //console.log(date);
    
   useEffect(() => {
+    loadUser();
      getOrderstime();
     // eslint-disable-next-line
   }, [])
@@ -181,8 +187,21 @@ const OrderTimes = () => {
 
   const handleSubmit=(e)=>{
     e.preventDefault();
-    addNewtime(from,to,day,state.isDisabled,maxCount);
-  }
+    if(from === '' || to === ''|| day === '' || maxCount === ''){
+      setAlertData({
+        open: true,
+        message: "تاكد من ادخال البيانات بشكل صحيح   ",
+        type: "error",
+      });
+    }else{
+      addNewtime(from,to,day,state.isDisabled,maxCount);
+      setAlertData({
+        open: true,
+        message: "تم الاضافه  ",
+        type: "success",
+      });
+    }
+ }
   
   const ordertimesView=(
     <React.Fragment>
@@ -261,6 +280,9 @@ const OrderTimes = () => {
 
   return (
     <React.Fragment>
+      {alertData.open ? (
+        <Alert severity={alertData.type}>{alertData.message}</Alert>
+      ) : null}
       <form onSubmit={handleSubmit}>
         <Grid container direction="column">
           <Grid item>

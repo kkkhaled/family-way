@@ -123,12 +123,13 @@ export const ProductProvider =({children})=>{
     }
 
        // delete
-       const removeProducts=async(_id)=>{
+       const removeProducts=async(id)=>{
         try {
-            const res = await server.delete(`/oneProduct/${_id}`)
+            const res = await server.delete(`/oneProduct/${id}`)
+            console.log(res,id);
             dispatch({
                 type :"REMOVE_PRODUCTS",
-                payload : _id 
+                payload : id 
             })
         } catch (err) {
             console.log(err);

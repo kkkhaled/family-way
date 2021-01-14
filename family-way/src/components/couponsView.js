@@ -1,6 +1,7 @@
 import React,{useState,useContext, useEffect} from 'react';
 import {Card,Grid,Typography,makeStyles} from '@material-ui/core';
 import {couponsContext} from '../contexts/coupons/couponState'
+import { authContext } from '../contexts/auth/authstate'
 import Animations  from './loader' 
 
 
@@ -16,10 +17,11 @@ const useStyles = makeStyles((theme) => ({
 const CouponsView = () => {
 
     const classes=useStyles();
-
+    const { loadUser } = useContext(authContext)
     const {coupons,getCoupons} = useContext(couponsContext);
     useEffect(()=>{
         getCoupons();
+        loadUser();
     },
         // eslint-disable-next-line
     [])

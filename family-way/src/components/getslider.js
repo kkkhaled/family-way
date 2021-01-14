@@ -4,6 +4,7 @@ import { Grid, Typography,  Button, Card , Divider } from '@material-ui/core'
 import Alert from '@material-ui/lab/Alert'
 import { makeStyles } from '@material-ui/core/styles'
 import { sliderContext } from '../contexts/sliders/sliderstate'
+import { authContext } from '../contexts/auth/authstate'
 import Animations from './loader'
 const useStyles = makeStyles(theme => ({
   button: {
@@ -52,12 +53,14 @@ const useStyles = makeStyles(theme => ({
 
 const GetSlider = () => {
   const classes=useStyles();
+  const { loadUser } = useContext(authContext)
   const { getslider, sliders, removeslider } = useContext(sliderContext)
   // const [productArr,setProductArr]=useState([]);
   // const [catagoriesArr,setCatagoriesArr]=useState([]);
   // const [NewArr, setNewArr] = useState([]);
   useEffect(() => {
-    getslider()
+    loadUser();
+    getslider();
     // eslint-disable-next-line
   }, [])
    console.log(sliders);

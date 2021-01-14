@@ -9,6 +9,8 @@ import SubCatagoryView from './subcatagoriesView'
 import DroZone from './DropZone'
 import { Switch } from '@material-ui/core'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
+import { authContext } from '../contexts/auth/authstate'
+import { Alert } from "@material-ui/lab";
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -82,6 +84,7 @@ const useStyles = makeStyles(theme => ({
 
 const GetSubCatagories = () => {
   // define component state
+  const [alertData, setAlertData] = useState({ open: false });
   const [text, setText] = useState({ name: 'انتظر تحميل البيانات' })
   const [isWide, setIsWide] = useState(false)
   const [files, setFiles] = useState([])
@@ -93,11 +96,14 @@ const GetSubCatagories = () => {
   
   // render subcatagories state && func
   const { addNewSubCatagories } = useContext(subcatagoriesContext)
+  const { loadUser } = useContext(authContext)
+ 
 
   // loading catagories
   useEffect(
     () => {
-      getAllCatagories()
+      loadUser();
+      getAllCatagories();
     },
     // eslint-disable-next-line
     []
@@ -125,16 +131,39 @@ const GetSubCatagories = () => {
   const handleSubmit = e => {
     e.preventDefault()
     if (parentId === null) {
-      console.log('err')
+      setAlertData({
+        open: true,
+        message: "تاكد من ادخال القسم الرئيسي",
+        type: "error",
+      });
     } else if (name === '') {
-      console.log('errr')
-    } else {
-      addNewSubCatagories(files, name, parentId, isWide)
+      setAlertData({
+        open: true,
+        message: "تاكد من ادخال اسم الصنف الفرعي",
+        type: "error",
+      });
+    } else if(files.length === 0){
+      setAlertData({
+        open: true,
+        message: "تاكد من رفع الصوره  ",
+        type: "error",
+      });
+    } 
+    else {
+      addNewSubCatagories(files, name, parentId, isWide);
+      setAlertData({
+        open: true,
+        message: "تم اضافه الصنف ",
+        type: "success",
+      });
     }
   }
 
   return (
     <React.Fragment>
+       {alertData.open ? (
+        <Alert severity={alertData.type}>{alertData.message}</Alert>
+      ) : null}
       <Typography variant='h4' className={classes.head}>
         ادخل الاصناف الفرعيه
       </Typography>

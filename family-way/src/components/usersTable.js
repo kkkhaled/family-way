@@ -82,7 +82,7 @@ const UsersTable = () => {
   const [wallet,setWallet]=useState('');
   const [spin,setSpins]=useState('');
   const [points,setPoints]=useState('');
-  const { getAllUsers,EditUsers,users,searchviaName,searchviaPhone,searchuser } = useContext(authContext);
+  const { getAllUsers,EditUsers,users,searchviaName,searchviaPhone,searchuser,loadUser } = useContext(authContext);
   const [userPhone,setUserPhone]=useState(''); 
   //for hanle pop-up
   const [openDialog, setOpenDialog] = useState(false)
@@ -91,6 +91,7 @@ const UsersTable = () => {
 
   // load user data
   useEffect(() => {
+    loadUser();
     loadPagenate()
     // eslint-disable-next-line
   }, [])

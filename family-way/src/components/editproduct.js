@@ -28,7 +28,9 @@ const useStyles = makeStyles((theme) => ({
 
   const EditProduct=()=>{
     const classes = useStyles();
-      // for handle switch
+    // for handlr alert
+    const [alertData, setAlertData] = useState({ open: false });
+    // for handle switch
     const [discountSwitch,setSwitch]=useState(false)
    // for variation switch
    const [switchOne, setISwitchOne] = useState(false);
@@ -70,10 +72,40 @@ const useStyles = makeStyles((theme) => ({
   const handleSubmit=(e)=>{
       e.preventDefault();
       if (discountSwitch === false) {
-        setDiscount(null);
-        setDiscountEnds(null);
+        setDiscount(0);
      }
-      const product={
+     if(title===''){
+      setAlertData({
+        open: true,
+        message: "تاكد من ادخال اسم المنتج",
+        type: "error",
+      });
+     }else if (price === '') {
+      setAlertData({
+        open: true,
+        message: "تاكد من ادخال سعر المنتج",
+        type: "error",
+      });
+    }else if (details === '') {
+      setAlertData({
+        open: true,
+        message: "تاكد من ادخال تفاصيل المنتج",
+        type: "error",
+      });
+    }else if (increaseCount === '') {
+      setAlertData({
+        open: true,
+        message: "تاكد من ادخال مقدار الزياده ",
+        type: "error",
+      });
+    }else if(barCode === ''){
+      setAlertData({
+        open: true,
+        message: "تاكد من ادخال الكود بطريقه صحيحه",
+        type: "error",
+      });
+    }else {
+        const product={
         _id : currentProduct._id,
         discount,
         discountEnds,
@@ -87,10 +119,21 @@ const useStyles = makeStyles((theme) => ({
         variationId
       }
       updateProducts(product);
+      setAlertData({
+        open: true,
+        message: "تم تعديل المنتج ",
+        type: "success",
+      })
+    }
+      
+      
   }
    
    const dialogContent = (
     <React.Fragment>
+      {alertData.open ? (
+        <Alert severity={alertData.type}>{alertData.message}</Alert>
+      ) : null}
       <form onSubmit={handleSubmit}>
           <Grid >
               <TextField label="اسم المنتج" 

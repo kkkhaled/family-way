@@ -7,6 +7,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import DroZone from './DropZone'
 import { productContext } from '../contexts/products/productState'
 import { thirdcatagoriesContext } from '../contexts/thirdcatagories/thirdState'
+import { authContext } from '../contexts/auth/authstate'
+import { Alert } from "@material-ui/lab";
 
 const useStyles = makeStyles(theme => ({
   field: {
@@ -40,17 +42,20 @@ const useStyles = makeStyles(theme => ({
 const AddProducts = () => {
   const classes = useStyles()
 
+  const { loadUser } = useContext(authContext)
   const { getAllThirdCatagories, thirdcatagories } = useContext(
     thirdcatagoriesContext
   )
   const { addProducts } = useContext(productContext)
+
+  const [alertData, setAlertData] = useState({ open: false });
 
   //const [thirdId,setThirdId]=useState('');
   const [barCode, setBarCode] = useState('')
   const [files, setFiles] = useState([])
   const [title, setTitle] = useState('')
   const [details, setDetails] = useState('')
-  const [categories, setCategories] = useState('')
+  const [categories, setCategories] = useState(null)
   const [price, setPrice] = useState('')
   const [increaseCount, setincreaseCount] = useState('')
   const [unit, setUnit] = useState('')
@@ -79,6 +84,7 @@ const AddProducts = () => {
   useEffect(
     () => {
       getAllThirdCatagories()
+      loadUser()
     },
     // eslint-disable-next-line
     []
@@ -112,10 +118,59 @@ const AddProducts = () => {
     e.preventDefault()
     // console.log(barCode,categories,files,details);
     if (switchtwo === false) {
-      setDiscount(null)
-      setDiscountEnds(null)
+      setDiscount(0)
     }
-    addProducts(
+     if(categories === null){
+      setAlertData({
+        open: true,
+        message: "تاكد من ادخال القسم الثالث",
+        type: "error",
+      });
+    }else if(files.length === 0){
+      setAlertData({
+        open: true,
+        message: "تاكد من رفع الصوره  ",
+        type: "error",
+      });
+    } 
+    else if(barCode === ''){
+      setAlertData({
+        open: true,
+        message: "تاكد من ادخال الكود بطريقه صحيحه",
+        type: "error",
+      });
+    }else if(title===''){
+      setAlertData({
+        open: true,
+        message: "تاكد من ادخال اسم المنتج",
+        type: "error",
+      });
+    }else if (details === '') {
+      setAlertData({
+        open: true,
+        message: "تاكد من ادخال تفاصيل المنتج",
+        type: "error",
+      });
+    }else if (price === '') {
+      setAlertData({
+        open: true,
+        message: "تاكد من ادخال سعر المنتج",
+        type: "error",
+      });
+    }else if (increaseCount === '') {
+      setAlertData({
+        open: true,
+        message: "تاكد من ادخال مقدار الزياده ",
+        type: "error",
+      });
+    }else if (increaseCount === '') {
+      setAlertData({
+        open: true,
+        message: "تاكد من ادخال الوحده ",
+        type: "error",
+      });
+    }else{
+      addProducts(
       barCode,
       files,
       title,
@@ -129,10 +184,20 @@ const AddProducts = () => {
       variationId,
       discountEnds
     )
+     setAlertData({
+      open: true,
+      message: "تم اضافه المنتج ",
+      type: "success",
+    });
+    }
+   
   }
 
   return (
     <React.Fragment>
+      {alertData.open ? (
+        <Alert severity={alertData.type}>{alertData.message}</Alert>
+      ) : null}
       <form onSubmit={handleSubmit}>
         <Grid container direction='column'>
           <Grid item>

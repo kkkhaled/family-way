@@ -13,6 +13,7 @@ import {
   import {sliderContext} from '../contexts/sliders/sliderstate';
   import {thirdcatagoriesContext} from '../contexts/thirdcatagories/thirdState';
   import {productContext} from '../contexts/products/productState';
+  import { authContext } from '../contexts/auth/authstate'
   import DroZone from './DropZone';
 
 
@@ -46,7 +47,8 @@ import {
 const AddSlider = () => {
 
     const classes=useStyles(); 
-    const [dropZoneState, setDropZoneState] = useState(false)
+    const [alertData, setAlertData] = useState({ open: false });
+    const [dropZoneState, setDropZoneState] = useState(false);
     const [text,setText]=useState([{name :"تحميل !!"}]);
 
     const [files, setFiles] = useState([]);
@@ -56,12 +58,14 @@ const AddSlider = () => {
     const [action, setaction] = useState('');
     const [isCatagory,setIscatagory]=useState(false);
 
+    const { loadUser } = useContext(authContext)
     const {addNewSliderProduct,addNewSliderCatag,addNewSlider} = useContext(sliderContext);
     const {getAllThirdCatagories,thirdcatagories}= useContext(thirdcatagoriesContext);
     const {GetProductViaCat,nonPagenateProducts}=useContext(productContext);
   
     useEffect(()=>{
         getAllThirdCatagories();
+        loadUser();
           },
         // eslint-disable-next-line
        [])
@@ -97,17 +101,48 @@ const AddSlider = () => {
 
         const handleSubmit=(e)=>{
             e.preventDefault();
+            if(sort===''){
+              setAlertData({
+                open: true,
+                message: "تاكد من ادخال البيانات بشكل صحيح",
+                type: "error",
+              });
+            }else if(files.length === 0){
+              setAlertData({
+                open: true,
+                message: "تاكد من رفع الصوره  ",
+                type: "error",
+              });
+            }
             if(isProduct){
                 addNewSliderProduct(files,isProduct,sort,action);
+                setAlertData({
+                  open: true,
+                  message: "تم الاضافه  ",
+                  type: "success",
+                });
             }else if(isCatagory){
                 addNewSliderCatag(files,category,sort);
+                setAlertData({
+                  open: true,
+                  message: "تم الاضافه  ",
+                  type: "success",
+                });
             }else if(!isProduct&&!isCatagory){
                 addNewSlider(files,sort)
+                setAlertData({
+                  open: true,
+                  message: "تم الاضافه  ",
+                  type: "success",
+                });
             }
          }
    
     return (
         <React.Fragment>
+           {alertData.open ? (
+        <Alert severity={alertData.type}>{alertData.message}</Alert>
+            ) : null}
            <form onSubmit={handleSubmit}>
              <Grid container direction="row" justify="center">
                 <Grid item>

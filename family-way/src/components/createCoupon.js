@@ -4,16 +4,8 @@ import {
   TextField,
   Button,
   Typography,
-  Card,
   Divider,
-  Chip,
-  Select,
-  InputLabel,
-  Input,
-  MenuItem,
-  FormControl,
-  ListItemText
-} from '@material-ui/core'
+   } from '@material-ui/core'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import { authContext } from '../contexts/auth/authstate'
@@ -46,26 +38,6 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const ITEM_HEIGHT = 48
-const ITEM_PADDING_TOP = 8
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250
-    }
-  }
-}
-
-function getStyles (name, personName, theme) {
-  return {
-    fontWeight:
-      personName.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium
-  }
-}
-
 const CreateCoupon = () => {
   const options1 = [
     { label: 'Grapes 🍇', value: 'grapes' },
@@ -81,31 +53,28 @@ const CreateCoupon = () => {
   const [selected, setSelected] = useState([])
 
   const classes = useStyles()
-  const theme = useTheme()
-  const { getAllUsers, users } = useContext(authContext)
-  const { getAllThirdCatagories, thirdcatagories } = useContext(
-    thirdcatagoriesContext
-  )
-  const [personName, setPersonName] = useState([])
+  const { getAllUsers, users,loadUser } = useContext(authContext)
 
-  const [options, setoptions] = useState([
-    { name: 'المستخدمين', id: 1 },
-    { name: 'المنتجات', id: 2 },
-    { name: 'الالقسام', id: 3 },
-    { name: 'التوصيل', id: 4 },
-    { name: 'الطلبات', id: 5 }
+  const { getAllThirdCatagories, thirdcatagories } = useContext(thirdcatagoriesContext)
+  
+    const [options, setoptions] = useState([
+    { label: 'المستخدمين', id: 1 },
+    { label: 'المنتجات', id: 2 },
+    { label: 'الالقسام', id: 3 },
+    { label: 'التوصيل', id: 4 },
+    { label: 'الطلبات', id: 5 }
   ])
 
   // load user data
   useEffect(() => {
-    getAllUsers()
-    getAllThirdCatagories()
+    loadUser();
+    getAllUsers();
+    getAllThirdCatagories();
     // eslint-disable-next-line
   }, [])
 
-  const handleChange = event => {
-    setPersonName(event.target.value)
-  }
+  console.log(users);
+  console.log(thirdcatagories);
 
   return (
     <React.Fragment>
@@ -124,19 +93,20 @@ const CreateCoupon = () => {
               className={classes.firstOfCoupon}
               id='combo-box-demo'
               options={options}
-              getOptionLabel={option => option.name}
+              getOptionLabel={option => option.label}
               renderInput={params => (
                 <TextField {...params} label='هدف الكوبون' variant='outlined' />
               )}
             />
           </Grid>
         </Grid>
+        {thirdcatagories.length > 0?
         <MultiSelect
-          options={options1}
+          options={options}
           value={selected}
           onChange={setSelected}
           labelledBy={'Select'}
-        />
+        />:null}
       </form>
     </React.Fragment>
   )

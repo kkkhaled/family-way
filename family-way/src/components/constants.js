@@ -1,7 +1,9 @@
 import React, { useState,useEffect,useContext } from "react";
 import { TextField, Grid, Typography, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { Alert } from "@material-ui/lab";
 import {constantsContext} from '../contexts/constants/constantState';
+import { authContext } from '../contexts/auth/authstate'
 //import Animations from './loader'
 import server from '../api/server'
 
@@ -27,8 +29,11 @@ const useStyles = makeStyles((theme) => ({
 
 const Constants = () => {
   const classes = useStyles();
+   const { loadUser } = useContext(authContext)
    const {AddConstants}= useContext(constantsContext);
-   
+
+  const [alertData, setAlertData] = useState({ open: false });
+
   const [high,setHigh]=useState('');
   const [low,setLow]=useState('');
   const [freeOrder,setfreeOrder]=useState('');
@@ -36,12 +41,17 @@ const Constants = () => {
   const [minimum,setMinimum]=useState('');
   const [pointsToMoney,setPointsToMoney]=useState('');
   const [mobile,setMobile]=useState('')
-  const [daysForReturns,setdaysForReturns]=useState('')
+  const [daysForReturns,setdaysForReturns]=useState('');
+
+  useEffect(() => {
+    loadUser();
+         // eslint-disable-next-line
+  }, [])
 
   useEffect(() => {
      server.get('/constants',{'headers': {
       'Authorization': 'Bearer ' + localStorage.token }}).then(res =>{
-        //console.log(res.data)
+        //console.log(res)
         setHigh(res.data.deliveryPrice.high)
         setLow(res.data.deliveryPrice.low)
         setfreeOrder(res.data.order.freeOrder)

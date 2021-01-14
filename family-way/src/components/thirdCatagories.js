@@ -8,9 +8,11 @@ import {
   Divider,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { Alert } from "@material-ui/lab";
 import {thirdcatagoriesContext} from '../contexts/thirdcatagories/thirdState';
 import {subcatagoriesContext} from '../contexts/subcatagories/subcatagoriesState';
 import ThirdCatagoriesView from './thirdcatagoriesView'
+import { authContext } from '../contexts/auth/authstate'
 import DroZone from "./DropZone";
 
 const useStyles = makeStyles((theme) => ({
@@ -84,8 +86,9 @@ const useStyles = makeStyles((theme) => ({
 
 const GetThirdCatagories = () => {
     const classes = useStyles();
-
+   
       // define component state
+      const [alertData, setAlertData] = useState({ open: false });
       const [text,setText]=useState({name:"انتظر تحميل البيانات"})
       const [files, setFiles] = useState([]);
       const [dropZoneState, setDropZoneState] = useState(false);  
@@ -95,8 +98,11 @@ const GetThirdCatagories = () => {
         // render subcatagories state && func
   const {getAllSubCatagories,subcatagories}=useContext(subcatagoriesContext);
   const {addNewThirdCatagories} =useContext(thirdcatagoriesContext); 
+  const { loadUser } = useContext(authContext)
+
   //loading subcatagories 
   useEffect(() => {
+    loadUser();
     getAllSubCatagories();
     // eslint-disable-next-line
 }, [])
@@ -120,16 +126,39 @@ const handleDropZoneSave = (files) => {
 const handleSubmit=(e)=>{
   e.preventDefault();
    if(subId === null){
-     console.log("err");
+    setAlertData({
+      open: true,
+      message: "تاكد من ادخال القسم الفرعي",
+      type: "error",
+    });
    }else if(name === ""){
-       console.log("errr");
-   }else {
+    setAlertData({
+      open: true,
+      message: "تاكد من ادخال اسم الصنف الثالث",
+      type: "error",
+    });
+   }else if(files.length === 0){
+    setAlertData({
+      open: true,
+      message: "تاكد من رفع الصوره  ",
+      type: "error",
+    });
+  }
+    else {
     addNewThirdCatagories(files,name,subId);
+    setAlertData({
+      open: true,
+      message: "تم اضافه الصنف ",
+      type: "success",
+    });
    }
 }
  
    return (
     <React.Fragment>
+      {alertData.open ? (
+        <Alert severity={alertData.type}>{alertData.message}</Alert>
+      ) : null}
       <Typography variant="h4" className={classes.head}>
         ادخل الاصناف الثالثه
       </Typography>
