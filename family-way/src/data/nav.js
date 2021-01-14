@@ -88,7 +88,7 @@ export default {
   ],
   orders: [
     {
-      title: "صفحه عرض الطلبات ",
+      title: " عرض الطلبات ",
       icon: ShoppingCartIcon,
       to: "/orders",
       id: shortid.generate(),

@@ -352,11 +352,11 @@ const SideBar = () => {
         ))}
       </List>
       <Divider className={classes.Divider} />
-        {/* 
+        
       <List>
         {NavData.orders.map((item, index) => (
           <ListItem
-            onClick={e => handleNested(e, item.id)}
+            onClick={e => handleClick(e, item.id)}
             selected={selected === item.id}
             component={Link}
             to={item.to}
@@ -367,25 +367,10 @@ const SideBar = () => {
               {<item.icon />}
             </ListItemIcon>
             <ListItemText className={classes.sideText} primary={item.title} />
-            {open ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
         ))}
-        <Collapse in={open} timeout='auto' unmountOnExit>
-          <List component='div' disablePadding>
-            {subOrderList.map(item => {
-              return (
-                <ListItem button className={classes.nested}>
-                  <ListItemText
-                    className={classes.sideBarText}
-                    primary={item}
-                  />
-                </ListItem>
-              )
-            })}
-          </List>
-        </Collapse>
-      </List>*/}
-      <CustomizedButton component={Link} to='/login' onClick={handleLogout}>
+      </List>
+        <CustomizedButton component={Link} to='/login' onClick={handleLogout}>
         تسجيل الخروج
       </CustomizedButton>
     </Drawer>

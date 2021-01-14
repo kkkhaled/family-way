@@ -1,13 +1,13 @@
 import React from "react";
 import BasePage from "./basePage";
 import Section from "../components/section";
-import Orders from "../components/orders";
+import OrdersTable from "../components/orders-all";
 
 const OrdersPage = () => {
   return (
     <BasePage pageTitle=" عرض الطلبات">
       <Section>
-        <Orders />
+        <OrdersTable />
       </Section>
     </BasePage>
   );

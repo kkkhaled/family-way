@@ -92,11 +92,11 @@ const UsersTable = () => {
   // load user data
   useEffect(() => {
     loadUser();
-    loadPagenate()
+    loadPagenate();
     // eslint-disable-next-line
   }, [])
   
-  console.log(users);
+  //console.log(users);
    
   const loadPagenate=(page)=>{
     getAllUsers(page,limit)

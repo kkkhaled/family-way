@@ -14,6 +14,7 @@ import Getproducts from './pages/getproducts'
 import ContantsPage from './pages/constants'
 import Ordertimes from './pages/ordertimes'
 import OrdersPage from './pages/orders'
+import OrdersDetail from './pages/orderDetails'
 import RTL from './components/rtl'
 import PushNotification from './pages/pushNotification'
 import PhoneNumber from './components/phoneNumber'
@@ -128,6 +129,11 @@ export default function MiniDrawer () {
                               exact
                               path='/orders'
                               component={OrdersPage}
+                            />
+                             <Route
+                              exact
+                              path='/order-details'
+                              component={OrdersDetail}
                             />
                             <Route
                               exact

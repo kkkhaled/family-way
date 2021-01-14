@@ -5,12 +5,12 @@ export default (state, action) => {
              ...state,
              orders: action.payload
            }
-           case "REMOVE_ORDER":
-               return {
-                   ...state,
-                   orders: state.orders.filter((orders) => orders._id !== action.payload),
-               }
-            default:
+           case "SET_CURRENT":
+             return{
+               ...state,
+               currentOrder: action.payload
+             }
+           default:
         return state;
     }
   };
