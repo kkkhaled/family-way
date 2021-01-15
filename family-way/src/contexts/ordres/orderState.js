@@ -58,8 +58,8 @@ export const OrdersProvider =({children})=>{
         payload : order
        })
     }
-
-    // // apply order 
+       
+    //  apply order 
     // const applyOrder =async(id,phone)=>{
     //     try {
     //         const res = await server.post(`/applyOrder/${id}`);

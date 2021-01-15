@@ -17,7 +17,7 @@ export default (state, action) => {
            case "REMOVE_PRODUCTS":
             return {
               ...state,
-              products: state.products.filter((product) => product._id !== action.payload),
+              products: state.products.products.filter((product) => product._id !== action.payload),
             }
             case "Set_Current":
               return{
