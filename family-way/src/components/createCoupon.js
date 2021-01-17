@@ -4,6 +4,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import { authContext } from '../contexts/auth/authstate'
 import { thirdcatagoriesContext } from '../contexts/thirdcatagories/thirdState'
+import {couponsContext} from '../contexts/coupons/couponState' 
 import MultiSelect from 'react-multi-select-component'
 import { Switch } from '@material-ui/core'
 import { FormControlLabel } from '@material-ui/core'
@@ -60,6 +61,8 @@ const CreateCoupon = () => {
     thirdcatagoriesContext
   )
 
+    const {createCoupon} = useContext(couponsContext);
+
   const [options, setoptions] = useState([
     { label: 'المستخدمين', id: 1 },
     { label: 'المنتجات', id: 2 },
@@ -105,7 +108,7 @@ const CreateCoupon = () => {
         </Grid>
         {thirdcatagories.length > 0 ? (
           <MultiSelect
-            options={options}
+            options={thirdcatagories} 
             value={selected}
             onChange={setSelected}
             labelledBy={'Select'}
