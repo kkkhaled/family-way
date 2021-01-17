@@ -1,16 +1,13 @@
 import React, { useState, useContext, useEffect } from 'react'
-import {
-  Grid,
-  TextField,
-  Button,
-  Typography,
-  Divider,
-   } from '@material-ui/core'
+import { Grid, TextField, Button, Typography, Divider } from '@material-ui/core'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import { authContext } from '../contexts/auth/authstate'
 import { thirdcatagoriesContext } from '../contexts/thirdcatagories/thirdState'
 import MultiSelect from 'react-multi-select-component'
+import { Switch } from '@material-ui/core'
+import { FormControlLabel } from '@material-ui/core'
+import { Alert, AlertTitle } from '@material-ui/lab'
 
 const useStyles = makeStyles(theme => ({
   title: {
@@ -20,7 +17,7 @@ const useStyles = makeStyles(theme => ({
   codeField: {},
   forWhoField: {
     width: '100%',
-    margin:"15px 0px",
+    margin: '15px 0px',
     display: 'flex',
     justifyContent: 'space-between'
   },
@@ -35,6 +32,9 @@ const useStyles = makeStyles(theme => ({
   },
   chip: {
     margin: 2
+  },
+  multiSelector: {
+    flex: 1
   }
 }))
 
@@ -50,14 +50,17 @@ const CreateCoupon = () => {
     { label: 'Pineapple 🍍', value: 'pineapple' },
     { label: 'Peach 🍑', value: 'peach' }
   ]
+  const isPercent = useState(false)
   const [selected, setSelected] = useState([])
 
   const classes = useStyles()
-  const { getAllUsers, users,loadUser } = useContext(authContext)
+  const { getAllUsers, users, loadUser } = useContext(authContext)
 
-  const { getAllThirdCatagories, thirdcatagories } = useContext(thirdcatagoriesContext)
-  
-    const [options, setoptions] = useState([
+  const { getAllThirdCatagories, thirdcatagories } = useContext(
+    thirdcatagoriesContext
+  )
+
+  const [options, setoptions] = useState([
     { label: 'المستخدمين', id: 1 },
     { label: 'المنتجات', id: 2 },
     { label: 'الالقسام', id: 3 },
@@ -67,21 +70,21 @@ const CreateCoupon = () => {
 
   // load user data
   useEffect(() => {
-    loadUser();
-    getAllUsers();
-    getAllThirdCatagories();
+    loadUser()
+    getAllUsers()
+    getAllThirdCatagories()
     // eslint-disable-next-line
   }, [])
 
-  console.log(users);
-  console.log(thirdcatagories);
+  console.log(users)
+  console.log(thirdcatagories)
 
   return (
     <React.Fragment>
       <Typography variant='h4'>ادخل بيانات الكوبون</Typography>
       <form noValidate autoComplete='off'>
         <Grid container direction='column'>
-          <Grid item className={classes.forWhoField} style={{flex: 1}}>
+          <Grid item className={classes.forWhoField} style={{ flex: 1 }}>
             <TextField
               className={classes.firstOfCoupon}
               id='outlined-basic'
@@ -89,7 +92,7 @@ const CreateCoupon = () => {
               variant='outlined'
             />
             <Autocomplete
-              style={{ marginRight: 10,flex: 1 }}
+              style={{ marginRight: 10, flex: 1 }}
               className={classes.firstOfCoupon}
               id='combo-box-demo'
               options={options}
@@ -100,13 +103,144 @@ const CreateCoupon = () => {
             />
           </Grid>
         </Grid>
-        {thirdcatagories.length > 0?
-        <MultiSelect
-          options={options}
-          value={selected}
-          onChange={setSelected}
-          labelledBy={'Select'}
-        />:null}
+        {thirdcatagories.length > 0 ? (
+          <MultiSelect
+            options={options}
+            value={selected}
+            onChange={setSelected}
+            labelledBy={'Select'}
+          />
+        ) : null}
+        <Divider style={{ margin: '20px 0px' }} />
+
+        <Typography variant='h4' style={{ marginTop: '10px' }}>
+          الخصم
+        </Typography>
+
+        <Grid container style={{ marginTop: '15px' }}>
+          <TextField
+            style={{ flex: 1 }}
+            className={classes.firstOfCoupon}
+            id='outlined-basic'
+            label='الحد الأدني لطلب الكوبون'
+            variant='outlined'
+          />
+          <FormControlLabel
+            style={{ marginTop: '10px', marginRight: '10px' }}
+            control={
+              <Switch
+                checked={isPercent}
+                // onChange={handleChange}
+                name='checkedB'
+                color='primary'
+              />
+            }
+            label='هل الخصم سيكون بالنسبه المئويه ؟ '
+          />
+        </Grid>
+        <Alert severity='info' style={{ margin: '10px 0px' }}>
+          <strong> يجب ان تملاء حقل ادخال واحد فقط</strong>
+          <br />
+        </Alert>
+        <Grid container style={{ gridGap: '10px' }}>
+          <TextField
+            style={{ flex: 1 }}
+            className={classes.firstOfCoupon}
+            id='outlined-basic'
+            label='مبلغ الخصم او نسبة الخصم'
+            variant='outlined'
+          />
+          <TextField
+            style={{ flex: 1 }}
+            className={classes.firstOfCoupon}
+            id='outlined-basic'
+            label='المبلغ الخاص بالمحفظه'
+            variant='outlined'
+          />
+          <TextField
+            style={{ flex: 1 }}
+            className={classes.firstOfCoupon}
+            id='outlined-basic'
+            label='المبلغ الخاص بالنقط'
+            variant='outlined'
+          />
+        </Grid>
+        <Divider style={{ margin: '20px 0px' }} />
+
+        <Typography
+          variant='h4'
+          style={{ marginTop: '10px', marginBottom: '20px' }}
+        >
+          الأنتهاء
+        </Typography>
+        <Grid container style={{ gridGap: '10px' }}>
+          <TextField
+            style={{ flex: 1 }}
+            className={classes.firstOfCoupon}
+            id='outlined-basic'
+            label='الحد الأقصي للشخص الواحد'
+            variant='outlined'
+          />
+          <TextField
+            style={{ flex: 1 }}
+            className={classes.firstOfCoupon}
+            id='outlined-basic'
+            label='الحد الأقصي لأستخدام الكوبون'
+            variant='outlined'
+          />
+          <TextField
+            id='datetime-local'
+            label='اختر '
+            type='datetime-local'
+            defaultValue='2017-05-24T10:30'
+            className={classes.firstOfCoupon}
+            InputLabelProps={{
+              shrink: true
+            }}
+          />
+        </Grid>
+        <Typography variant='h4' style={{ marginTop: '30px' }}>
+          اقصاء
+        </Typography>
+        <Grid container style={{ gridGap: '10px' }}>
+          <Grid item className={classes.multiSelector}>
+            <h5 style={{ marginBottom: '8px' }}>مستخدمين</h5>
+            <MultiSelect
+              options={options}
+              value={selected}
+              onChange={setSelected}
+              labelledBy={'Select'}
+            />
+          </Grid>
+          <Grid item className={classes.multiSelector}>
+            <h5 style={{ marginBottom: '8px' }}>اقسام</h5>
+            <MultiSelect
+              options={options}
+              value={selected}
+              onChange={setSelected}
+              labelledBy={'Select'}
+            />
+          </Grid>
+          <Grid item className={classes.multiSelector}>
+            <h5 style={{ marginBottom: '8px' }}>منتجات</h5>
+            <MultiSelect
+              options={options}
+              value={selected}
+              onChange={setSelected}
+              labelledBy={'Select'}
+            />
+          </Grid>
+        </Grid>
+        <Alert severity='info' style={{ margin: '10px 0px' }}>
+          <strong>
+            الكوبون سيتجاهل كل المنتجات التي عليها تخفيض بدون تدخل
+          </strong>
+        </Alert>
+        <Grid container>
+          <Button variant='contained' color='primary' style={{ flex: 1,marginTop:'20px',color:"#FFF" }}>
+            انشاء
+          </Button>
+        </Grid>
       </form>
     </React.Fragment>
   )

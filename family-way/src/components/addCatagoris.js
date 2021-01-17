@@ -5,11 +5,11 @@ import {
   Button,
   Typography,
   Card,
-  Divider,
-  } from '@material-ui/core'
+  Divider
+} from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
-import { Alert } from "@material-ui/lab";
+import { Alert } from '@material-ui/lab'
 //import EditIcon from '@material-ui/icons/Edit'
 import { authContext } from '../contexts/auth/authstate'
 import { catagoriesContext } from '../contexts/catagories/catagoriesState'
@@ -43,7 +43,7 @@ const useStyles = makeStyles(theme => ({
   card: {
     margin: '8px',
     width: '260px',
-    padding:"6px"
+    padding: '6px'
   },
   name: {
     marginLeft: '10px',
@@ -52,23 +52,23 @@ const useStyles = makeStyles(theme => ({
   editicon: {
     backgroundColor: theme.palette.yellow.main,
     color: 'white',
-    marginLeft:"5px"
+    marginLeft: '5px'
     //marginRight: "5px",
     //marginTop: "5px",
   },
   delIcon: {
     color: 'white',
-    marginLeft:"5px",
+    marginLeft: '5px',
     backgroundColor: theme.palette.secondary.main
     //marginRight :"5px"
   }
-}))  
+}))
 const AddCatagiories = () => {
-  const classes = useStyles();
-  const [name, setName] = useState('');
-  const [sort, setSort] = useState('');
-  const [isCompany, setIsCompany] = useState(false);
-  const [alertData, setAlertData] = useState({ open: false });
+  const classes = useStyles()
+  const [name, setName] = useState('')
+  const [sort, setSort] = useState('')
+  const [isCompany, setIsCompany] = useState(false)
+  const [alertData, setAlertData] = useState({ open: false })
   const { loadUser } = useContext(authContext)
   const {
     getAllCatagories,
@@ -98,23 +98,23 @@ const AddCatagiories = () => {
     if (name === '' || sort === '') {
       setAlertData({
         open: true,
-        message: "تاكد من ادخال البيانات بشكل صحيح",
-        type: "error",
-      });
+        message: 'تاكد من ادخال البيانات بشكل صحيح',
+        type: 'error'
+      })
     } else {
-      addNewCategories(name, sort, isCompany);
+      addNewCategories(name, sort, isCompany)
       setAlertData({
         open: true,
-        message: "تم اضافه الصنف  ",
-        type: "success"
-      });
+        message: 'تم اضافه الصنف  ',
+        type: 'success'
+      })
     }
-    
   }
 
   const catagView = (
     <React.Fragment>
-      {//console.log(catagories)
+      {
+        //console.log(catagories)
       }
       <Grid container direction='row'>
         {catagories.length > 1 && !loading ? (
@@ -125,12 +125,12 @@ const AddCatagiories = () => {
                   {catag.name}
                 </Typography>
                 <Grid item>
-                <DeleteForeverIcon
-                      className={classes.delIcon}
-                      onClick={() => {
-                        removeOne(catag._id)
-                      }}
-                    />
+                  <DeleteForeverIcon
+                    className={classes.delIcon}
+                    onClick={() => {
+                      removeOne(catag._id)
+                    }}
+                  />
                 </Grid>
               </Grid>
             </Card>
@@ -144,7 +144,7 @@ const AddCatagiories = () => {
 
   return (
     <React.Fragment>
-       {alertData.open ? (
+      {alertData.open ? (
         <Alert severity={alertData.type}>{alertData.message}</Alert>
       ) : null}
       <form onSubmit={handleSubmit}>
