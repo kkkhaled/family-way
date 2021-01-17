@@ -26,7 +26,7 @@
     "react-multiple-select-dropdown-lite": "^2.0.4",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.3",
+    "react-scripts": "^3.4.4",
     "react-select": "^3.1.1",
     "shortid": "^2.2.15",
     "use-state-if-mounted": "^1.0.4"

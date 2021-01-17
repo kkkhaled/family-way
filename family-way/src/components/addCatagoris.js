@@ -5,17 +5,24 @@ import {
   Button,
   Typography,
   Card,
-  Divider
+  Divider,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
-import { Alert } from '@material-ui/lab'
+import { Alert } from "@material-ui/lab";
 //import EditIcon from '@material-ui/icons/Edit'
 import { authContext } from '../contexts/auth/authstate'
 import { catagoriesContext } from '../contexts/catagories/catagoriesState'
 import Animations from './loader'
 import { Switch } from '@material-ui/core'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
+import EditIcon from '@material-ui/icons/Edit'
+import { url } from '../constants/constants';
+import axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -40,10 +47,13 @@ const useStyles = makeStyles(theme => ({
     marginBottom: '10px',
     marginTop: '20px'
   },
+  dialog: {
+    width: '100% !important'
+  },
   card: {
     margin: '8px',
     width: '260px',
-    padding: '6px'
+    padding: "6px"
   },
   name: {
     marginLeft: '10px',
@@ -52,24 +62,27 @@ const useStyles = makeStyles(theme => ({
   editicon: {
     backgroundColor: theme.palette.yellow.main,
     color: 'white',
-    marginLeft: '5px'
+    marginLeft: "5px"
     //marginRight: "5px",
     //marginTop: "5px",
   },
   delIcon: {
     color: 'white',
-    marginLeft: '5px',
+    marginLeft: "5px",
     backgroundColor: theme.palette.secondary.main
     //marginRight :"5px"
   }
 }))
 const AddCatagiories = () => {
-  const classes = useStyles()
-  const [name, setName] = useState('')
-  const [sort, setSort] = useState('')
-  const [isCompany, setIsCompany] = useState(false)
-  const [alertData, setAlertData] = useState({ open: false })
+  const classes = useStyles();
+  const [name, setName] = useState('');
+  const [sort, setSort] = useState('');
+  const [isCompany, setIsCompany] = useState(false);
+  const [alertData, setAlertData] = useState({ open: false });
   const { loadUser } = useContext(authContext)
+  const [openDialog, setOpenDialog] = useState(false)
+  const [editInput, setEditInput] = useState('')
+  const [saveId, setSaveId] = useState(null)
   const {
     getAllCatagories,
     addNewCategories,
@@ -98,49 +111,41 @@ const AddCatagiories = () => {
     if (name === '' || sort === '') {
       setAlertData({
         open: true,
-        message: 'تاكد من ادخال البيانات بشكل صحيح',
-        type: 'error'
-      })
+        message: "تاكد من ادخال البيانات بشكل صحيح",
+        type: "error",
+      });
     } else {
-      addNewCategories(name, sort, isCompany)
+      addNewCategories(name, sort, isCompany);
       setAlertData({
         open: true,
-        message: 'تم اضافه الصنف  ',
-        type: 'success'
-      })
+        message: "تم اضافه الصنف  ",
+        type: "success"
+      });
     }
+
   }
 
-  const catagView = (
-    <React.Fragment>
-      {
-        //console.log(catagories)
-      }
-      <Grid container direction='row'>
-        {catagories.length > 1 && !loading ? (
-          catagories.map(catag => (
-            <Card className={classes.card} key={catag._id}>
-              <Grid container justify='space-between'>
-                <Typography variant='h5' className={classes.name}>
-                  {catag.name}
-                </Typography>
-                <Grid item>
-                  <DeleteForeverIcon
-                    className={classes.delIcon}
-                    onClick={() => {
-                      removeOne(catag._id)
-                    }}
-                  />
-                </Grid>
-              </Grid>
-            </Card>
-          ))
-        ) : (
-          <Animations />
-        )}
-      </Grid>
-    </React.Fragment>
-  )
+  const handleUpdate = async () => {
+    console.log(saveId, editInput)
+    try {
+      const response = await axios.put(`${url}categories/${saveId}`, {
+        name: editInput
+      })
+      console.log(response)
+      setAlertData({
+        open: true,
+        message: "تم اضافه الصنف",
+        type: "success"
+      });
+    } catch (error) {
+      console.log(error)
+      setAlertData({
+        open: true,
+        message: error.message,
+        type: "error"
+      });
+    }
+  }
 
   return (
     <React.Fragment>
@@ -195,7 +200,68 @@ const AddCatagiories = () => {
       <Typography variant='h4' color='primary'>
         عرض الاصناف الرئسيه
       </Typography>
-      {catagView}
+      <Dialog
+        fullWidth={true}
+        open={openDialog}
+        onClose={() => setOpenDialog(value => value = false)}
+        aria-labelledby='draggable-dialog-title'
+      >
+        <DialogTitle style={{ cursor: 'move' }} id='draggable-dialog-title'>
+          <Typography variant='h4' color='primary'>
+            تعديل
+          </Typography>
+        </DialogTitle>
+        <DialogContent>
+          <TextField id="outlined-basic"
+            label="اكتب الأسم الجديد"
+            variant="outlined"
+            className={classes.dialog}
+            onChange={(text) => {
+              setEditInput(text.target.value)
+            }} />
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => handleUpdate()}
+            variant='contained'
+            className={classes.dialog}
+            style={{ margin: '0px 15px', backgroundColor: "#06f", marginBottom: '10px', color: "#FFF" }}
+          >
+            تعديل
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Grid container direction='row'>
+        {catagories.length > 1 && !loading ? (
+          catagories.map(catag => (
+            <Card className={classes.card} key={catag._id}>
+              <Grid container justify='space-between'>
+                <Typography variant='h5' className={classes.name}>
+                  {catag.name}
+                </Typography>
+                <Grid item>
+                  <DeleteForeverIcon
+                    className={classes.delIcon}
+                    onClick={() => {
+                      removeOne(catag._id)
+                    }}
+                  />
+
+                  <EditIcon
+                    className={classes.editicon}
+                    onClick={() => {
+                      setSaveId(catag._id)
+                      setOpenDialog(value => value = true)
+                    }}
+                  />
+                </Grid>
+              </Grid>
+            </Card>
+          ))
+        ) : (
+            <Animations />
+          )}
+      </Grid>
     </React.Fragment>
   )
 }

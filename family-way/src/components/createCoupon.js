@@ -4,7 +4,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import { authContext } from '../contexts/auth/authstate'
 import { thirdcatagoriesContext } from '../contexts/thirdcatagories/thirdState'
-import {couponsContext} from '../contexts/coupons/couponState' 
+import { couponsContext } from '../contexts/coupons/couponState'
 import MultiSelect from 'react-multi-select-component'
 import { Switch } from '@material-ui/core'
 import { FormControlLabel } from '@material-ui/core'
@@ -61,7 +61,7 @@ const CreateCoupon = () => {
     thirdcatagoriesContext
   )
 
-    const {createCoupon} = useContext(couponsContext);
+  const { createCoupon } = useContext(couponsContext);
 
   const [options, setoptions] = useState([
     { label: 'المستخدمين', id: 1 },
@@ -108,7 +108,7 @@ const CreateCoupon = () => {
         </Grid>
         {thirdcatagories.length > 0 ? (
           <MultiSelect
-            options={thirdcatagories} 
+            options={options1}
             value={selected}
             onChange={setSelected}
             labelledBy={'Select'}
@@ -122,7 +122,7 @@ const CreateCoupon = () => {
 
         <Grid container style={{ marginTop: '15px' }}>
           <TextField
-            style={{ flex: 1 }}
+            style={{ flex: 1, zIndex: 0 }}
             className={classes.firstOfCoupon}
             id='outlined-basic'
             label='الحد الأدني لطلب الكوبون'
@@ -147,21 +147,21 @@ const CreateCoupon = () => {
         </Alert>
         <Grid container style={{ gridGap: '10px' }}>
           <TextField
-            style={{ flex: 1 }}
+            style={{ flex: 1, zIndex: 0 }}
             className={classes.firstOfCoupon}
             id='outlined-basic'
             label='مبلغ الخصم او نسبة الخصم'
             variant='outlined'
           />
           <TextField
-            style={{ flex: 1 }}
+            style={{ flex: 1, zIndex: 0 }}
             className={classes.firstOfCoupon}
             id='outlined-basic'
             label='المبلغ الخاص بالمحفظه'
             variant='outlined'
           />
           <TextField
-            style={{ flex: 1 }}
+            style={{ flex: 1, zIndex: 0 }}
             className={classes.firstOfCoupon}
             id='outlined-basic'
             label='المبلغ الخاص بالنقط'
@@ -178,14 +178,14 @@ const CreateCoupon = () => {
         </Typography>
         <Grid container style={{ gridGap: '10px' }}>
           <TextField
-            style={{ flex: 1 }}
+            style={{ flex: 1, zIndex: 0 }}
             className={classes.firstOfCoupon}
             id='outlined-basic'
             label='الحد الأقصي للشخص الواحد'
             variant='outlined'
           />
           <TextField
-            style={{ flex: 1 }}
+            style={{ flex: 1, zIndex: 0 }}
             className={classes.firstOfCoupon}
             id='outlined-basic'
             label='الحد الأقصي لأستخدام الكوبون'
@@ -240,9 +240,22 @@ const CreateCoupon = () => {
           </strong>
         </Alert>
         <Grid container>
-          <Button variant='contained' color='primary' style={{ flex: 1,marginTop:'20px',color:"#FFF" }}>
-            انشاء
+          <Grid item style={{ width: "100%" }}>
+            <TextField
+              style={{ width: '100%', zIndex: 0 }}
+              className={classes.firstOfCoupon}
+              id='outlined-basic'
+              label='رساله تعريفية عن الكوبون'
+              variant='outlined'
+            />
+          </Grid>
+        </Grid>
+        <Grid container>
+          <Grid item style={{ width: "100%" }}>
+            <Button variant='contained' color='primary' style={{ marginTop: '20px', color: "#FFF",width: "100%"  }}>
+              انشاء
           </Button>
+          </Grid>
         </Grid>
       </form>
     </React.Fragment>
