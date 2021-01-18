@@ -89,6 +89,8 @@ const UsersTable = () => {
   // for pagenate
   const [limit, setLimit] = useState(12)
 
+  const [search,setsearch]=useState('')  
+  
   // load user data
   useEffect(() => {
     loadUser();
@@ -119,15 +121,30 @@ const UsersTable = () => {
     EditUsers(userPhone, wallet, points, spin, isBlocked);
   }
 
-  // handle search via name
-  const handlenameSearch = (e) => {
-    searchviaName(e.target.value);
-  }
+    // handle search via name
+    const handlenameSearch = (e) => {
+        const name = e.target.value;
+        if(!name.match("[A-Za-z0-9_.-]+")){
+          console.log('invalid name');
+          setsearch('');
+        }else{
+           searchviaName(name);
+           setsearch("done")
+        }
+    }
   console.log(searchuser);
 
   // handle search via name
   const handlenamephone = (e) => {
-    searchviaPhone(e.target.value);
+      const regex = /^[0-9\b]+$/;
+      const phone=e.target.value;
+      if (regex.test(phone)) {
+        searchviaPhone(phone);
+        setsearch("done")
+      } else {
+        console.log("invalid number");
+        setsearch('');
+      }
   }
 
 
@@ -209,7 +226,7 @@ const UsersTable = () => {
       </TextField>
         </Grid>
       </Grid >
-  { searchuser !== null ?
+  { searchuser.length > 0  && search === 'done' ?
   <TableContainer elevation={0} component={Paper}>
     <Table aria-label='simple table'>
       <TableHead className={classes.head}>
@@ -243,8 +260,8 @@ const UsersTable = () => {
         </TableRow>
       </TableHead>
       <TableBody>
-        {searchuser !== null ?
-          searchuser.users.map((row, i) => (
+        { searchuser.length > 0 && search === 'done' ?
+          searchuser.map((row, i) => (
             <TableRow key={row.name}>
               <TableCell component='th' scope='row' align='center'>
                 {i + 1}
@@ -266,6 +283,7 @@ const UsersTable = () => {
       </TableBody>
     </Table>
   </TableContainer> :
+  <div>
   <TableContainer elevation={0} component={Paper}>
     <Table aria-label='simple table'>
       <TableHead className={classes.head}>
@@ -321,9 +339,8 @@ const UsersTable = () => {
           )) : <Animations />}
       </TableBody>
     </Table>
-  </TableContainer>}
-{
-  users !== null && searchuser === null ?
+  </TableContainer>
+  {users !== null ?
   <Pagination
     onChange={(i, page) => {
       loadPagenate(page);
@@ -331,9 +348,10 @@ const UsersTable = () => {
     count={Math.ceil(users.pagination.totalItems / limit)}
     color="primary"
     className={classes.pagenation}
-  />
-  : ""
-}
+  />:""}
+</div>
+  }
+
 <Dialog
   open={openDialog}
   onClose={handleClose}
@@ -353,9 +371,9 @@ const UsersTable = () => {
       className={classes.buttondialogsubmit}
     >
       تم
-          </Button>
-  </DialogActions>
-</Dialog>
+    </Button>
+    </DialogActions>
+    </Dialog>
     </React.Fragment >
   )
 }

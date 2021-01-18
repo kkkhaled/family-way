@@ -1,14 +1,15 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { Grid, TextField, Button, Typography, Divider } from '@material-ui/core'
 import Autocomplete from '@material-ui/lab/Autocomplete'
-import { makeStyles, useTheme } from '@material-ui/core/styles'
+import { makeStyles} from '@material-ui/core/styles'
 import { authContext } from '../contexts/auth/authstate'
 import { thirdcatagoriesContext } from '../contexts/thirdcatagories/thirdState'
+import { productContext } from '../contexts/products/productState';
 import { couponsContext } from '../contexts/coupons/couponState'
 import MultiSelect from 'react-multi-select-component'
 import { Switch } from '@material-ui/core'
 import { FormControlLabel } from '@material-ui/core'
-import { Alert, AlertTitle } from '@material-ui/lab'
+import { Alert} from '@material-ui/lab'
 
 const useStyles = makeStyles(theme => ({
   title: {
@@ -51,16 +52,18 @@ const CreateCoupon = () => {
     { label: 'Pineapple 🍍', value: 'pineapple' },
     { label: 'Peach 🍑', value: 'peach' }
   ]
+
+  
+  
   const isPercent = useState(false)
   const [selected, setSelected] = useState([])
+  const [id, setId] = useState(null);
+
 
   const classes = useStyles()
-  const { getAllUsers, users, loadUser } = useContext(authContext)
-
-  const { getAllThirdCatagories, thirdcatagories } = useContext(
-    thirdcatagoriesContext
-  )
-
+  const { getUnpagenatedUsers, users, loadUser } = useContext(authContext)
+  const {products,GetProductViaCat} = useContext(productContext);
+  const { getAllThirdCatagories, thirdcatagories } = useContext(thirdcatagoriesContext);
   const { createCoupon } = useContext(couponsContext);
 
   const [options, setoptions] = useState([
@@ -71,14 +74,13 @@ const CreateCoupon = () => {
     { label: 'الطلبات', id: 5 }
   ])
 
-  // load user data
+ // load user data
   useEffect(() => {
     loadUser()
-    getAllUsers()
+    getUnpagenatedUsers()
     getAllThirdCatagories()
-    // eslint-disable-next-line
-  }, [])
-
+       // eslint-disable-next-line
+  }, []);
   console.log(users)
   console.log(thirdcatagories)
 

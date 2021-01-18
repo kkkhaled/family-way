@@ -27,7 +27,8 @@ export default (state, action) => {
              case "SEARCH_DATA":
                 return{
                   ...state,
-                  filterProducts : action.payload
+                  products : action.payload
+                 // filterProducts : action.payload
                 };   
                 case "UPATE_PRODUCTS":
                 return {

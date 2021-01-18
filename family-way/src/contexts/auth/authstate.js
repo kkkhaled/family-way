@@ -11,7 +11,7 @@ const initialState = {
   user: null,
   code: null,
   users :null,
-  searchuser:null
+  searchuser:[]
 }
 
 // create context
@@ -105,6 +105,21 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+
+   // get unpagenated users 
+   const getUnpagenatedUsers = async () => {
+    try {
+      const res = await server.get(`/users`);
+    //  console.log(res);
+      dispatch({
+        type: 'GET_USERS',
+        payload: res.data
+      })
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   // edit users
   const EditUsers=async(phone,wallet,points,spins,isBlocked)=>{
         const data={wallet,points,spins,isBlocked}
@@ -121,12 +136,12 @@ export const AuthProvider = ({ children }) => {
   // search users
   const searchviaPhone=async(phone)=>{
      try {
-      const res = await server.get(`/users?phoneSearch=${phone}`);
-      console.log(res);
-      dispatch({
-        type:"PHONE_SEARCH",
-        payload : res.data
-      })
+        const res = await server.get(`/users?phoneSearch=${phone}`);
+       // console.log(res);
+          dispatch({
+          type:"PHONE_SEARCH",
+          payload : res.data.users
+        })
      } catch (err) {
        console.log(err);
      }
@@ -134,13 +149,13 @@ export const AuthProvider = ({ children }) => {
 
   const searchviaName=async(name)=>{
     try {
-     const res = await server.get(`/users?nameSearch=${name}`);
-     console.log(res);
+         const res = await server.get(`/users?nameSearch=${name}`);
+     // console.log(res);
      dispatch({
        type:"Name_SEARCH",
-       payload : res.data
-     })
-    } catch (err) {
+       payload : res.data.users
+     })}
+     catch (err) {
       console.log(err);
     }
  }
@@ -159,6 +174,7 @@ export const AuthProvider = ({ children }) => {
         addPhoneNumber,
         loadUser,
         getAllUsers,
+        getUnpagenatedUsers,
         EditUsers,
         searchviaName,
         searchviaPhone,

@@ -127,7 +127,7 @@ const GetProducts = () => {
     products,
     setCurrentProduct,
     searchProducts,
-    filterProducts } = useContext(productContext);
+     } = useContext(productContext);
   const [id, setId] = useState(null);
   const [text, setText] = useState([{ name: "تحميل !!" }]);
   const [page, setPage] = useState(1);
@@ -158,7 +158,7 @@ const GetProducts = () => {
       console.log(1)
     }
   }
-  console.log(filterProducts);
+  //console.log(filterProducts);
   // handle filter input
   const handleFilter = (event, item) => {
     if (item) {
@@ -263,8 +263,9 @@ const GetProducts = () => {
               </Card>
             </Grid>)
           ) : null}
+     
       </Grid>
-      {products !== null && filterProducts.length === 0 ?
+     {products !== null && products.pagination !== undefined ?
         <Pagination
           onChange={(i, page) => {
             GetProductThird(id, page, limit);

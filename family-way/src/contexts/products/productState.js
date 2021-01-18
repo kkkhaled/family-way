@@ -115,7 +115,7 @@ export const ProductProvider =({children})=>{
             const res = await server.post(`/products/search?search=${name}`);
             dispatch({
                 type :"SEARCH_DATA",
-                payload : res.data.products
+                payload : res.data
             })
         } catch (err) {
             console.log(err);

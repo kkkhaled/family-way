@@ -159,74 +159,56 @@ const handleSubmit=(e)=>{
       {alertData.open ? (
         <Alert severity={alertData.type}>{alertData.message}</Alert>
       ) : null}
-      <Typography variant="h4" className={classes.head}>
+      <Typography variant="h4" style={{margin:"15px 0px"}}>
         ادخل الاصناف الثالثه
       </Typography>
       <form onSubmit={handleSubmit}>
-        <Grid container direction="column">
-          <Grid item>
-            <TextField
-              variant="outlined"
-              label="ادخل الاسم"
-              className={classes.field}
-              onChange={(e)=>setName(e.target.value)}
+        <Grid container direction='column'>
+          <Grid item style={{ display: 'flex', gridGap: '10px' }}>
+            <Autocomplete
+              style={{ flex: 1 }}
+              id='combo-box-demo'
+              options={subcatagories}
+              getOptionLabel={option => option.name}
+              onChange={handleFilter}
+              renderInput={params => (
+                <TextField
+                  {...params}
+                  label='اختر الصنف الرئيسى'
+                  variant='outlined'
+                />
+              )}
             />
+            <TextField
+              style={{ flex: 1 }}
+              variant='outlined'
+              label='اسم الصنف'
+              onChange={(e)=>setName(e.target.value)}
+                 />
+          </Grid>
+            <Grid item>
+            <Button
+              variant='contained'
+              color='primary'
+              onClick={SelectFilesButtonHandler}
+              style={{color:"#FFF",padding:'10px',margin:"15px 0px",width:220}}
+            >
+              ادخل صوره الصنف
+                </Button>
           </Grid>
           <Grid item>
-            <Grid container direction="row">
-              <Grid item>
-                {subcatagories.length > 0 ? 
-                <Autocomplete
-                  className={classes.autocomplete}
-                  id="combo-box-demo"
-                  options={subcatagories}
-                  getOptionLabel={(option) => option.name}
-                  onChange={handleFilter}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="اختر الصنف الفرعي"
-                      variant="outlined"
-                    />
-                  )}
-                />:
-                <Autocomplete
-                className={classes.autocomplete}
-                id="combo-box-demo"
-                options={text}
-                getOptionLabel={(option) => option.name}
-                onChange={handleFilter}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="اختر الصنف الفرعي"
-                    variant="outlined"
-                  />
-                )}
-              />}
-              </Grid>
-              <Grid item>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  className={classes.button}
-                  onClick={SelectFilesButtonHandler}
-                >
-                  ادخل صوره الصنف
-                </Button>
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid container justify="center">
-            <Grid item>
-              <Button variant="contained" className={classes.button2} type="submit" >
-                تم
+            <Button
+              variant='contained'
+              color='secondary'
+              className={classes.button2}
+              type='submit'
+              style={{width:"100%"}}
+            >
+              انشاء
               </Button>
-            </Grid>
           </Grid>
         </Grid>
       </form>
-
       <Divider />
       <ThirdCatagoriesView /> 
       <DroZone

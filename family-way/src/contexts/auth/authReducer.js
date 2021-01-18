@@ -37,6 +37,7 @@ export default (state, action) => {
       }
     }
     case "SUCCESSFUL_USERS":
+    case "GET_USERS":
       return{
         ...state,
         users : action.payload,

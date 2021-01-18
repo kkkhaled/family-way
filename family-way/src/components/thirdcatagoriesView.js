@@ -97,29 +97,14 @@ const ThirdCatagoriesView = () => {
           <Grid container direction='row'>
             {filteredthird.length > 0 ?
             filteredthird.map((catag)=>(
-              <Card className={classes.card}>
-                <img className={classes.img}
+              <Card style={{ margin: 10 ,textAlign:"center"}} key={catag._id}>
+                <img  style={{ width: 200, height: 100 }}
                  src={`https://familyway.sa/uploads/thirdCategory/${catag.image}`} 
                   alt="subimg" />
-                <Grid container justify='space-between' className={classes.itemSpace} >
-                  <Grid item >
-                    <Typography variant='h4' className={classes.spacerLeft}> الصنف الفرعي </Typography>
-                  </Grid>
-                  <Grid item>
-                    <Typography variant='h4' className={classes.spacerRight}>{name}</Typography>
-                  </Grid>
-                </Grid>
-                <Grid container justify='space-between' className={classes.itemSpace}>
-                  <Grid item >
-                    <Typography variant='h4' className={classes.spacerLeft}>اسم المنتج</Typography>
-                  </Grid>
-                  <Grid item>
-                    <Typography variant='h4' className={classes.spacerRight}>{catag.name}</Typography>
-                  </Grid>
-                </Grid>
+               <h5 style={{textAlign:"center",margin:10}}>{catag.name}</h5>
               </Card>
             )):
-            <div className={classes.root}><Alert severity="info">
+            <div style={{ margin: "15px 0px", width: "100%" }}><Alert severity="info">
             <Typography variant='h5'>
             ادخل الصنف الفرعي من فضلك
             </Typography>
@@ -130,47 +115,28 @@ const ThirdCatagoriesView = () => {
       )
     return(
         <React.Fragment>
-          <Grid container direction="row">
-              <Grid item>
-              <Grid item>
-          <Typography variant="h4" className={classes.head}>
-            عرض الاصناف الثالثه
-          </Typography>
-        </Grid>
+          <Grid container direction="column">
+        <Typography variant="h4" className={classes.head}>
+          عرض الاصناف الثالثه
+        </Typography>
+        {thirdCatagView}
         <Grid item>
-        {subcatagories.length >0 ? 
           <Autocomplete
-            className={classes.autocomplete2}
             id="combo-box-demo"
+            style={{ width: "100%", margin: '15px 0' }}
             options={subcatagories}
             getOptionLabel={(option) => option.name}
             onChange={handleFilter}
             renderInput={(params) => (
               <TextField
                 {...params}
-                label="اختر الصنف الفرعي"
+                label="اختر الصنف الرئيسى"
                 variant="outlined"
               />
             )}
-          />:
-          <Autocomplete
-          className={classes.autocomplete2}
-          id="combo-box-demo"
-          options={text}
-          getOptionLabel={(option) => option.name}
-          onChange={handleFilter}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="اختر الصنف الفرعي"
-              variant="outlined"
-            />
-          )}
-        />}
-            </Grid>
-           </Grid>
-          </Grid>
-          {thirdCatagView}
+          />
+        </Grid>
+      </Grid>
         </React.Fragment>
     )
 }
