@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
   },
 
   autocomplete: {
-    width: '35em',
+    width: '100%',
     marginRight: '15px'
   },
   button: {
@@ -93,11 +93,11 @@ const GetSubCatagories = () => {
   const [parentId, setParentId] = useState(null)
   // render catagories state && func
   const { getAllCatagories, catagories, loading, getOneCatagory } = useContext(catagoriesContext)
-  
+
   // render subcatagories state && func
   const { addNewSubCatagories } = useContext(subcatagoriesContext)
   const { loadUser } = useContext(authContext)
- 
+
 
   // loading catagories
   useEffect(
@@ -142,13 +142,13 @@ const GetSubCatagories = () => {
         message: "تاكد من ادخال اسم الصنف الفرعي",
         type: "error",
       });
-    } else if(files.length === 0){
+    } else if (files.length === 0) {
       setAlertData({
         open: true,
         message: "تاكد من رفع الصوره  ",
         type: "error",
       });
-    } 
+    }
     else {
       addNewSubCatagories(files, name, parentId, isWide);
       setAlertData({
@@ -161,91 +161,69 @@ const GetSubCatagories = () => {
 
   return (
     <React.Fragment>
-       {alertData.open ? (
+      {alertData.open ? (
         <Alert severity={alertData.type}>{alertData.message}</Alert>
       ) : null}
-      <Typography variant='h4' className={classes.head}>
+      <Typography variant='h4' style={{margin:"15px 0px"}}>
         ادخل الاصناف الفرعيه
       </Typography>
       <form onSubmit={handleSubmit}>
         <Grid container direction='column'>
-          <Grid item>
+          <Grid item style={{ display: 'flex', gridGap: '10px' }}>
+            <Autocomplete
+              style={{ flex: 1 }}
+              id='combo-box-demo'
+              options={catagories}
+              getOptionLabel={option => option.name}
+              onChange={handleFilter}
+              renderInput={params => (
+                <TextField
+                  {...params}
+                  label='اختر الصنف الرئيسى'
+                  variant='outlined'
+                />
+              )}
+            />
             <TextField
+              style={{ flex: 1 }}
               variant='outlined'
-              label='ادخل الاسم'
+              label='اسم الصنف'
               onChange={e => setName(e.target.value)}
-              className={classes.field}
+            />
+          </Grid>
+
+          <Grid item style={{ marginTop: 10 }}>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={isWide}
+                  onChange={() => setIsWide(value => !value)}
+                  name='checkedA'
+                />
+              }
+              label='عرض الشاشه بالكامل ؟'
             />
           </Grid>
           <Grid item>
-            <Grid container direction='row'>
-              <Grid item>
-                {catagories.length > 0 && !loading ? (
-                  <Autocomplete
-                    className={classes.autocomplete}
-                    id='combo-box-demo'
-                    options={catagories}
-                    getOptionLabel={option => option.name}
-                    onChange={handleFilter}
-                    renderInput={params => (
-                      <TextField
-                        {...params}
-                        label='اختر الصنف الرئيسى'
-                        variant='outlined'
-                      />
-                    )}
-                  />
-                ) : (
-                  <Autocomplete
-                    className={classes.autocomplete}
-                    id='combo-box-demo'
-                    options={text}
-                    getOptionLabel={option => option.name}
-                    renderInput={params => (
-                      <TextField
-                        {...params}
-                        label='اختر الصنف الرئيسى'
-                        variant='outlined'
-                      />
-                    )}
-                  />
-                )}
-              </Grid>
-              <Grid item>
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={isWide}
-                      onChange={() => setIsWide(value => !value)}
-                      name='checkedA'
-                    />
-                  }
-                  label='عرض الشاشه بالكامل ؟'
-                />
-              </Grid>
-              <Grid item>
-                <Button
-                  variant='contained'
-                  color='primary'
-                  onClick={SelectFilesButtonHandler}
-                  className={classes.button}
-                >
-                  ادخل صوره الصنف
+            <Button
+              variant='contained'
+              color='primary'
+              onClick={SelectFilesButtonHandler}
+              style={{color:"#FFF",padding:'10px',margin:"15px 0px",width:220}}
+            >
+              ادخل صوره الصنف
                 </Button>
-              </Grid>
-            </Grid>
           </Grid>
-          <Grid container justify='center'>
-            <Grid item>
-              <Button
-                variant='contained'
-                color='secondary'
-                className={classes.button2}
-                type='submit'
-              >
-                تم
+          <Grid item>
+            <Button
+              variant='contained'
+              color='secondary'
+              className={classes.button2}
+              type='submit'
+              style={{width:"100%"}}
+            >
+              انشاء
               </Button>
-            </Grid>
           </Grid>
         </Grid>
       </form>

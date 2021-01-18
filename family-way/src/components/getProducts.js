@@ -1,4 +1,4 @@
-import React, { useState , useEffect,useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import {
   Grid,
@@ -17,15 +17,15 @@ import Pagination from "@material-ui/lab/Pagination";
 import Alert from '@material-ui/lab/Alert';
 import SearchIcon from '@material-ui/icons/Search';
 import { makeStyles } from "@material-ui/core/styles";
-import {productContext} from '../contexts/products/productState';
-import {thirdcatagoriesContext} from '../contexts/thirdcatagories/thirdState';
+import { productContext } from '../contexts/products/productState';
+import { thirdcatagoriesContext } from '../contexts/thirdcatagories/thirdState';
 import { authContext } from '../contexts/auth/authstate'
 import EditProduct from './editproduct'
 import Draggable from 'react-draggable'
 
 
 
-function PaperComponent (props) {
+function PaperComponent(props) {
   return (
     <Draggable
       handle='#draggable-dialog-title'
@@ -39,7 +39,7 @@ function PaperComponent (props) {
 const useStyles = makeStyles((theme) => ({
   card: {
     width: "22em",
-     //height: "30em",
+    //height: "30em",
     border: 8,
     marginTop: "20px",
     marginBottom: "20px",
@@ -76,17 +76,17 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "12px",
     marginLeft: "8px",
     marginRight: "5px",
-    marginBottom:"8px"
+    marginBottom: "8px"
   },
   delbutton: {
     color: "red",
-    backgroundColor:"white" ,
+    backgroundColor: "white",
     width: "10em",
     height: "2.6em",
     marginTop: "12px",
     marginLeft: "8px",
     marginRight: "5px",
-    marginBottom:"8px"
+    marginBottom: "8px"
   },
   root: {
     width: '67%',
@@ -99,12 +99,12 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.green.main,
     border: 5
   },
-  search :{
-    marginBottom :"20px",
-    width :"22em"
+  search: {
+    marginBottom: "20px",
+    width: "22em"
   },
-  divider :{
-    marginBottom:"10px"
+  divider: {
+    marginBottom: "10px"
   },
   pagenation: {
     paddingTop: "35px",
@@ -115,123 +115,77 @@ const useStyles = makeStyles((theme) => ({
 
 const GetProducts = () => {
   const classes = useStyles();
-   // for pop up
+  // for pop up
   const [openDialog, setOpenDialog] = useState(false)
-  
+
   const { loadUser } = useContext(authContext)
-  const {getAllThirdCatagories,thirdcatagories}= useContext(thirdcatagoriesContext);
-  
+  const { getAllThirdCatagories, thirdcatagories } = useContext(thirdcatagoriesContext);
+
   const {
-       GetProductThird,
-       removeProducts,
-       products,
-       setCurrentProduct,
-       searchProducts,
-       filterProducts}=useContext(productContext);
-  const [id,setId]=useState(null); 
-  const [text,setText]=useState([{name :"تحميل !!"}]);
-  const [page,setPage]=useState(1);
-  const [limit,setLimit]=useState(11);
-  useEffect(()=>{
+    GetProductThird,
+    removeProducts,
+    products,
+    setCurrentProduct,
+    searchProducts,
+    filterProducts } = useContext(productContext);
+  const [id, setId] = useState(null);
+  const [text, setText] = useState([{ name: "تحميل !!" }]);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(11);
+  useEffect(() => {
     loadUser();
     getAllThirdCatagories();
-      },
+  },
     // eslint-disable-next-line
-   [])
+    [])
 
 
-      // handle dialog open
-       const handleOpen=(product)=>{
-        setOpenDialog(true)
-         setCurrentProduct(product)
-       } 
+  // handle dialog open
+  const handleOpen = (product) => {
+    setOpenDialog(true)
+    setCurrentProduct(product)
+  }
 
-       // handle dialog closed
+  // handle dialog closed
   const handleClose = () => {
     setOpenDialog(false)
   }
 
-    // handle search via name
-    const handlenameSearch =(e)=>{
+  // handle search via name
+  const handlenameSearch = (e) => {
+    if (e.target.value.length > 0) {
       searchProducts(e.target.value);
-    } 
-    console.log(filterProducts);
-     // handle filter input
-     const handleFilter=(event,item)=>{
-      if(item){
-        setId(item._id);
-        GetProductThird(item._id,page,limit);
-        }
-      }
-      console.log(products);
+      console.log(1)
+    }
+  }
+  console.log(filterProducts);
+  // handle filter input
+  const handleFilter = (event, item) => {
+    if (item) {
+      setId(item._id);
+      GetProductThird(item._id, page, limit);
+    }
+  }
+  console.log(products);
 
   return (
     <React.Fragment>
-         <Typography variant="h4">
-        بحث المنتجات
-      </Typography>
-      <TextField label="بحث عن طريق الاسم"
-       className={classes.search}
-      onChange={handlenameSearch}>
-        <SearchIcon />
-      </TextField>
-      <Divider className={classes.divider} />
-      <Grid container direction="row">
-      {filterProducts.length>0 ? 
-           filterProducts.map((product)=>
-                             <Grid item>
-                <Card className={classes.card}>
-                  <img className={classes.img} 
-                  src={`https://familyway.sa/uploads/products/${product.images}`}
-                   alt="subimg" />
-                  <Grid container direction="column">
-                    <Typography
-                      variant="h5"
-                      align="right"
-                      className={classes.font}
-                    >
-                      {product.price}
-                    </Typography>
-                    <Grid item>
-                      <Typography variant="h4" className={classes.name}>
-                        {product.title}
-                      </Typography>
-                    </Grid>
-                    <Grid item>
-                      <Typography variant="h5" className={classes.details}>
-                        {product.details}
-                      </Typography>
-                    </Grid>
-                    <Grid item>
-                      <Grid container direction="row">
-                        <Button variant="contained"
-                         className={classes.button} 
-                         onClick={()=>handleOpen(product)}
-                        >
-                          <Typography variant="h5">تعديل</Typography>
-                        </Button>
-                        <Button
-                          variant="contained"
-                          className={classes.delbutton}
-                          onClick={()=>removeProducts(product._id)}
-                        >
-                          <Typography variant="h5"> مسح</Typography>
-                        </Button>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                </Card>
-              </Grid>
-           ):
-      <div>
-      <Grid container direction="row">
-        <Grid item>
-          <Typography variant="h4">اختر الصنف الثالث</Typography>
+      <Grid container style={{ flexWrap: "nowrap", gridGap: 10 }}>
+        <Grid item style={{ width: "50%" }}>
+          <Typography variant="h4">
+            بحث عن طريق الاسم
+          </Typography>
+          <TextField label="اكتب اسم المنتج"
+            style={{ width: '100%', margin: '20px 0px' }}
+            variant="outlined"
+            onChange={handlenameSearch}>
+            <SearchIcon />
+          </TextField>
         </Grid>
-        <Grid item>
-          {thirdcatagories.length >0 ? 
+        <Grid item style={{ width: "50%" }}>
+          <Typography variant="h4">بحث عن طريق الصنف</Typography>
           <Autocomplete
-            className={classes.autocomplete}
+            style={{ width: '100%', margin: '20px 0px' }}
             id="combo-box-demo"
             onChange={handleFilter}
             options={thirdcatagories}
@@ -243,89 +197,83 @@ const GetProducts = () => {
                 variant="outlined"
               />
             )}
-          /> :<Autocomplete
-          className={classes.autocomplete}
-          id="combo-box-demo"
-          options={text}
-          getOptionLabel={(option) => option.name}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="اختر الصنف الثالث"
-              variant="outlined"
-            />
-          )}
-        /> }
+          />
         </Grid>
       </Grid>
-
-      <Grid container direction="row">
-        {products !== null ? 
-        products.products.map((product) => (
-          <Grid item key={product.name}>
-            <Grid container direction="column">
-              <Grid item>
-                <Card className={classes.card}>
-                  <img className={classes.img} src={`https://familyway.sa/uploads/products/${product.images}`} alt="subimg" />
-                  <Grid container direction="column">
-                    <Typography
+      <Divider className={classes.divider} />
+      <Grid container style={{ gridGap: 10 }}>
+        {products !== null ?
+          products.products.map((product) => (
+            <Grid item key={product._id} style={{ flex: '1 1 19%', marginBottom: 20 }}>
+              <Card>
+                <div style={{ height: 200, width: '100%' }}>
+                  <img src={`https://familyway.sa/uploads/products/${product.images}`} alt="subimg" style={{ height: 200, objectFit: "contain" }} />
+                </div>
+                <Grid container direction="column">
+                  {product.discount > 0 ?
+                    <div style={{ display: 'flex' }}>
+                      <Typography
+                        variant="h5"
+                        align="right"
+                        style={{ fontSize: 19, color: "red" }}
+                      >
+                        {product.discount}
+                      </Typography>
+                      <Typography
+                        variant="h5"
+                        align="right"
+                        style={{ textDecoration: "line-through", color: "#999", marginRight: 10 }}
+                      >
+                        {product.price}
+                      </Typography>
+                    </div> : <Typography
                       variant="h5"
                       align="right"
-                      className={classes.font}
+                      style={{ textTransform: "line-through" }}
                     >
                       {product.price}
+                    </Typography>}
+
+                  <Grid item>
+                    <Typography variant="h4" >
+                      {product.title}
                     </Typography>
-                    <Grid item>
-                      <Typography variant="h4" className={classes.name}>
-                        {product.title}
-                      </Typography>
-                    </Grid>
-                    <Grid item>
-                      <Typography variant="h5" className={classes.details}>
-                        {product.details}
-                      </Typography>
-                    </Grid>
-                    <Grid item>
-                      <Grid container direction="row">
-                        <Button variant="contained"
-                         className={classes.button} 
-                         onClick={()=>handleOpen(product)}
-                        >
-                          <Typography variant="h5">تعديل</Typography>
-                        </Button>
-                        <Button
-                          variant="contained"
-                          className={classes.delbutton}
-                          onClick={()=>removeProducts(product._id)}
-                        >
-                          <Typography variant="h5"> مسح</Typography>
-                        </Button>
-                      </Grid>
+                  </Grid>
+                  <Grid item>
+                    <Typography variant="h5">
+                      {product.details}
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Grid container direction="row">
+                      <Button variant="contained"
+                        onClick={() => handleOpen(product)}
+                      >
+                        <Typography variant="h5">تعديل</Typography>
+                      </Button>
+                      <Button
+                        variant="contained"
+                        onClick={() => removeProducts(product._id)}
+                      >
+                        <Typography variant="h5"> مسح</Typography>
+                      </Button>
                     </Grid>
                   </Grid>
-                </Card>
-              </Grid>
-            </Grid>
-          </Grid>
-        )):<div className={classes.root}><Alert severity="info">
-        <Typography variant='h5'>
-        ادخل الصنف الثالث من فضلك
-        </Typography>
-        </Alert>
-        </div>}
-        </Grid>
-      </div>}
-        </Grid>
-        {products !==null && filterProducts.length === 0 ?
+                </Grid>
+              </Card>
+            </Grid>)
+          ) : null}
+      </Grid>
+      {products !== null && filterProducts.length === 0 ?
         <Pagination
-          onChange={(i,page) => {
-            GetProductThird(id,page,limit);
+          onChange={(i, page) => {
+            GetProductThird(id, page, limit);
           }}
-          count={Math.ceil(products.pagination.totalItems/limit)}
+          count={Math.ceil(products.pagination.totalItems / limit)}
           color="primary"
           className={classes.pagenation}
         />
-      :""}
+        : ""}
       <Dialog
         open={openDialog}
         onClose={handleClose}

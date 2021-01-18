@@ -59,13 +59,13 @@ const useStyle = makeStyles(theme => ({
     width: "max-content",
     margin: "auto"
   },
-  search :{
-    marginBottom :"20px",
-    width :"22em"
+  search: {
+    marginBottom: "20px",
+    width: "22em"
   }
 }))
 
-function PaperComponent (props) {
+function PaperComponent(props) {
   return (
     <Draggable
       handle='#draggable-dialog-title'
@@ -79,15 +79,15 @@ function PaperComponent (props) {
 const UsersTable = () => {
   const classes = useStyle()
   const [isBlocked, setIsBlocked] = useState(false);
-  const [wallet,setWallet]=useState('');
-  const [spin,setSpins]=useState('');
-  const [points,setPoints]=useState('');
-  const { getAllUsers,EditUsers,users,searchviaName,searchviaPhone,searchuser,loadUser } = useContext(authContext);
-  const [userPhone,setUserPhone]=useState(''); 
+  const [wallet, setWallet] = useState('');
+  const [spin, setSpins] = useState('');
+  const [points, setPoints] = useState('');
+  const { getAllUsers, EditUsers, users, searchviaName, searchviaPhone, searchuser, loadUser } = useContext(authContext);
+  const [userPhone, setUserPhone] = useState('');
   //for hanle pop-up
   const [openDialog, setOpenDialog] = useState(false)
   // for pagenate
-  const [limit,setLimit]=useState(12)
+  const [limit, setLimit] = useState(12)
 
   // load user data
   useEffect(() => {
@@ -95,43 +95,43 @@ const UsersTable = () => {
     loadPagenate();
     // eslint-disable-next-line
   }, [])
-  
+
   //console.log(users);
-   
-  const loadPagenate=(page)=>{
-    getAllUsers(page,limit)
-     }
-  
+
+  const loadPagenate = (page) => {
+    getAllUsers(page, limit)
+  }
+
   // handle dialog open
   const handleClickOpen = (phone) => {
     setOpenDialog(true);
     setUserPhone(phone);
   }
- // console.log(userPhone);
+  // console.log(userPhone);
 
   // handle dialog closed
   const handleClose = () => {
     setOpenDialog(false)
   }
 
-  const handleUpate=(e)=>{
+  const handleUpate = (e) => {
     e.preventDefault();
-    EditUsers(userPhone,wallet,points,spin,isBlocked);
+    EditUsers(userPhone, wallet, points, spin, isBlocked);
   }
-  
+
   // handle search via name
-  const handlenameSearch =(e)=>{
+  const handlenameSearch = (e) => {
     searchviaName(e.target.value);
-  } 
- console.log(searchuser);
+  }
+  console.log(searchuser);
 
-   // handle search via name
-   const handlenamephone =(e)=>{
+  // handle search via name
+  const handlenamephone = (e) => {
     searchviaPhone(e.target.value);
-  } 
+  }
 
 
-   const dialogContent = (
+  const dialogContent = (
     <React.Fragment>
       <form onSubmit={handleUpate}>
         <Grid container direction='column'>
@@ -140,7 +140,7 @@ const UsersTable = () => {
               variant='outlined'
               label=' المحفظه'
               className={classes.field}
-              onChange={(e)=>{setWallet(e.target.value)}}
+              onChange={(e) => { setWallet(e.target.value) }}
             />
           </Grid>
           <Grid item>
@@ -148,7 +148,7 @@ const UsersTable = () => {
               variant='outlined'
               label=' النقاط'
               className={classes.field}
-              onChange={(e)=>{setPoints(e.target.value)}}
+              onChange={(e) => { setPoints(e.target.value) }}
             />
           </Grid>
           <Grid item>
@@ -156,7 +156,7 @@ const UsersTable = () => {
               variant='outlined'
               label=' المحاولات المتاحه'
               className={classes.field}
-              onChange={(e)=>{setSpins(e.target.value)}}
+              onChange={(e) => { setSpins(e.target.value) }}
             />
           </Grid>
           <Grid item>
@@ -194,168 +194,169 @@ const UsersTable = () => {
         بحث المستخدمين
       </Typography>
       <Grid container direction="row" justify="space-between">
-        <Grid item>
-      <TextField label="بحث عن طريق الاسم"
-       className={classes.search}
-       onChange={handlenameSearch}>
-        <SearchIcon />
-      </TextField>
-      </Grid>
-      <Grid item>
-      <TextField 
-      onChange={handlenamephone}
-      label="بحث عن طريق رقم الهاتف"
-       className={classes.search}>
-        <SearchIcon />
-      </TextField>
-      </Grid>
-      </Grid>
-      {searchuser !== null ?
-        <TableContainer elevation={0} component={Paper}>
-        <Table aria-label='simple table'>
-          <TableHead className={classes.head}>
-            <TableRow>
-              <TableCell align='center'>
-                <Typography variant='h5'>العدد</Typography>
-              </TableCell>
-              <TableCell align='center'>
-                <Typography variant='h5'>الاسم</Typography>
-              </TableCell>
-              <TableCell align='center'>
-                <Typography variant='h5'>الدور</Typography>
-              </TableCell>
-              <TableCell align='center'>
-                <Typography variant='h5'>المحفظه</Typography>
-              </TableCell>
-              <TableCell>
-                <Typography variant='h5' align='center'>
-                  المحاولات المتاحه
-                </Typography>
-              </TableCell>
-              <TableCell align='center'>
-                <Typography variant='h5'>النقاط</Typography>
-              </TableCell>
-              <TableCell align='center'>
-                <Typography variant='h5'>نوع الهاتف</Typography>
-              </TableCell>
-              <TableCell align='center'>
-                <Typography variant='h5'>التعديل</Typography>
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-          {searchuser !== null ?
-             searchuser.users.map((row,i) => (
-              <TableRow key={row.name}>
-                <TableCell component='th' scope='row' align='center'>
-                  {i+1}
-                </TableCell>
-                <TableCell align='center'> {row.name}</TableCell>
-                <TableCell align='center'> {row.role}</TableCell>
-                <TableCell align='center'> {row.wallet}</TableCell>
-                <TableCell align='center'> {row.spins}</TableCell>
-                <TableCell align='center'> {row.points}</TableCell>
-                <TableCell align='center'> اندرويد</TableCell>
-                <TableCell align='center'>
-                  <EditIcon
-                    className={classes.editicon}
-                    onClick={()=>handleClickOpen(row.phone)}
-                  />
-                </TableCell>
-              </TableRow>  
-            )): <Animations />}
-          </TableBody>
-        </Table>
-      </TableContainer> : 
-      <TableContainer elevation={0} component={Paper}>
-        <Table aria-label='simple table'>
-          <TableHead className={classes.head}>
-            <TableRow>
-              <TableCell align='center'>
-                <Typography variant='h5'>العدد</Typography>
-              </TableCell>
-              <TableCell align='center'>
-                <Typography variant='h5'>الاسم</Typography>
-              </TableCell>
-              <TableCell align='center'>
-                <Typography variant='h5'>الدور</Typography>
-              </TableCell>
-              <TableCell align='center'>
-                <Typography variant='h5'>المحفظه</Typography>
-              </TableCell>
-              <TableCell>
-                <Typography variant='h5' align='center'>
-                  المحاولات المتاحه
-                </Typography>
-              </TableCell>
-              <TableCell align='center'>
-                <Typography variant='h5'>النقاط</Typography>
-              </TableCell>
-              <TableCell align='center'>
-                <Typography variant='h5'>نوع الهاتف</Typography>
-              </TableCell>
-              <TableCell align='center'>
-                <Typography variant='h5'>التعديل</Typography>
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {users !== null ?
-             users.users.map((row,i) => (
-              <TableRow key={row.name}>
-                <TableCell component='th' scope='row' align='center'>
-                  {i+1}
-                </TableCell>
-                <TableCell align='center'> {row.name}</TableCell>
-                <TableCell align='center'> {row.role}</TableCell>
-                <TableCell align='center'> {row.wallet}</TableCell>
-                <TableCell align='center'> {row.spins}</TableCell>
-                <TableCell align='center'> {row.points}</TableCell>
-                <TableCell align='center'> اندرويد</TableCell>
-                <TableCell align='center'>
-                  <EditIcon
-                    className={classes.editicon}
-                    onClick={()=>handleClickOpen(row.phone)}
-                  />
-                </TableCell>
-              </TableRow>  
-            )): <Animations />}
-          </TableBody>
-        </Table>
-      </TableContainer>}
-      {users !== null && searchuser === null?
-        <Pagination
-          onChange={(i,page) => {
-             loadPagenate(page);  
-          }}
-          count={Math.ceil(users.pagination.totalItems/limit)}
-          color="primary"
-          className={classes.pagenation}
-        />
-      :""}
-      <Dialog
-        open={openDialog}
-        onClose={handleClose}
-        PaperComponent={PaperComponent}
-        aria-labelledby='draggable-dialog-title'
+        <Grid item style={{
+          display: 'flex',width: '100% ', margin:'15px 0px' ,gridGap:10,}} >
+            < TextField label="بحث عن طريق الاسم" variant="outlined"
+
+            onChange={ handlenameSearch } style={{width:"50%"}}>
+            <SearchIcon />
+          </TextField>
+      <TextField
+        onChange={handlenamephone} style={{ width: "50%" }}
+        label="بحث عن طريق رقم الهاتف" variant="outlined"
       >
-        <DialogTitle style={{ cursor: 'move' }} id='draggable-dialog-title'>
-          <Typography variant='h5' color='primary'>
-            تعديل بيانات المستخدم
+        <SearchIcon />
+      </TextField>
+        </Grid>
+      </Grid >
+  { searchuser !== null ?
+  <TableContainer elevation={0} component={Paper}>
+    <Table aria-label='simple table'>
+      <TableHead className={classes.head}>
+        <TableRow>
+          <TableCell align='center'>
+            <Typography variant='h5'>العدد</Typography>
+          </TableCell>
+          <TableCell align='center'>
+            <Typography variant='h5'>الاسم</Typography>
+          </TableCell>
+          <TableCell align='center'>
+            <Typography variant='h5'>الدور</Typography>
+          </TableCell>
+          <TableCell align='center'>
+            <Typography variant='h5'>المحفظه</Typography>
+          </TableCell>
+          <TableCell>
+            <Typography variant='h5' align='center'>
+              المحاولات المتاحه
+                </Typography>
+          </TableCell>
+          <TableCell align='center'>
+            <Typography variant='h5'>النقاط</Typography>
+          </TableCell>
+          <TableCell align='center'>
+            <Typography variant='h5'>نوع الهاتف</Typography>
+          </TableCell>
+          <TableCell align='center'>
+            <Typography variant='h5'>التعديل</Typography>
+          </TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {searchuser !== null ?
+          searchuser.users.map((row, i) => (
+            <TableRow key={row.name}>
+              <TableCell component='th' scope='row' align='center'>
+                {i + 1}
+              </TableCell>
+              <TableCell align='center'> {row.name}</TableCell>
+              <TableCell align='center'> {row.role}</TableCell>
+              <TableCell align='center'> {row.wallet}</TableCell>
+              <TableCell align='center'> {row.spins}</TableCell>
+              <TableCell align='center'> {row.points}</TableCell>
+              <TableCell align='center'> اندرويد</TableCell>
+              <TableCell align='center'>
+                <EditIcon
+                  className={classes.editicon}
+                  onClick={() => handleClickOpen(row.phone)}
+                />
+              </TableCell>
+            </TableRow>
+          )) : <Animations />}
+      </TableBody>
+    </Table>
+  </TableContainer> :
+  <TableContainer elevation={0} component={Paper}>
+    <Table aria-label='simple table'>
+      <TableHead className={classes.head}>
+        <TableRow>
+          <TableCell align='center'>
+            <Typography variant='h5'>العدد</Typography>
+          </TableCell>
+          <TableCell align='center'>
+            <Typography variant='h5'>الاسم</Typography>
+          </TableCell>
+          <TableCell align='center'>
+            <Typography variant='h5'>الدور</Typography>
+          </TableCell>
+          <TableCell align='center'>
+            <Typography variant='h5'>المحفظه</Typography>
+          </TableCell>
+          <TableCell>
+            <Typography variant='h5' align='center'>
+              المحاولات المتاحه
+                </Typography>
+          </TableCell>
+          <TableCell align='center'>
+            <Typography variant='h5'>النقاط</Typography>
+          </TableCell>
+          <TableCell align='center'>
+            <Typography variant='h5'>نوع الهاتف</Typography>
+          </TableCell>
+          <TableCell align='center'>
+            <Typography variant='h5'>التعديل</Typography>
+          </TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {users !== null ?
+          users.users.map((row, i) => (
+            <TableRow key={row.name}>
+              <TableCell component='th' scope='row' align='center'>
+                {i + 1}
+              </TableCell>
+              <TableCell align='center'> {row.name}</TableCell>
+              <TableCell align='center'> {row.role}</TableCell>
+              <TableCell align='center'> {row.wallet}</TableCell>
+              <TableCell align='center'> {row.spins}</TableCell>
+              <TableCell align='center'> {row.points}</TableCell>
+              <TableCell align='center'> اندرويد</TableCell>
+              <TableCell align='center'>
+                <EditIcon
+                  className={classes.editicon}
+                  onClick={() => handleClickOpen(row.phone)}
+                />
+              </TableCell>
+            </TableRow>
+          )) : <Animations />}
+      </TableBody>
+    </Table>
+  </TableContainer>}
+{
+  users !== null && searchuser === null ?
+  <Pagination
+    onChange={(i, page) => {
+      loadPagenate(page);
+    }}
+    count={Math.ceil(users.pagination.totalItems / limit)}
+    color="primary"
+    className={classes.pagenation}
+  />
+  : ""
+}
+<Dialog
+  open={openDialog}
+  onClose={handleClose}
+  PaperComponent={PaperComponent}
+  aria-labelledby='draggable-dialog-title'
+>
+  <DialogTitle style={{ cursor: 'move' }} id='draggable-dialog-title'>
+    <Typography variant='h5' color='primary'>
+      تعديل بيانات المستخدم
           </Typography>
-        </DialogTitle>
-        <DialogContent>{dialogContent}</DialogContent>
-        <DialogActions>
-          <Button
-            onClick={handleClose}
-            variant='contained'
-            className={classes.buttondialogsubmit}
-          >
-            تم
+  </DialogTitle>
+  <DialogContent>{dialogContent}</DialogContent>
+  <DialogActions>
+    <Button
+      onClick={handleClose}
+      variant='contained'
+      className={classes.buttondialogsubmit}
+    >
+      تم
           </Button>
-        </DialogActions>
-      </Dialog>
-    </React.Fragment>
+  </DialogActions>
+</Dialog>
+    </React.Fragment >
   )
 }
 export default UsersTable
