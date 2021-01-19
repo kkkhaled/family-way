@@ -46,11 +46,30 @@ export const CouponsProvider =({children})=>{
           }
     } 
 
+    // delete coupon
+    const deleteCoupon=async(id)=>{
+      const config = {
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.token
+        },
+    }
+      try {
+        const res = await server.delete(`/coupon/${id}`,config)
+        dispatch({
+          type: 'REMOVE_ONE',
+          payload: id
+        })
+      } catch (err) {
+        console.log(err)
+      }
+    }
+
     return(
         <couponsContext.Provider value={{
            coupons : state.coupons, 
            getCoupons,
-           createCoupon
+           createCoupon,
+           deleteCoupon
         }} >
             {children}
         </couponsContext.Provider>

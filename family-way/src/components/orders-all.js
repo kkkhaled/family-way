@@ -30,18 +30,18 @@ const OrdersTable=()=>{
     const classes = useStyle()
     const {loadUser } = useContext(authContext);
     const {getOrders,orders,SetCurrntOrder}=useContext(ordersContext);
-    const [subOrderList, setSideOrderList] = useState([
-        'جميع الطلبات',
-        'تم استلام الطلب',
-        'مرحلة المراجعه',
-        'جاري التجهيز',
-        'في الطريق',
-        'تم التوصيل',
-        'تحت المراجعة للأسترجاع',
-        'تم الأسترجاع',
-        'لم يتم الأسترجاع',
-        'تم الرفض'
-      ])
+    const [status, setstaus] = useState([
+      {id : 0 , text: 'تم استلام الطلب'},
+      {id : 1 , text:'مرحلة المراجعه'},
+      {id : 2 , text:'جاري التجهيز'},
+      {id : 3 , text:   'في الطريق'},
+      {id : 4 , text:'تم التوصيل'},
+      {id : 5 , text:'تحت المراجعة للأسترجاع'},
+      {id : 6 , text:'تم الأسترجاع'},
+      {id : 7 , text:'لم يتم الأسترجاع'},
+      {id : 8 , text:'تم الرفض'},
+     ]);
+     
     const [limit,setLimit]=useState(12)
 
     useEffect(() => {
@@ -50,9 +50,9 @@ const OrdersTable=()=>{
        // eslint-disable-next-line
     }, []);
 
-    const loadPagenateOrders=(page)=>{
+        const loadPagenateOrders=(page)=>{
         getOrders(page,limit)
-    }
+         }
    
     console.log(orders);
      
@@ -91,11 +91,28 @@ const OrdersTable=()=>{
             {orders !== null ?
              orders.orders.map((row,i) => (
               <TableRow key={row.name}>
-                  <TableCell align='center'> {row.id}</TableCell>
+                <TableCell align='center'> {row.id}</TableCell>
                 <TableCell align='center'> 1234</TableCell>
                 <TableCell align='center'> {row.time.day}</TableCell>
                 <TableCell align='center'> {row.totalCost}</TableCell>
-                <TableCell align='center'> {row.status}</TableCell>
+                {row.status === 0 ?
+                <TableCell align='center'> تم استلام الطلب</TableCell>:null}
+                {row.status === 1?
+                <TableCell align='center'>مرحلة المراجعة</TableCell>:null}
+                {row.status === 2?
+                <TableCell align='center'>جاري التجهيز</TableCell>:null}
+                {row.status === 3?
+                <TableCell align='center'>في الطريق </TableCell>:null}
+                {row.status === 4?
+                <TableCell align='center'>تم التوصيل</TableCell>:null}
+                {row.status === 5?
+                <TableCell align='center'>تحت المراجعة للأسترجاع</TableCell>:null}
+                {row.status === 6?
+                <TableCell align='center'>تم الأسترجاع</TableCell>:null}
+                {row.status === 7?
+                <TableCell align='center'>لم يتم الاسترجاع</TableCell>:null}
+                {row.status === 8?
+                <TableCell align='center'>تم الرفض</TableCell>:null}
                 <TableCell align='center'> </TableCell>
                 <TableCell align='center'>
                     <Button 

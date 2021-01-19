@@ -41,35 +41,23 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const CreateCoupon = () => {
-  const options1 = [
-    { label: 'Grapes 🍇', value: 'grapes' },
-    { label: 'Mango 🥭', value: 'mango' },
-    { label: 'Strawberry 🍓', value: 'strawberry', disabled: true },
-    { label: 'Watermelon 🍉', value: 'watermelon' },
-    { label: 'Pear 🍐', value: 'pear' },
-    { label: 'Apple 🍎', value: 'apple' },
-    { label: 'Tangerine 🍊', value: 'tangerine' },
-    { label: 'Pineapple 🍍', value: 'pineapple' },
-    { label: 'Peach 🍑', value: 'peach' }
-  ]
 
-  
-  
   const isPercent = useState(false)
   const [selected, setSelected] = useState([])
-  const [id, setId] = useState(null);
-
-
+  
   const classes = useStyles()
   const { getUnpagenatedUsers, users, loadUser } = useContext(authContext)
-  const {products,GetProductViaCat} = useContext(productContext);
+  const {products,GetAllProducts} = useContext(productContext);
   const { getAllThirdCatagories, thirdcatagories } = useContext(thirdcatagoriesContext);
   const { createCoupon } = useContext(couponsContext);
+  const [myNewData, setMyNewData] = useState([]);
+  const [usersData,setUsersData]=useState([]);
+  const [productsData,setProductsData]=useState([]);
 
   const [options, setoptions] = useState([
     { label: 'المستخدمين', id: 1 },
     { label: 'المنتجات', id: 2 },
-    { label: 'الالقسام', id: 3 },
+    { label: 'الاقسام', id: 3 },
     { label: 'التوصيل', id: 4 },
     { label: 'الطلبات', id: 5 }
   ])
@@ -79,11 +67,35 @@ const CreateCoupon = () => {
     loadUser()
     getUnpagenatedUsers()
     getAllThirdCatagories()
+    GetAllProducts()
        // eslint-disable-next-line
   }, []);
-  console.log(users)
-  console.log(thirdcatagories)
+ 
 
+  useEffect(() => {
+    let oldData = thirdcatagories.map(item=>{
+      return {...item, label:item.name};
+    })
+    setMyNewData([...oldData]);
+    // handle users data
+    if(users !== null){
+      let newUsers = users.users.map(item=>{
+      return {...item,label:item.name}
+    })
+    setUsersData([...newUsers])}
+    // handle product data
+     if(products !== null){
+       let NewProducts=products.map(item=>{
+         return {...item,label:item.title}
+       })
+       setProductsData([...NewProducts])
+    }
+    // console.log("thirdcatagories",thirdcatagories);
+    // console.log("oldData",oldData);
+      }, [thirdcatagories,users,products])
+
+    //  console.log(productsData);
+    
   return (
     <React.Fragment>
       <Typography variant='h4'>ادخل بيانات الكوبون</Typography>
@@ -108,9 +120,9 @@ const CreateCoupon = () => {
             />
           </Grid>
         </Grid>
-        {thirdcatagories.length > 0 ? (
+        {thirdcatagories.length > 0 && myNewData.length > 0 ? (
           <MultiSelect
-            options={options1}
+            options={myNewData}
             value={selected}
             onChange={setSelected}
             labelledBy={'Select'}
@@ -210,30 +222,33 @@ const CreateCoupon = () => {
         <Grid container style={{ gridGap: '10px' }}>
           <Grid item className={classes.multiSelector}>
             <h5 style={{ marginBottom: '8px' }}>مستخدمين</h5>
+            {usersData.length > 0 ?
             <MultiSelect
-              options={options}
+              options={usersData}
               value={selected}
               onChange={setSelected}
               labelledBy={'Select'}
-            />
+            />:null}
           </Grid>
           <Grid item className={classes.multiSelector}>
             <h5 style={{ marginBottom: '8px' }}>اقسام</h5>
+            {thirdcatagories.length >0 && myNewData.length > 0 ?
             <MultiSelect
-              options={options}
+              options={myNewData}
               value={selected}
               onChange={setSelected}
               labelledBy={'Select'}
-            />
+            />: null }
           </Grid>
           <Grid item className={classes.multiSelector}>
             <h5 style={{ marginBottom: '8px' }}>منتجات</h5>
+            {productsData.length > 0 ?
             <MultiSelect
-              options={options}
+              options={productsData}
               value={selected}
               onChange={setSelected}
               labelledBy={'Select'}
-            />
+            />:null}
           </Grid>
         </Grid>
         <Alert severity='info' style={{ margin: '10px 0px' }}>

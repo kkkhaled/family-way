@@ -9,12 +9,7 @@ export default (state, action) => {
              ...state,
              products: action.payload
            }
-           case "GET_CAT_PRODUCTS":
-             return{
-            ...state,
-            nonPagenateProducts: action.payload
-           }
-           case "REMOVE_PRODUCTS":
+             case "REMOVE_PRODUCTS":
             return {
               ...state,
               products: state.products.products.filter((product) => product._id !== action.payload),
@@ -34,6 +29,11 @@ export default (state, action) => {
                 return {
                   ...state,
                 }; 
+                case "GET_ALL":
+                  return{
+                    ...state,
+                    products:action.payload
+                  }
       default:
         return state;
     }

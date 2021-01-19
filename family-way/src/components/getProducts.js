@@ -155,7 +155,7 @@ const GetProducts = () => {
   const handlenameSearch = (e) => {
     if (e.target.value.length > 0) {
       searchProducts(e.target.value);
-      console.log(1)
+      //console.log(1)
     }
   }
   //console.log(filterProducts);

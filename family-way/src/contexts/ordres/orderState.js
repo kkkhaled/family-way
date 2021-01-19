@@ -58,7 +58,25 @@ export const OrdersProvider =({children})=>{
         payload : order
        })
     }
-       
+  
+    // handle refuse
+    const refuseOrder=async(id,status)=>{
+      const formData = new FormData();
+      formData.append('status',status);
+        const config = {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            'Authorization': 'Bearer ' + localStorage.token
+          },
+        }
+      try {
+        const res = await server.put(`/order/${id}`,formData,config); 
+        console.log(res);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    
     //  apply order 
     // const applyOrder =async(id,phone)=>{
     //     try {
@@ -91,7 +109,8 @@ export const OrdersProvider =({children})=>{
             currentOrder:state.currentOrder,
             getOrders,
             updateOrders,
-            SetCurrntOrder
+            SetCurrntOrder,
+            refuseOrder
           }} >
             {children}
         </ordersContext.Provider>

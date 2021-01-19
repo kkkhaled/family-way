@@ -9,6 +9,11 @@ export default (state, action) => {
              ...state,
              coupons: action.payload
            }
+           case "REMOVE_ONE":
+            return {
+              ...state,
+              coupons: state.coupons.filter((coupon) => coupon._id !== action.payload),
+            }
             default:
         return state;
     }

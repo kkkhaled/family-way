@@ -132,7 +132,7 @@ const UsersTable = () => {
            setsearch("done")
         }
     }
-  console.log(searchuser);
+  //console.log(searchuser);
 
   // handle search via name
   const handlenamephone = (e) => {
@@ -146,6 +146,8 @@ const UsersTable = () => {
         setsearch('');
       }
   }
+
+  //console.log(users);
 
 
   const dialogContent = (

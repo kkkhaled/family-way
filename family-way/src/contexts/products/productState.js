@@ -4,10 +4,10 @@ import server from '../../api/server';
 
 //initial State
 const initialState = {
-    nonPagenateProducts:[],
     products : null,
     currentProduct: null,
-    filterProducts: []  
+    filterProducts: [],
+   // allProducts : []
   }
   // create context
 export const productContext = createContext();
@@ -56,6 +56,20 @@ export const ProductProvider =({children})=>{
          } 
      }
 
+
+     // get all products
+     const GetAllProducts=async()=>{
+         try {
+             const res = await server.get('/allProducts')
+             dispatch({
+                 type :"GET_ALL",
+                 payload : res.data.products
+             })
+         } catch (err) {
+             console.log(err);
+         }
+     }
+
      // get product by third
      const GetProductThird=async(id,page,limit)=>{
         try {
@@ -70,17 +84,17 @@ export const ProductProvider =({children})=>{
      } 
   
         // get product by third
-        const GetProductViaCat=async(id)=>{
-            try {
-                const res = await server.get(`/products/${id}`)
-                dispatch({
-                    type :"GET_CAT_PRODUCTS",
-                    payload : res.data.products
-                })
-            } catch (err) {
-                console.log(err);
-            }
-         } 
+        // const GetProductViaCat=async(id)=>{
+        //     try {
+        //         const res = await server.get(`/products/${id}`)
+        //         dispatch({
+        //             type :"GET_CAT_PRODUCTS",
+        //             payload : res.data.products
+        //         })
+        //     } catch (err) {
+        //         console.log(err);
+        //     }
+        //  } 
     
      // update
     const updateProducts=async(product)=>{
@@ -138,7 +152,6 @@ export const ProductProvider =({children})=>{
 
      return(
          <productContext.Provider value={{
-            nonPagenateProducts:state.nonPagenateProducts,
              products:state.products,
              currentProduct:state.currentProduct,
              filterProducts :state.filterProducts,
@@ -148,7 +161,7 @@ export const ProductProvider =({children})=>{
             setCurrentProduct,
             removeProducts,
             searchProducts,
-            GetProductViaCat 
+            GetAllProducts
          }}>
             {children}
          </productContext.Provider>
