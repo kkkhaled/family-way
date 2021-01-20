@@ -42,17 +42,56 @@ const useStyles = makeStyles(theme => ({
 
 const CreateCoupon = () => {
 
-  const isPercent = useState(false)
-  const [selected, setSelected] = useState([])
-  
+  // state for handle switches
+  const [isUsers,setIsUsers] = useState(false);
+  const [isCatagories,setIsCatagories] = useState(false);
+  const [isProduct,setIsProduct] = useState(false);
+   // state for multi selector
+  const [selectedUser, setSelectedUser] = useState([]);
+  const [selectedCatagories, setSelectedCatagories] = useState([]);
+  const [selectedProduct, setSelectedProducts] = useState([]);
+ // state for unrxcepected multi selector
+  const [userSelector, setuserSelector] = useState([]);
+  const [catagoriesSelectors, setcatagoriesSelectors] = useState([]);
+  const [productSelector, setproductSelector] = useState([]) 
+
   const classes = useStyles()
   const { getUnpagenatedUsers, users, loadUser } = useContext(authContext)
   const {products,GetAllProducts} = useContext(productContext);
   const { getAllThirdCatagories, thirdcatagories } = useContext(thirdcatagoriesContext);
   const { createCoupon } = useContext(couponsContext);
+  // state for add new element label by old data
   const [myNewData, setMyNewData] = useState([]);
   const [usersData,setUsersData]=useState([]);
   const [productsData,setProductsData]=useState([]);
+   // state for post coupons
+   // handle for who
+   const [itemId,setItemId]=useState(null);  //for control selected item in هدف الكوبون 
+   const [code,setCode]=useState('');
+   const [isDelvery,setIsDelvery]=useState(false);
+   const [isOrder,setIsOrder]= useState(false);
+   const [user,setUser]=useState([]);
+   const [product,setProduct]=useState([]);
+   const [category,setCategory]=useState([]);
+   // for handle discount
+   const [isPercent,setIsPrecent] = useState(false);
+   const [saved,setsaved] = useState('');
+   const [forWallet, setforWallet] = useState('');
+   const [forPoints, setforPoints] = useState('');
+   // for handle minmum
+   const [minimum, setminimum] = useState('');
+   // for handle ends
+   const [userCount, setuserCount] = useState(1);
+   const [usedCount, setusedCount] = useState('');
+   const [limit, setlimit] = useState('');
+   const [dateLimit, setdateLimit] = useState('');
+   // for handle message
+   const [message, setmessage] = useState('');
+   // for handle notExpected
+   const [unexpectUsers,setunexpectUsers]=useState([]);
+   const [unexcepectProduct, setunexcepectProduct] = useState([]);
+   const [unexcepectCategory, setunexcepectCategory] = useState([]);
+
 
   const [options, setoptions] = useState([
     { label: 'المستخدمين', id: 1 },
@@ -68,38 +107,81 @@ const CreateCoupon = () => {
     getUnpagenatedUsers()
     getAllThirdCatagories()
     GetAllProducts()
-       // eslint-disable-next-line
+     // eslint-disable-next-line
   }, []);
  
 
   useEffect(() => {
     let oldData = thirdcatagories.map(item=>{
-      return {...item, label:item.name};
+      return {...item, label:item.name,value:item._id};
     })
     setMyNewData([...oldData]);
     // handle users data
     if(users !== null){
       let newUsers = users.users.map(item=>{
-      return {...item,label:item.name}
+      return {...item,label:item.name,value:item._id}
     })
     setUsersData([...newUsers])}
     // handle product data
      if(products !== null){
        let NewProducts=products.map(item=>{
-         return {...item,label:item.title}
+         return {...item,label:item.title,value:item._id}
        })
        setProductsData([...NewProducts])
     }
-    // console.log("thirdcatagories",thirdcatagories);
-    // console.log("oldData",oldData);
-      }, [thirdcatagories,users,products])
+   }, [thirdcatagories,users,products])
 
-    //  console.log(productsData);
-    
+   const handleForWhoSelect=(event,item)=>{
+     if(item){
+       setItemId(item.id);
+     }
+   }
+   useEffect(() => {
+     // handle user forwho
+     if(selectedUser.length > 0){
+      let newUsersIDS=selectedUser.map(item=>{
+        return {id:item._id}
+         })
+       newUsersIDS=newUsersIDS.map(id=>{ 
+         return[id.id] }
+       )  
+         setUser(newUsersIDS)
+      }
+        // handle catagories 
+        if(selectedCatagories.length > 0){
+        let newcatagoriesIDS=selectedCatagories.map(item=>{
+          return {id:item._id}
+        })
+        newcatagoriesIDS=newcatagoriesIDS.map(id=>{ 
+          return[id.id] }
+        )  
+      setCategory(newcatagoriesIDS);
+      }
+          // handle product 
+          if(selectedProduct.length > 0){
+            let newproductIDS=selectedProduct.map(item=>{
+              return {id:item._id}
+            })
+            newproductIDS=newproductIDS.map(id=>{ 
+              return[id.id] }
+            )  
+             //console.log(newproductIDS);
+            setProduct(newproductIDS);
+          }
+   }, [selectedUser,selectedCatagories,selectedProduct])
+
+     const handleSubmit=(e)=>{
+       e.preventDefault();
+       
+     }
+
+     //console.log(user);
+    // console.log(product);
+    // console.log(category);
   return (
     <React.Fragment>
       <Typography variant='h4'>ادخل بيانات الكوبون</Typography>
-      <form noValidate autoComplete='off'>
+      <form noValidate autoComplete='off'  onSubmit={handleSubmit} >
         <Grid container direction='column'>
           <Grid item className={classes.forWhoField} style={{ flex: 1 }}>
             <TextField
@@ -107,10 +189,12 @@ const CreateCoupon = () => {
               id='outlined-basic'
               label='الرمز الخاص بالكوبون'
               variant='outlined'
+              onChange={(e)=>setCode(e.target.value)}
             />
             <Autocomplete
               style={{ marginRight: 10, flex: 1 }}
               className={classes.firstOfCoupon}
+              onChange={handleForWhoSelect}
               id='combo-box-demo'
               options={options}
               getOptionLabel={option => option.label}
@@ -120,16 +204,48 @@ const CreateCoupon = () => {
             />
           </Grid>
         </Grid>
-        {thirdcatagories.length > 0 && myNewData.length > 0 ? (
+        <Alert severity='info' style={{ margin: '10px 0px' }}>
+          <strong>
+            لا تملاء هدف الكوبون ان كان الخصم علي النقاط او المحفظه 
+          </strong>
+        </Alert>
+        {itemId === 1 ? 
+       <div>
+        {usersData.length > 0 ? (
           <MultiSelect
-            options={myNewData}
-            value={selected}
-            onChange={setSelected}
+            options={usersData}
+            value={selectedUser}
+            onChange={setSelectedUser}
             labelledBy={'Select'}
           />
         ) : null}
+        </div>
+        :null}
+        {itemId === 2 ? 
+       <div>
+        {productsData.length > 0 ? (
+          <MultiSelect
+            options={productsData}
+            value={selectedProduct}
+            onChange={setSelectedProducts}
+            labelledBy={'Select'}
+          />
+        ) : null}
+        </div>
+        :null}
+         {itemId === 3 ? 
+       <div>
+        {myNewData.length > 0 ? (
+          <MultiSelect
+            options={myNewData}
+            value={selectedCatagories}
+            onChange={setSelectedCatagories}
+            labelledBy={'Select'}
+          />
+        ) : null}
+        </div>
+        :null}
         <Divider style={{ margin: '20px 0px' }} />
-
         <Typography variant='h4' style={{ marginTop: '10px' }}>
           الخصم
         </Typography>
@@ -141,13 +257,14 @@ const CreateCoupon = () => {
             id='outlined-basic'
             label='الحد الأدني لطلب الكوبون'
             variant='outlined'
+            onChange={(e)=>setminimum(e.target.value)}
           />
           <FormControlLabel
             style={{ marginTop: '10px', marginRight: '10px' }}
             control={
               <Switch
                 checked={isPercent}
-                // onChange={handleChange}
+                onChange={() => setIsPrecent(value => !value)}
                 name='checkedB'
                 color='primary'
               />
@@ -166,6 +283,7 @@ const CreateCoupon = () => {
             id='outlined-basic'
             label='مبلغ الخصم او نسبة الخصم'
             variant='outlined'
+            onChange={(e)=>setsaved(e.target.value)}
           />
           <TextField
             style={{ flex: 1, zIndex: 0 }}
@@ -173,6 +291,7 @@ const CreateCoupon = () => {
             id='outlined-basic'
             label='المبلغ الخاص بالمحفظه'
             variant='outlined'
+            onChange={(e)=>setforWallet(e.target.value)}
           />
           <TextField
             style={{ flex: 1, zIndex: 0 }}
@@ -180,6 +299,7 @@ const CreateCoupon = () => {
             id='outlined-basic'
             label='المبلغ الخاص بالنقط'
             variant='outlined'
+            onChange={(e)=>setforPoints(e.target.value)}
           />
         </Grid>
         <Divider style={{ margin: '20px 0px' }} />
@@ -197,6 +317,7 @@ const CreateCoupon = () => {
             id='outlined-basic'
             label='الحد الأقصي للشخص الواحد'
             variant='outlined'
+             onChange={(e)=>setuserCount(e.target.value)}
           />
           <TextField
             style={{ flex: 1, zIndex: 0 }}
@@ -204,12 +325,13 @@ const CreateCoupon = () => {
             id='outlined-basic'
             label='الحد الأقصي لأستخدام الكوبون'
             variant='outlined'
+            onChange={(e)=>setlimit(e.target.value)}
           />
           <TextField
             id='datetime-local'
             label='اختر '
             type='datetime-local'
-            defaultValue='2017-05-24T10:30'
+            onChange={(e)=>setdateLimit(e.target.value)}
             className={classes.firstOfCoupon}
             InputLabelProps={{
               shrink: true
@@ -220,36 +342,82 @@ const CreateCoupon = () => {
           اقصاء
         </Typography>
         <Grid container style={{ gridGap: '10px' }}>
+           <FormControlLabel
+            style={{ marginTop: '10px', marginRight: '10px' }}
+            control={
+              <Switch
+                checked={isUsers}
+                onChange={() => setIsUsers(value => !value)}
+                name='checkedB'
+                color='primary'
+              />
+            }
+            label=' اقصاء مستخدمين ؟ '
+          />
+
+           <FormControlLabel
+            style={{ marginTop: '10px', marginRight: '10px' }}
+            control={
+              <Switch
+                checked={isCatagories}
+                onChange={() => setIsCatagories(value => !value)}
+                name='checkedB'
+                color='primary'
+              />
+            }
+            label=' اقصاء اصناف ؟ '
+          />
+          <FormControlLabel
+            style={{ marginTop: '10px', marginRight: '10px' }}
+            control={
+              <Switch
+                checked={isProduct}
+                onChange={() => setIsProduct(value => !value)}
+                name='checkedB'
+                color='primary'
+              />
+            }
+            label=' اقصاء منتجات ؟ '
+          />
+         </Grid> 
+         
+         <Grid container style={{ gridGap: '10px' }}>
+          {isUsers ?
           <Grid item className={classes.multiSelector}>
             <h5 style={{ marginBottom: '8px' }}>مستخدمين</h5>
             {usersData.length > 0 ?
             <MultiSelect
               options={usersData}
-              value={selected}
-              onChange={setSelected}
+              value={userSelector}
+              onChange={setuserSelector}
               labelledBy={'Select'}
             />:null}
-          </Grid>
+          </Grid>: null}
+          
+          {isCatagories ?
           <Grid item className={classes.multiSelector}>
             <h5 style={{ marginBottom: '8px' }}>اقسام</h5>
-            {thirdcatagories.length >0 && myNewData.length > 0 ?
+            { myNewData.length > 0 ?
             <MultiSelect
               options={myNewData}
-              value={selected}
-              onChange={setSelected}
+              value={catagoriesSelectors}
+              onChange={setcatagoriesSelectors}
               labelledBy={'Select'}
             />: null }
-          </Grid>
+          </Grid>:null}
+          
+          {isProduct ? 
           <Grid item className={classes.multiSelector}>
             <h5 style={{ marginBottom: '8px' }}>منتجات</h5>
             {productsData.length > 0 ?
             <MultiSelect
               options={productsData}
-              value={selected}
-              onChange={setSelected}
+              value={productSelector}
+              onChange={setproductSelector}
               labelledBy={'Select'}
             />:null}
           </Grid>
+          :null}
         </Grid>
         <Alert severity='info' style={{ margin: '10px 0px' }}>
           <strong>
@@ -264,12 +432,16 @@ const CreateCoupon = () => {
               id='outlined-basic'
               label='رساله تعريفية عن الكوبون'
               variant='outlined'
+              onChange={(e)=>setmessage(e.target.value)}
             />
           </Grid>
         </Grid>
         <Grid container>
           <Grid item style={{ width: "100%" }}>
-            <Button variant='contained' color='primary' style={{ marginTop: '20px', color: "#FFF",width: "100%"  }}>
+            <Button variant='contained'
+             color='primary' 
+             style={{ marginTop: '20px', color: "#FFF",width: "100%"  }}
+             type="submit">
               انشاء
           </Button>
           </Grid>
