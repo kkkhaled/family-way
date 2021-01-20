@@ -75,9 +75,9 @@ const CreateCoupon = () => {
    const [category,setCategory]=useState([]);
    // for handle discount
    const [isPercent,setIsPrecent] = useState(false);
-   const [saved,setsaved] = useState('');
-   const [forWallet, setforWallet] = useState('');
-   const [forPoints, setforPoints] = useState('');
+   const [saved,setsaved] = useState(0);
+   const [forWallet, setforWallet] = useState(0);
+   const [forPoints, setforPoints] = useState(0);
    // for handle minmum
    const [minimum, setminimum] = useState('');
    // for handle ends
@@ -131,11 +131,7 @@ const CreateCoupon = () => {
     }
    }, [thirdcatagories,users,products])
 
-   const handleForWhoSelect=(event,item)=>{
-     if(item){
-       setItemId(item.id);
-     }
-   }
+   
    useEffect(() => {
      // handle user forwho
      if(selectedUser.length > 0){
@@ -143,9 +139,9 @@ const CreateCoupon = () => {
         return {id:item._id}
          })
        newUsersIDS=newUsersIDS.map(id=>{ 
-         return[id.id] }
+         return[id.id]}
        )  
-         setUser(newUsersIDS)
+         setUser([...newUsersIDS])
       }
         // handle catagories 
         if(selectedCatagories.length > 0){
@@ -168,12 +164,80 @@ const CreateCoupon = () => {
              //console.log(newproductIDS);
             setProduct(newproductIDS);
           }
-   }, [selectedUser,selectedCatagories,selectedProduct])
+     }, [selectedUser,selectedCatagories,selectedProduct])
 
-     const handleSubmit=(e)=>{
-       e.preventDefault();
-       
+     useEffect(() => {
+      // handle unexepected user 
+     if(userSelector.length > 0){
+       let newUsersIDS=userSelector.map(item=>{
+         return {id:item._id}
+          })
+        newUsersIDS=newUsersIDS.map(id=>{ 
+          return[id.id]}
+        )  
+        setunexpectUsers([...newUsersIDS])
+       }
+       // handle unexepected catagories 
+     if(catagoriesSelectors.length > 0){
+       let newcatagoriesIDS=catagoriesSelectors.map(item=>{
+         return {id:item._id}
+       })
+       newcatagoriesIDS=newcatagoriesIDS.map(id=>{ 
+         return[id.id] }
+       )  
+       setunexcepectCategory(newcatagoriesIDS);
      }
+        // handle unexepected products 
+        if(productSelector.length > 0){
+          let newproductIDS=productSelector.map(item=>{
+            return {id:item._id}
+          })
+          newproductIDS=newproductIDS.map(id=>{ 
+            return[id.id] }
+          )  
+          setunexcepectProduct(newproductIDS);
+        }
+    }, [userSelector,catagoriesSelectors,productSelector])   
+
+       // handle selector
+       const handleForWhoSelect=(event,item)=>{
+       if(item){
+        setItemId(item.id);
+        }
+        }
+        // handle submit form
+        const handleSubmit=(e)=>{
+         e.preventDefault();
+          const coupon=[{
+           forWho:{
+            user,
+            product,
+            category,
+            delivery :isDelvery,
+            order : isOrder
+           },
+           notExpected :{
+            user:unexpectUsers,
+            product:unexcepectProduct,
+            category:unexcepectCategory
+           },
+           discount :{
+            isPercent,
+            saved,
+            forWallet,
+            forPoints 
+           },
+           end:{
+            userCount,
+            limit,
+            dateLimit
+           },
+           code,
+           minimum,
+           message
+         }]
+           createCoupon(coupon)           
+         }
 
      //console.log(user);
     // console.log(product);
