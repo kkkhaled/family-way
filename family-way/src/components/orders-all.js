@@ -24,23 +24,26 @@ const useStyle = makeStyles(theme => ({
         width: "max-content",
         margin: "auto"
       },
+      head: {
+        backgroundColor: '#fafafa'
+      },
 }));
 
 const OrdersTable=()=>{
     const classes = useStyle()
     const {loadUser } = useContext(authContext);
     const {getOrders,orders,SetCurrntOrder}=useContext(ordersContext);
-    const [status, setstaus] = useState([
-      {id : 0 , text: 'تم استلام الطلب'},
-      {id : 1 , text:'مرحلة المراجعه'},
-      {id : 2 , text:'جاري التجهيز'},
-      {id : 3 , text:   'في الطريق'},
-      {id : 4 , text:'تم التوصيل'},
-      {id : 5 , text:'تحت المراجعة للأسترجاع'},
-      {id : 6 , text:'تم الأسترجاع'},
-      {id : 7 , text:'لم يتم الأسترجاع'},
-      {id : 8 , text:'تم الرفض'},
-     ]);
+    // const [status, setstaus] = useState([
+    //   {id : 0 , text: 'تم استلام الطلب'},
+    //   {id : 1 , text:'مرحلة المراجعه'},
+    //   {id : 2 , text:'جاري التجهيز'},
+    //   {id : 3 , text:   'في الطريق'},
+    //   {id : 4 , text:'تم التوصيل'},
+    //   {id : 5 , text:'تحت المراجعة للأسترجاع'},
+    //   {id : 6 , text:'تم الأسترجاع'},
+    //   {id : 7 , text:'لم يتم الأسترجاع'},
+    //   {id : 8 , text:'تم الرفض'},
+    //  ]);
      
     const [limit,setLimit]=useState(12)
 
@@ -113,7 +116,7 @@ const OrdersTable=()=>{
                 <TableCell align='center'>لم يتم الاسترجاع</TableCell>:null}
                 {row.status === 8?
                 <TableCell align='center'>تم الرفض</TableCell>:null}
-                <TableCell align='center'> </TableCell>
+                <TableCell align='center'> <b style={{color : 'red'}}> تعليق </b> </TableCell>
                 <TableCell align='center'>
                     <Button 
                          component={Link}

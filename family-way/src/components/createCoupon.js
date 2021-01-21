@@ -57,7 +57,7 @@ const CreateCoupon = () => {
 
   const classes = useStyles()
   const { getUnpagenatedUsers, users, loadUser } = useContext(authContext)
-  const {products,GetAllProducts} = useContext(productContext);
+  const {allProducts,GetAllProducts} = useContext(productContext);
   const { getAllThirdCatagories, thirdcatagories } = useContext(thirdcatagoriesContext);
   const { createCoupon } = useContext(couponsContext);
   // state for add new element label by old data
@@ -123,13 +123,13 @@ const CreateCoupon = () => {
     })
     setUsersData([...newUsers])}
     // handle product data
-     if(products !== null){
-       let NewProducts=products.map(item=>{
+     if(allProducts !== null){
+       let NewProducts=allProducts.map(item=>{
          return {...item,label:item.title,value:item._id}
        })
        setProductsData([...NewProducts])
     }
-   }, [thirdcatagories,users,products])
+   }, [thirdcatagories,users,allProducts])
 
    
    useEffect(() => {
@@ -204,8 +204,14 @@ const CreateCoupon = () => {
        if(item){
         setItemId(item.id);
         }
+       if(item && item.id === 4){
+         setIsDelvery(true);
+         }
+        if(item && item.id === 5){
+          setIsOrder(true);
+        } 
         }
-        // handle submit form
+         // handle submit form
         const handleSubmit=(e)=>{
          e.preventDefault();
           const coupon=[{

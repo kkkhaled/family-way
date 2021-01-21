@@ -273,7 +273,7 @@ const UsersTable = () => {
               <TableCell align='center'> {row.wallet}</TableCell>
               <TableCell align='center'> {row.spins}</TableCell>
               <TableCell align='center'> {row.points}</TableCell>
-              <TableCell align='center'> اندرويد</TableCell>
+              <TableCell align='center'> {row.os}</TableCell>
               <TableCell align='center'>
                 <EditIcon
                   className={classes.editicon}
@@ -330,7 +330,7 @@ const UsersTable = () => {
               <TableCell align='center'> {row.wallet}</TableCell>
               <TableCell align='center'> {row.spins}</TableCell>
               <TableCell align='center'> {row.points}</TableCell>
-              <TableCell align='center'> اندرويد</TableCell>
+              <TableCell align='center'> {row.os}</TableCell>
               <TableCell align='center'>
                 <EditIcon
                   className={classes.editicon}
@@ -342,7 +342,7 @@ const UsersTable = () => {
       </TableBody>
     </Table>
   </TableContainer>
-  {users !== null ?
+  {users !== null && users.pagination !== null?
   <Pagination
     onChange={(i, page) => {
       loadPagenate(page);

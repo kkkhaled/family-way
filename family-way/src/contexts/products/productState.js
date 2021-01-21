@@ -4,10 +4,11 @@ import server from '../../api/server';
 
 //initial State
 const initialState = {
+    nonPagenateProducts :[],
     products : null,
     currentProduct: null,
     filterProducts: [],
-   // allProducts : []
+    allProducts : []
   }
   // create context
 export const productContext = createContext();
@@ -84,17 +85,17 @@ export const ProductProvider =({children})=>{
      } 
   
         // get product by third
-        // const GetProductViaCat=async(id)=>{
-        //     try {
-        //         const res = await server.get(`/products/${id}`)
-        //         dispatch({
-        //             type :"GET_CAT_PRODUCTS",
-        //             payload : res.data.products
-        //         })
-        //     } catch (err) {
-        //         console.log(err);
-        //     }
-        //  } 
+        const GetProductViaCat=async(id)=>{
+            try {
+                const res = await server.get(`/products/${id}`)
+                dispatch({
+                    type :"GET_CAT_PRODUCTS",
+                    payload : res.data.products
+                })
+            } catch (err) {
+                console.log(err);
+            }
+         } 
     
      // update
     const updateProducts=async(product)=>{
@@ -152,6 +153,8 @@ export const ProductProvider =({children})=>{
 
      return(
          <productContext.Provider value={{
+             allProducts :state.allProducts,
+            nonPagenateProducts : state.nonPagenateProducts,
              products:state.products,
              currentProduct:state.currentProduct,
              filterProducts :state.filterProducts,
@@ -161,7 +164,8 @@ export const ProductProvider =({children})=>{
             setCurrentProduct,
             removeProducts,
             searchProducts,
-            GetAllProducts
+            GetAllProducts,
+            GetProductViaCat
          }}>
             {children}
          </productContext.Provider>

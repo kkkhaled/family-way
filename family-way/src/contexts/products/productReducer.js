@@ -9,6 +9,11 @@ export default (state, action) => {
              ...state,
              products: action.payload
            }
+           case "GET_CAT_PRODUCTS":
+            return {
+              ...state,
+              nonPagenateProducts: action.payload
+            }
              case "REMOVE_PRODUCTS":
             return {
               ...state,
@@ -32,7 +37,7 @@ export default (state, action) => {
                 case "GET_ALL":
                   return{
                     ...state,
-                    products:action.payload
+                    allProducts:action.payload
                   }
       default:
         return state;
