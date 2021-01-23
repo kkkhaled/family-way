@@ -1,15 +1,16 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { Grid, TextField, Button, Typography, Divider } from '@material-ui/core'
 import Autocomplete from '@material-ui/lab/Autocomplete'
-import { makeStyles} from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import { authContext } from '../contexts/auth/authstate'
 import { thirdcatagoriesContext } from '../contexts/thirdcatagories/thirdState'
-import { productContext } from '../contexts/products/productState';
+import { productContext } from '../contexts/products/productState'
 import { couponsContext } from '../contexts/coupons/couponState'
 import MultiSelect from 'react-multi-select-component'
 import { Switch } from '@material-ui/core'
 import { FormControlLabel } from '@material-ui/core'
-import { Alert} from '@material-ui/lab'
+import { Alert } from '@material-ui/lab'
+import moment from 'moment'
 
 const useStyles = makeStyles(theme => ({
   title: {
@@ -41,57 +42,57 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const CreateCoupon = () => {
-
   // state for handle switches
-  const [isUsers,setIsUsers] = useState(false);
-  const [isCatagories,setIsCatagories] = useState(false);
-  const [isProduct,setIsProduct] = useState(false);
-   // state for multi selector
-  const [selectedUser, setSelectedUser] = useState([]);
-  const [selectedCatagories, setSelectedCatagories] = useState([]);
-  const [selectedProduct, setSelectedProducts] = useState([]);
- // state for unrxcepected multi selector
-  const [userSelector, setuserSelector] = useState([]);
-  const [catagoriesSelectors, setcatagoriesSelectors] = useState([]);
-  const [productSelector, setproductSelector] = useState([]) 
+  const [isUsers, setIsUsers] = useState(false)
+  const [isCatagories, setIsCatagories] = useState(false)
+  const [isProduct, setIsProduct] = useState(false)
+  // state for multi selector
+  const [selectedUser, setSelectedUser] = useState([])
+  const [selectedCatagories, setSelectedCatagories] = useState([])
+  const [selectedProduct, setSelectedProducts] = useState([])
+  // state for unrxcepected multi selector
+  const [userSelector, setuserSelector] = useState([])
+  const [catagoriesSelectors, setcatagoriesSelectors] = useState([])
+  const [productSelector, setproductSelector] = useState([])
 
   const classes = useStyles()
   const { getUnpagenatedUsers, users, loadUser } = useContext(authContext)
-  const {allProducts,GetAllProducts} = useContext(productContext);
-  const { getAllThirdCatagories, thirdcatagories } = useContext(thirdcatagoriesContext);
-  const { createCoupon } = useContext(couponsContext);
+  const { allProducts, GetAllProducts } = useContext(productContext)
+  const { getAllThirdCatagories, thirdcatagories } = useContext(
+    thirdcatagoriesContext
+  )
+  const { createCoupon } = useContext(couponsContext)
   // state for add new element label by old data
-  const [myNewData, setMyNewData] = useState([]);
-  const [usersData,setUsersData]=useState([]);
-  const [productsData,setProductsData]=useState([]);
-   // state for post coupons
-   // handle for who
-   const [itemId,setItemId]=useState(null);  //for control selected item in هدف الكوبون 
-   const [code,setCode]=useState('');
-   const [isDelvery,setIsDelvery]=useState(false);
-   const [isOrder,setIsOrder]= useState(false);
-   const [user,setUser]=useState([]);
-   const [product,setProduct]=useState([]);
-   const [category,setCategory]=useState([]);
-   // for handle discount
-   const [isPercent,setIsPrecent] = useState(false);
-   const [saved,setsaved] = useState(0);
-   const [forWallet, setforWallet] = useState(0);
-   const [forPoints, setforPoints] = useState(0);
-   // for handle minmum
-   const [minimum, setminimum] = useState('');
-   // for handle ends
-   const [userCount, setuserCount] = useState(1);
-   const [usedCount, setusedCount] = useState('');
-   const [limit, setlimit] = useState('');
-   const [dateLimit, setdateLimit] = useState('');
-   // for handle message
-   const [message, setmessage] = useState('');
-   // for handle notExpected
-   const [unexpectUsers,setunexpectUsers]=useState([]);
-   const [unexcepectProduct, setunexcepectProduct] = useState([]);
-   const [unexcepectCategory, setunexcepectCategory] = useState([]);
-
+  const [myNewData, setMyNewData] = useState([])
+  const [usersData, setUsersData] = useState([])
+  const [productsData, setProductsData] = useState([])
+  // state for post coupons
+  // handle for who
+  const [itemId, setItemId] = useState(null) //for control selected item in هدف الكوبون
+  const [code, setCode] = useState('')
+  const [isDelvery, setIsDelvery] = useState(false)
+  const [isOrder, setIsOrder] = useState(false)
+  const [user, setUser] = useState([])
+  const [product, setProduct] = useState([])
+  const [category, setCategory] = useState([])
+  // for handle discount
+  const [isPercent, setIsPrecent] = useState(false)
+  const [saved, setsaved] = useState(0)
+  const [forWallet, setforWallet] = useState(0)
+  const [forPoints, setforPoints] = useState(0)
+  // for handle minmum
+  const [minimum, setminimum] = useState(50)
+  // for handle ends
+  const [userCount, setuserCount] = useState(1)
+  const [usedCount, setusedCount] = useState('')
+  const [limit, setlimit] = useState(100)
+  const [dateLimit, setdateLimit] = useState('')
+  // for handle message
+  const [message, setmessage] = useState('')
+  // for handle notExpected
+  const [unexpectUsers, setunexpectUsers] = useState([])
+  const [unexcepectProduct, setunexcepectProduct] = useState([])
+  const [unexcepectCategory, setunexcepectCategory] = useState([])
 
   const [options, setoptions] = useState([
     { label: 'المستخدمين', id: 1 },
@@ -101,157 +102,179 @@ const CreateCoupon = () => {
     { label: 'الطلبات', id: 5 }
   ])
 
- // load user data
+  // load user data
   useEffect(() => {
     loadUser()
     getUnpagenatedUsers()
     getAllThirdCatagories()
     GetAllProducts()
-     // eslint-disable-next-line
-  }, []);
- 
+    // eslint-disable-next-line
+  }, [])
 
   useEffect(() => {
-    let oldData = thirdcatagories.map(item=>{
-      return {...item, label:item.name,value:item._id};
+    let oldData = thirdcatagories.map(item => {
+      return { ...item, label: item.name, value: item._id }
     })
-    setMyNewData([...oldData]);
+    setMyNewData([...oldData])
     // handle users data
-    if(users !== null){
-      let newUsers = users.users.map(item=>{
-      return {...item,label:item.name,value:item._id}
-    })
-    setUsersData([...newUsers])}
-    // handle product data
-     if(allProducts !== null){
-       let NewProducts=allProducts.map(item=>{
-         return {...item,label:item.title,value:item._id}
-       })
-       setProductsData([...NewProducts])
+    if (users !== null) {
+      let newUsers = users.users.map(item => {
+        return { ...item, label: item.name, value: item._id }
+      })
+      setUsersData([...newUsers])
     }
-   }, [thirdcatagories,users,allProducts])
+    // handle product data
+    if (allProducts !== null) {
+      let NewProducts = allProducts.map(item => {
+        return { ...item, label: item.title, value: item._id }
+      })
+      setProductsData([...NewProducts])
+    }
+  }, [thirdcatagories, users, allProducts])
 
-   
-   useEffect(() => {
-     // handle user forwho
-     if(selectedUser.length > 0){
-      let newUsersIDS=selectedUser.map(item=>{
-        return {id:item._id}
-         })
-       newUsersIDS=newUsersIDS.map(id=>{ 
-         return[id.id]}
-       )  
-         setUser([...newUsersIDS])
+  useEffect(() => {
+    // handle user forwho
+    if (selectedUser.length > 0) {
+      let newUsersIDS = selectedUser.map(item => {
+        return { id: item._id }
+      })
+      newUsersIDS = newUsersIDS.map(id => {
+        return [id.id]
+      })
+      setUser([...newUsersIDS])
+    }
+    // handle catagories
+    if (selectedCatagories.length > 0) {
+      let newcatagoriesIDS = selectedCatagories.map(item => {
+        return { id: item._id }
+      })
+      newcatagoriesIDS = newcatagoriesIDS.map(id => {
+        return [id.id]
+      })
+      setCategory(newcatagoriesIDS)
+    }
+    // handle product
+    if (selectedProduct.length > 0) {
+      let newproductIDS = selectedProduct.map(item => {
+        return { id: item._id }
+      })
+      newproductIDS = newproductIDS.map(id => {
+        return [id.id]
+      })
+      //console.log(newproductIDS);
+      setProduct(newproductIDS)
+    }
+  }, [selectedUser, selectedCatagories, selectedProduct])
+
+  useEffect(() => {
+    // handle unexepected user
+    if (userSelector.length > 0) {
+      let newUsersIDS = userSelector.map(item => {
+        return { id: item._id }
+      })
+      newUsersIDS = newUsersIDS.map(id => {
+        return [id.id]
+      })
+      setunexpectUsers([...newUsersIDS])
+    }
+    // handle unexepected catagories
+    if (catagoriesSelectors.length > 0) {
+      let newcatagoriesIDS = catagoriesSelectors.map(item => {
+        return { id: item._id }
+      })
+      newcatagoriesIDS = newcatagoriesIDS.map(id => {
+        return [id.id]
+      })
+      setunexcepectCategory(newcatagoriesIDS)
+    }
+    // handle unexepected products
+    if (productSelector.length > 0) {
+      let newproductIDS = productSelector.map(item => {
+        return { id: item._id }
+      })
+      newproductIDS = newproductIDS.map(id => {
+        return [id.id]
+      })
+      setunexcepectProduct(newproductIDS)
+    }
+  }, [userSelector, catagoriesSelectors, productSelector])
+
+  // handle selector
+  const handleForWhoSelect = (event, item) => {
+    if (item) {
+      setItemId(item.id)
+    }
+    // setIsDelvery(false)
+    // setIsOrder(false)
+    // setUser(value => (value = []))
+    // setProduct(value => (value = []))
+    // setCategory(value => (value = []))
+    // switch (item?.id) {
+    //   case 1:
+    //     setUser(value => (value = []))
+    //     break
+    //   case 2:
+    //     setProduct(value => (value = []))
+    //     break
+    //   case 3:
+    //     setProduct(value => (value = []))
+    //     setUser(value => (value = []))
+    //     break
+
+    //   case 4:
+    //     setIsDelvery(true)
+    //     break
+    //   case 5:
+    //     setIsOrder(true)
+    //     break
+    //   default:
+    //     break
+    // }
+  }
+  // handle submit form
+  const handleSubmit = async e => {
+    e.preventDefault()
+    let userMerged = user.flat(1)
+    let productsMerged = [].concat.apply([], product)
+    let categoriesMerged = [].concat.apply([], category)
+
+    const coupon = [
+      {
+        forWho: {
+          user: userMerged,
+          product: productsMerged,
+          category: categoriesMerged,
+          delivery: isDelvery,
+          order: isOrder
+        },
+        notExpected: {
+          user: unexpectUsers,
+          product: unexcepectProduct,
+          category: unexcepectCategory
+        },
+        discount: {
+          isPercent,
+          saved,
+          forWallet,
+          forPoints
+        },
+        end: {
+          userCount,
+          limit,
+          dateLimit
+        },
+        code,
+        minimum,
+        message
       }
-        // handle catagories 
-        if(selectedCatagories.length > 0){
-        let newcatagoriesIDS=selectedCatagories.map(item=>{
-          return {id:item._id}
-        })
-        newcatagoriesIDS=newcatagoriesIDS.map(id=>{ 
-          return[id.id] }
-        )  
-      setCategory(newcatagoriesIDS);
-      }
-          // handle product 
-          if(selectedProduct.length > 0){
-            let newproductIDS=selectedProduct.map(item=>{
-              return {id:item._id}
-            })
-            newproductIDS=newproductIDS.map(id=>{ 
-              return[id.id] }
-            )  
-             //console.log(newproductIDS);
-            setProduct(newproductIDS);
-          }
-     }, [selectedUser,selectedCatagories,selectedProduct])
-
-     useEffect(() => {
-      // handle unexepected user 
-     if(userSelector.length > 0){
-       let newUsersIDS=userSelector.map(item=>{
-         return {id:item._id}
-          })
-        newUsersIDS=newUsersIDS.map(id=>{ 
-          return[id.id]}
-        )  
-        setunexpectUsers([...newUsersIDS])
-       }
-       // handle unexepected catagories 
-     if(catagoriesSelectors.length > 0){
-       let newcatagoriesIDS=catagoriesSelectors.map(item=>{
-         return {id:item._id}
-       })
-       newcatagoriesIDS=newcatagoriesIDS.map(id=>{ 
-         return[id.id] }
-       )  
-       setunexcepectCategory(newcatagoriesIDS);
-     }
-        // handle unexepected products 
-        if(productSelector.length > 0){
-          let newproductIDS=productSelector.map(item=>{
-            return {id:item._id}
-          })
-          newproductIDS=newproductIDS.map(id=>{ 
-            return[id.id] }
-          )  
-          setunexcepectProduct(newproductIDS);
-        }
-    }, [userSelector,catagoriesSelectors,productSelector])   
-
-       // handle selector
-       const handleForWhoSelect=(event,item)=>{
-       if(item){
-        setItemId(item.id);
-        }
-       if(item && item.id === 4){
-         setIsDelvery(true);
-         }
-        if(item && item.id === 5){
-          setIsOrder(true);
-        } 
-        }
-         // handle submit form
-        const handleSubmit=(e)=>{
-         e.preventDefault();
-          const coupon=[{
-           forWho:{
-            user,
-            product,
-            category,
-            delivery :isDelvery,
-            order : isOrder
-           },
-           notExpected :{
-            user:unexpectUsers,
-            product:unexcepectProduct,
-            category:unexcepectCategory
-           },
-           discount :{
-            isPercent,
-            saved,
-            forWallet,
-            forPoints 
-           },
-           end:{
-            userCount,
-            limit,
-            dateLimit
-           },
-           code,
-           minimum,
-           message
-         }]
-           createCoupon(coupon)           
-         }
-
-     //console.log(user);
-    // console.log(product);
-    // console.log(category);
+    ]
+    console.log(coupon)
+    createCoupon(coupon)
+  }
   return (
     <React.Fragment>
       <Typography variant='h4'>ادخل بيانات الكوبون</Typography>
-      <form noValidate autoComplete='off'  onSubmit={handleSubmit} >
+      <form noValidate autoComplete='off' onSubmit={handleSubmit}>
         <Grid container direction='column'>
           <Grid item className={classes.forWhoField} style={{ flex: 1 }}>
             <TextField
@@ -259,7 +282,7 @@ const CreateCoupon = () => {
               id='outlined-basic'
               label='الرمز الخاص بالكوبون'
               variant='outlined'
-              onChange={(e)=>setCode(e.target.value)}
+              onChange={e => setCode(e.target.value)}
             />
             <Autocomplete
               style={{ marginRight: 10, flex: 1 }}
@@ -276,45 +299,45 @@ const CreateCoupon = () => {
         </Grid>
         <Alert severity='info' style={{ margin: '10px 0px' }}>
           <strong>
-            لا تملاء هدف الكوبون ان كان الخصم علي النقاط او المحفظه 
+            لا تملاء هدف الكوبون ان كان الخصم علي النقاط او المحفظه
           </strong>
         </Alert>
-        {itemId === 1 ? 
-       <div>
-        {usersData.length > 0 ? (
-          <MultiSelect
-            options={usersData}
-            value={selectedUser}
-            onChange={setSelectedUser}
-            labelledBy={'Select'}
-          />
+        {itemId === 1 ? (
+          <div>
+            {usersData.length > 0 ? (
+              <MultiSelect
+                options={usersData}
+                value={selectedUser}
+                onChange={setSelectedUser}
+                labelledBy={'Select'}
+              />
+            ) : null}
+          </div>
         ) : null}
-        </div>
-        :null}
-        {itemId === 2 ? 
-       <div>
-        {productsData.length > 0 ? (
-          <MultiSelect
-            options={productsData}
-            value={selectedProduct}
-            onChange={setSelectedProducts}
-            labelledBy={'Select'}
-          />
+        {itemId === 2 ? (
+          <div>
+            {productsData.length > 0 ? (
+              <MultiSelect
+                options={productsData}
+                value={selectedProduct}
+                onChange={setSelectedProducts}
+                labelledBy={'Select'}
+              />
+            ) : null}
+          </div>
         ) : null}
-        </div>
-        :null}
-         {itemId === 3 ? 
-       <div>
-        {myNewData.length > 0 ? (
-          <MultiSelect
-            options={myNewData}
-            value={selectedCatagories}
-            onChange={setSelectedCatagories}
-            labelledBy={'Select'}
-          />
+        {itemId === 3 ? (
+          <div>
+            {myNewData.length > 0 ? (
+              <MultiSelect
+                options={myNewData}
+                value={selectedCatagories}
+                onChange={setSelectedCatagories}
+                labelledBy={'Select'}
+              />
+            ) : null}
+          </div>
         ) : null}
-        </div>
-        :null}
         <Divider style={{ margin: '20px 0px' }} />
         <Typography variant='h4' style={{ marginTop: '10px' }}>
           الخصم
@@ -322,12 +345,13 @@ const CreateCoupon = () => {
 
         <Grid container style={{ marginTop: '15px' }}>
           <TextField
+            defaultValue={minimum}
             style={{ flex: 1, zIndex: 0 }}
             className={classes.firstOfCoupon}
             id='outlined-basic'
             label='الحد الأدني لطلب الكوبون'
             variant='outlined'
-            onChange={(e)=>setminimum(e.target.value)}
+            onChange={e => setminimum(~~e.target.value)}
           />
           <FormControlLabel
             style={{ marginTop: '10px', marginRight: '10px' }}
@@ -353,7 +377,7 @@ const CreateCoupon = () => {
             id='outlined-basic'
             label='مبلغ الخصم او نسبة الخصم'
             variant='outlined'
-            onChange={(e)=>setsaved(e.target.value)}
+            onChange={e => setsaved(~~e.target.value)}
           />
           <TextField
             style={{ flex: 1, zIndex: 0 }}
@@ -361,7 +385,7 @@ const CreateCoupon = () => {
             id='outlined-basic'
             label='المبلغ الخاص بالمحفظه'
             variant='outlined'
-            onChange={(e)=>setforWallet(e.target.value)}
+            onChange={e => setforWallet(~~e.target.value)}
           />
           <TextField
             style={{ flex: 1, zIndex: 0 }}
@@ -369,7 +393,7 @@ const CreateCoupon = () => {
             id='outlined-basic'
             label='المبلغ الخاص بالنقط'
             variant='outlined'
-            onChange={(e)=>setforPoints(e.target.value)}
+            onChange={e => setforPoints(~~e.target.value)}
           />
         </Grid>
         <Divider style={{ margin: '20px 0px' }} />
@@ -387,21 +411,24 @@ const CreateCoupon = () => {
             id='outlined-basic'
             label='الحد الأقصي للشخص الواحد'
             variant='outlined'
-             onChange={(e)=>setuserCount(e.target.value)}
+            onChange={e => setuserCount(~~e.target.value)}
           />
           <TextField
+            defaultValue={limit}
             style={{ flex: 1, zIndex: 0 }}
             className={classes.firstOfCoupon}
             id='outlined-basic'
             label='الحد الأقصي لأستخدام الكوبون'
             variant='outlined'
-            onChange={(e)=>setlimit(e.target.value)}
+            onChange={e => setlimit(~~e.target.value)}
           />
           <TextField
             id='datetime-local'
             label='اختر '
             type='datetime-local'
-            onChange={(e)=>setdateLimit(e.target.value)}
+            onChange={e => {
+              setdateLimit(moment(e.target.value).format())
+            }}
             className={classes.firstOfCoupon}
             InputLabelProps={{
               shrink: true
@@ -412,7 +439,7 @@ const CreateCoupon = () => {
           اقصاء
         </Typography>
         <Grid container style={{ gridGap: '10px' }}>
-           <FormControlLabel
+          <FormControlLabel
             style={{ marginTop: '10px', marginRight: '10px' }}
             control={
               <Switch
@@ -425,7 +452,7 @@ const CreateCoupon = () => {
             label=' اقصاء مستخدمين ؟ '
           />
 
-           <FormControlLabel
+          <FormControlLabel
             style={{ marginTop: '10px', marginRight: '10px' }}
             control={
               <Switch
@@ -449,45 +476,50 @@ const CreateCoupon = () => {
             }
             label=' اقصاء منتجات ؟ '
           />
-         </Grid> 
-         
-         <Grid container style={{ gridGap: '10px' }}>
-          {isUsers ?
-          <Grid item className={classes.multiSelector}>
-            <h5 style={{ marginBottom: '8px' }}>مستخدمين</h5>
-            {usersData.length > 0 ?
-            <MultiSelect
-              options={usersData}
-              value={userSelector}
-              onChange={setuserSelector}
-              labelledBy={'Select'}
-            />:null}
-          </Grid>: null}
-          
-          {isCatagories ?
-          <Grid item className={classes.multiSelector}>
-            <h5 style={{ marginBottom: '8px' }}>اقسام</h5>
-            { myNewData.length > 0 ?
-            <MultiSelect
-              options={myNewData}
-              value={catagoriesSelectors}
-              onChange={setcatagoriesSelectors}
-              labelledBy={'Select'}
-            />: null }
-          </Grid>:null}
-          
-          {isProduct ? 
-          <Grid item className={classes.multiSelector}>
-            <h5 style={{ marginBottom: '8px' }}>منتجات</h5>
-            {productsData.length > 0 ?
-            <MultiSelect
-              options={productsData}
-              value={productSelector}
-              onChange={setproductSelector}
-              labelledBy={'Select'}
-            />:null}
-          </Grid>
-          :null}
+        </Grid>
+
+        <Grid container style={{ gridGap: '10px' }}>
+          {isUsers ? (
+            <Grid item className={classes.multiSelector}>
+              <h5 style={{ marginBottom: '8px' }}>مستخدمين</h5>
+              {usersData.length > 0 ? (
+                <MultiSelect
+                  options={usersData}
+                  value={userSelector}
+                  onChange={setuserSelector}
+                  labelledBy={'Select'}
+                />
+              ) : null}
+            </Grid>
+          ) : null}
+
+          {isCatagories ? (
+            <Grid item className={classes.multiSelector}>
+              <h5 style={{ marginBottom: '8px' }}>اقسام</h5>
+              {myNewData.length > 0 ? (
+                <MultiSelect
+                  options={myNewData}
+                  value={catagoriesSelectors}
+                  onChange={setcatagoriesSelectors}
+                  labelledBy={'Select'}
+                />
+              ) : null}
+            </Grid>
+          ) : null}
+
+          {isProduct ? (
+            <Grid item className={classes.multiSelector}>
+              <h5 style={{ marginBottom: '8px' }}>منتجات</h5>
+              {productsData.length > 0 ? (
+                <MultiSelect
+                  options={productsData}
+                  value={productSelector}
+                  onChange={setproductSelector}
+                  labelledBy={'Select'}
+                />
+              ) : null}
+            </Grid>
+          ) : null}
         </Grid>
         <Alert severity='info' style={{ margin: '10px 0px' }}>
           <strong>
@@ -495,25 +527,27 @@ const CreateCoupon = () => {
           </strong>
         </Alert>
         <Grid container>
-          <Grid item style={{ width: "100%" }}>
+          <Grid item style={{ width: '100%' }}>
             <TextField
               style={{ width: '100%', zIndex: 0 }}
               className={classes.firstOfCoupon}
               id='outlined-basic'
               label='رساله تعريفية عن الكوبون'
               variant='outlined'
-              onChange={(e)=>setmessage(e.target.value)}
+              onChange={e => setmessage(e.target.value)}
             />
           </Grid>
         </Grid>
         <Grid container>
-          <Grid item style={{ width: "100%" }}>
-            <Button variant='contained'
-             color='primary' 
-             style={{ marginTop: '20px', color: "#FFF",width: "100%"  }}
-             type="submit">
+          <Grid item style={{ width: '100%' }}>
+            <Button
+              variant='contained'
+              color='primary'
+              style={{ marginTop: '20px', color: '#FFF', width: '100%' }}
+              type='submit'
+            >
               انشاء
-          </Button>
+            </Button>
           </Grid>
         </Grid>
       </form>
