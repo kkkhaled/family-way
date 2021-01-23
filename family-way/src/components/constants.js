@@ -70,10 +70,18 @@ const Constants = () => {
   const handleSubmit=(e)=>{
      e.preventDefault();
      AddConstants(high,low,freeOrder,midOrder,minimum,pointsToMoney,daysForReturns,mobile);
+     setAlertData({
+      open: true,
+      message: 'تم التعديل',
+      type: 'success'
+    })
   }
 
   return (
     <React.Fragment>
+        {alertData.open ? (
+        <Alert severity={alertData.type}>{alertData.message}</Alert>
+      ) : null}
       <form onSubmit={handleSubmit} >
         <Grid container direction="column">
           <Grid item>

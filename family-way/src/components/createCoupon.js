@@ -42,6 +42,9 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const CreateCoupon = () => {
+
+   // for handle alert
+   const [alertData, setAlertData] = useState({ open: false })
   // state for handle switches
   const [isUsers, setIsUsers] = useState(false)
   const [isCatagories, setIsCatagories] = useState(false)
@@ -270,9 +273,17 @@ const CreateCoupon = () => {
     ]
     console.log(coupon)
     createCoupon(coupon)
+    setAlertData({
+      open: true,
+      message: 'تم اضافه الكوبون  ',
+      type: 'success'
+    })
   }
   return (
     <React.Fragment>
+      {alertData.open ? (
+        <Alert severity={alertData.type}>{alertData.message}</Alert>
+      ) : null}
       <Typography variant='h4'>ادخل بيانات الكوبون</Typography>
       <form noValidate autoComplete='off' onSubmit={handleSubmit}>
         <Grid container direction='column'>
