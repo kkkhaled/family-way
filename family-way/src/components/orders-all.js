@@ -32,7 +32,7 @@ const useStyle = makeStyles(theme => ({
 const OrdersTable=()=>{
     const classes = useStyle()
     const {loadUser } = useContext(authContext);
-    const {getOrders,orders,SetCurrntOrder}=useContext(ordersContext);
+    const {getOrders,orders,SetCurrntOrder,getOrder}=useContext(ordersContext);
     // const [status, setstaus] = useState([
     //   {id : 0 , text: 'تم استلام الطلب'},
     //   {id : 1 , text:'مرحلة المراجعه'},
@@ -56,6 +56,11 @@ const OrdersTable=()=>{
         const loadPagenateOrders=(page)=>{
         getOrders(page,limit)
          }
+        
+      const handleGetOrder=(order)=>{
+         getOrder(order._id);
+         SetCurrntOrder(order);
+      }   
    
     console.log(orders);
      
@@ -121,7 +126,7 @@ const OrdersTable=()=>{
                     <Button 
                          component={Link}
                          to="/order-details"
-                        onClick={()=>SetCurrntOrder(row)} >
+                        onClick={()=>handleGetOrder(row)} >
                         <VisibilityRoundedIcon/>
                     </Button>
                 </TableCell>

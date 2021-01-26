@@ -10,6 +10,11 @@ export default (state, action) => {
                ...state,
                currentOrder: action.payload
              }
+            case "GET_ONE_ORDER":
+              return {
+                ...state,
+                order : action.payload
+              } 
            default:
         return state;
     }

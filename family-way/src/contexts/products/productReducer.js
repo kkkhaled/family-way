@@ -7,7 +7,8 @@ export default (state, action) => {
          case "GET_THIRD_PRODUCTS":
            return {
              ...state,
-             products: action.payload
+             products: action.payload,
+             productdata : action.payload.products
            }
            case "GET_CAT_PRODUCTS":
             return {
@@ -17,7 +18,7 @@ export default (state, action) => {
              case "REMOVE_PRODUCTS":
             return {
               ...state,
-              products: state.products.products.filter((product) => product._id !== action.payload),
+             productdata: state.productdata.filter((product) => product._id !== action.payload),
             }
             case "Set_Current":
               return{
@@ -27,7 +28,8 @@ export default (state, action) => {
              case "SEARCH_DATA":
                 return{
                   ...state,
-                  products : action.payload
+                  products : action.payload,
+                  productdata : action.payload.products
                  // filterProducts : action.payload
                 };   
                 case "UPATE_PRODUCTS":

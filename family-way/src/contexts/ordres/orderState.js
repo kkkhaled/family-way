@@ -5,7 +5,8 @@ import server from '../../api/server';
 //initial State
 const initialState = {
     orders : null,
-    currentOrder : null
+    currentOrder : null,
+    order : null
   }
   // create context
 export const ordersContext = createContext();
@@ -26,6 +27,24 @@ export const OrdersProvider =({children})=>{
         } catch (err) {
             console.log(err);
         }
+    }
+
+    // get one orders 
+    const getOrder=async(id)=>{
+      const config = {
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.token
+        },
+       }
+       try {
+         const res = await server.get(`/order/${id}`,config);
+         dispatch({
+          type: "GET_ONE_ORDER",
+          payload : res.data
+         }) 
+       } catch (err) {
+         console.log(err);
+       }
     }
     
     // update orders
@@ -107,6 +126,8 @@ export const OrdersProvider =({children})=>{
         <ordersContext.Provider value={{
             orders : state.orders,
             currentOrder:state.currentOrder,
+            order : state.order,
+            getOrder,
             getOrders,
             updateOrders,
             SetCurrntOrder,

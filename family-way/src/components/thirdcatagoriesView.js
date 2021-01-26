@@ -61,6 +61,14 @@ const useStyles = makeStyles((theme) => ({
   spacerLeft :{
     paddingLeft:"8px"
   },
+  buttondelete: {
+    color: 'white',
+    width: '0.8em',
+    border: 7,
+    marginTop: '2px',
+    marginBottom: '5px',
+    backgroundColor: theme.palette.red.light
+  },
   root: {
     width: '78.7%',
     '& > * + *': {
@@ -77,7 +85,7 @@ const ThirdCatagoriesView = () => {
      
              // render subcatagories state && func
        const {getAllSubCatagories,subcatagories}=useContext(subcatagoriesContext);
-       const {filteredthird,getFilteredThirdData} =useContext(thirdcatagoriesContext); 
+       const {filteredthird,getFilteredThirdData,removeThird} =useContext(thirdcatagoriesContext); 
        //loading subcatagories 
        useEffect(() => {
          getAllSubCatagories();
@@ -102,6 +110,12 @@ const ThirdCatagoriesView = () => {
                  src={`https://familyway.sa/uploads/thirdCategory/${catag.image}`} 
                   alt="subimg" />
                <h5 style={{textAlign:"center",margin:10}}>{catag.name}</h5>
+               <Button variant="contained"
+                    className={classes.buttondelete}
+                    onClick={()=>removeThird(catag._id)}
+                   >
+                     مسح
+                   </Button>
               </Card>
             )):
             <div style={{ margin: "15px 0px", width: "100%" }}><Alert severity="info">
@@ -130,7 +144,7 @@ const ThirdCatagoriesView = () => {
             renderInput={(params) => (
               <TextField
                 {...params}
-                label="اختر الصنف الرئيسى"
+                label="اختر الصنف الفرعي"
                 variant="outlined"
               />
             )}

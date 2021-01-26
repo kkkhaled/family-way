@@ -63,7 +63,6 @@ const initialState = {
           };
           try {
              const res = await server.post("/subCategory",formData,config);
-             alert('done');
              dispatch({
                 type:"ADD_IMAGES",
                 payload : res.data
@@ -72,6 +71,19 @@ const initialState = {
               console.log(err);
           }
       }
+
+      //delete sub catagories
+  const removeOne = async _id => {
+    try {
+      const res = await server.delete(`/subCategory/${_id}`)
+      dispatch({
+        type: 'REMOVE_ONE_SUB',
+        payload: _id
+      })
+    } catch (err) {
+      console.log(err)
+    }
+  }
    
       return(
           <subcatagoriesContext.Provider value={{
@@ -80,7 +92,8 @@ const initialState = {
             filterdata : state.filterdata,
             getAllSubCatagories,
             getFilteredSubSatagories,
-            addNewSubCatagories
+            addNewSubCatagories,
+            removeOne
           }}>
            {children}
           </subcatagoriesContext.Provider>

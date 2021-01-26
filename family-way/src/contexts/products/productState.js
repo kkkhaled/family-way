@@ -7,7 +7,7 @@ const initialState = {
     nonPagenateProducts :[],
     products : null,
     currentProduct: null,
-    filterProducts: [],
+    productdata: [],
     allProducts : []
   }
   // create context
@@ -20,7 +20,7 @@ export const ProductProvider =({children})=>{
      //actions
 
      // create products
-     const addProducts=async(barCode,files,title,details,categories,price,increaseCount,unit,discount,sold,variationId,discountEnds)=>{
+     const addProducts=async(barCode,files,title,details,categories,price,increaseCount,unit,discount,variationId,discountEnds)=>{
         const formData = new FormData();
         Array.from(files).forEach((file) => {
             formData.append("files", file);
@@ -36,7 +36,7 @@ export const ProductProvider =({children})=>{
           //formData.append('inStock',inStock);
          // formData.append('boxUnit',boxUnit);
           formData.append('discount',discount);
-          formData.append('sold',sold);
+         // formData.append('sold',sold);
           formData.append('variationId',variationId)
           formData.append('discountEnds',discountEnds)
 
@@ -157,7 +157,7 @@ export const ProductProvider =({children})=>{
             nonPagenateProducts : state.nonPagenateProducts,
              products:state.products,
              currentProduct:state.currentProduct,
-             filterProducts :state.filterProducts,
+             productdata :state.productdata,
             addProducts,
             GetProductThird,
             updateProducts,

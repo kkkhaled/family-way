@@ -61,7 +61,6 @@ const initialState = {
           };
           try {
              const res = await server.post("/thirdCategory",formData,config);
-             alert('done');
              dispatch({
                 type:"ADD_THIRD_IMAGES",
                 payload : res.data
@@ -71,6 +70,19 @@ const initialState = {
           }
       }
 
+          //delete sub catagories
+  const removeThird = async _id => {
+    try {
+      const res = await server.delete(`/thirdCategory/${_id}`)
+      dispatch({
+        type: 'REMOVE_ONE_THIRD',
+        payload: _id
+      })
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
     return(
         <thirdcatagoriesContext.Provider value={{
             thirdcatagories : state.thirdcatagories,
@@ -78,7 +90,8 @@ const initialState = {
             filteredthird : state.filteredthird,
             getAllThirdCatagories,
             getFilteredThirdData,
-            addNewThirdCatagories 
+            addNewThirdCatagories,
+            removeThird 
         }} >
             {children}
         </thirdcatagoriesContext.Provider>

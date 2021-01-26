@@ -96,8 +96,8 @@ const OrderTimes = () => {
   const [state, setState] = useState({ isDisabled: false })
   const [from, setFrom] = useState('')
   const [to, setTo] = useState('')
-  const [day, setDay] = useState('')
-  const [maxCount, setMaxCount] = useState('')
+  const [day, setDay] = useState(null)
+  const [maxCount, setMaxCount] = useState(null)
   const [data, setData] = useState([
     {
       value: {
@@ -191,7 +191,7 @@ const OrderTimes = () => {
 
   const handleSubmit = e => {
     e.preventDefault()
-    if (from === '' || to === '' || day === '' || maxCount === '') {
+    if (from === '' || to === '' || day === null || maxCount ===null) {
       setAlertData({
         open: true,
         message: 'تاكد من ادخال البيانات بشكل صحيح   ',
@@ -204,6 +204,11 @@ const OrderTimes = () => {
         message: 'تم الاضافه  ',
         type: 'success'
       })
+      setFrom('');
+      setMaxCount(null);
+      setTo('');
+      setState({isDisabled : false});
+      setDay(null);
     }
   }
 

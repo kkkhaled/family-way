@@ -53,19 +53,19 @@ const AddProducts = () => {
   const [alertData, setAlertData] = useState({ open: false })
 
   //const [thirdId,setThirdId]=useState('');
-  const [barCode, setBarCode] = useState('')
+  const [barCode, setBarCode] = useState(null)
   const [files, setFiles] = useState([])
   const [title, setTitle] = useState('')
   const [details, setDetails] = useState('')
   const [categories, setCategories] = useState(null)
-  const [price, setPrice] = useState('')
-  const [increaseCount, setincreaseCount] = useState('')
+  const [price, setPrice] = useState(null)
+  const [increaseCount, setincreaseCount] = useState(null)
   const [unit, setUnit] = useState('')
   //const [userMax, setUserMax] = useState('');
   //const [inStock, setinStock] = useState('');
   //const [boxUnit, setboxUnit] = useState('');
-  const [discount, setDiscount] = useState('')
-  const [sold, setSold] = useState('')
+  const [discount, setDiscount] = useState(0)
+  //const [sold, setSold] = useState('')
   const [variationId, setVariationId] = useState('')
   const [discountEnds, setDiscountEnds] = useState('')
 
@@ -134,7 +134,7 @@ const AddProducts = () => {
         message: 'تاكد من رفع الصوره  ',
         type: 'error'
       })
-    } else if (barCode === '') {
+    } else if (barCode === null) {
       setAlertData({
         open: true,
         message: 'تاكد من ادخال الكود بطريقه صحيحه',
@@ -152,13 +152,13 @@ const AddProducts = () => {
         message: 'تاكد من ادخال تفاصيل المنتج',
         type: 'error'
       })
-    } else if (price === '') {
+    } else if (price === null) {
       setAlertData({
         open: true,
         message: 'تاكد من ادخال سعر المنتج',
         type: 'error'
       })
-    } else if (increaseCount === '') {
+    } else if (increaseCount === null) {
       setAlertData({
         open: true,
         message: 'تاكد من ادخال مقدار الزياده ',
@@ -181,7 +181,7 @@ const AddProducts = () => {
         increaseCount,
         unit,
         discount,
-        sold,
+      //  sold,
         variationId,
         discountEnds
       )
@@ -190,6 +190,19 @@ const AddProducts = () => {
         message: 'تم اضافه المنتج ',
         type: 'success'
       })
+      setBarCode(null);
+      setTitle('') 
+      setFiles([]);
+      setDetails('');
+      setPrice(null);
+      setCategories(null);
+      setincreaseCount(null);
+      setUnit('');
+      setDiscount(0);
+      setDiscountEnds('');
+      setVariationId('');
+      setISwitchOne(false);
+      setISwitchtwo(false);
     }
   }
 

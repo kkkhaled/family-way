@@ -13,9 +13,14 @@ export default (state, action) => {
              }    
          case "ADD_IMAGES":
              return {
-                 ...state,
+                 ...state,  
                  loader:false
-             }  
+             }
+         case 'REMOVE_ONE_SUB' :  
+         return {
+            ...state,
+            filterdata: state.filterdata.filter((subcatagory) => subcatagory._id !== action.payload),
+          }       
       default:
         return state;
     }

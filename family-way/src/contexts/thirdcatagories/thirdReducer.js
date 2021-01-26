@@ -15,7 +15,12 @@ export default (state, action) => {
               return{
               ...state,
               isLoad:false
-          }     
+          }
+          case 'REMOVE_ONE_THIRD' :  
+          return {
+             ...state,
+             filteredthird: state.filteredthird.filter((thirdcatagory) => thirdcatagory._id !== action.payload),
+           }       
       default:
         return state;
     }

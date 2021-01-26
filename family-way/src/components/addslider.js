@@ -49,12 +49,12 @@ const AddSlider = () => {
   const [dropZoneState, setDropZoneState] = useState(false)
   const [text, setText] = useState([{ name: 'تحميل !!' }])
 
-  const [files, setFiles] = useState([])
-  const [isProduct, setisProduct] = useState(false)
-  const [sort, setsort] = useState('')
-  const [category, setcategory] = useState('')
-  const [action, setaction] = useState('')
-  const [isCatagory, setIscatagory] = useState(false)
+  const [files, setFiles] = useState([]);
+  const [isProduct, setisProduct] = useState(false);
+  const [sort, setsort] = useState('');
+  const [category, setcategory] = useState('');
+  const [action, setaction] = useState('');
+  const [isCatagory, setIscatagory] = useState(false);
 
   const { loadUser } = useContext(authContext)
   const { addNewSliderProduct, addNewSliderCatag, addNewSlider } = useContext(
@@ -139,6 +139,12 @@ const AddSlider = () => {
         type: 'success'
       })
     }
+    setFiles([]);
+    setisProduct(false);
+    setIscatagory(false);
+    setsort('');
+    setcategory('');
+    setaction('');
   }
 
   return (

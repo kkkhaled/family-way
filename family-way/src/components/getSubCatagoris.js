@@ -91,6 +91,7 @@ const GetSubCatagories = () => {
   const [dropZoneState, setDropZoneState] = useState(false)
   const [name, setName] = useState('')
   const [parentId, setParentId] = useState(null)
+  const [parentName, setParentName] = useState('')
   // render catagories state && func
   const { getAllCatagories, catagories, loading, getOneCatagory } = useContext(catagoriesContext)
 
@@ -115,6 +116,10 @@ const GetSubCatagories = () => {
   const handleFilter = (event, item) => {
     if (item) {
       getOneCatagory(item._id)
+      if (item.name === "الشركات") {
+        setIsWide(true);
+        setParentName(item.name);
+      }
       setParentId(item._id)
     }
   }
@@ -148,6 +153,13 @@ const GetSubCatagories = () => {
         message: "تاكد من رفع الصوره  ",
         type: "error",
       });
+    }else if(parentName ==='الشركات' && isWide=== false){
+     setIsWide(true);
+     setAlertData({
+      open: true,
+      message: " يجب الموافقه علي عرض الشاشه بالكامل في حاله الشركات ",
+      type: "error",
+    });
     }
     else {
       addNewSubCatagories(files, name, parentId, isWide);
@@ -156,8 +168,11 @@ const GetSubCatagories = () => {
         message: "تم اضافه الصنف ",
         type: "success",
       });
+      setName('');
+      setParentId(null);
+      setFiles([]);
     }
-  }
+ }
 
   return (
     <React.Fragment>

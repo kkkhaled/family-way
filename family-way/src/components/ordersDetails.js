@@ -118,8 +118,8 @@ const OrdersDetails = () => {
   const [statusId, setstatusId] = useState(null)
 
   const { loadUser } = useContext(authContext)
-  const { currentOrder, updateOrders, refuseOrder } = useContext(ordersContext)
-  console.log(currentOrder)
+  const { currentOrder, updateOrders, refuseOrder ,order} = useContext(ordersContext)
+  console.log(order);
   useEffect(() => {
     if (currentOrder !== null) {
       console.log(currentOrder)

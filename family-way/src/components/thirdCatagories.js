@@ -151,6 +151,9 @@ const handleSubmit=(e)=>{
       message: "تم اضافه الصنف ",
       type: "success",
     });
+    setFiles([]);
+    setName('');
+    setSubId(null);
    }
 }
  
@@ -174,7 +177,7 @@ const handleSubmit=(e)=>{
               renderInput={params => (
                 <TextField
                   {...params}
-                  label='اختر الصنف الرئيسى'
+                  label='اختر الصنف الفرعي'
                   variant='outlined'
                 />
               )}

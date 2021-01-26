@@ -122,7 +122,12 @@ const CreateCoupon = () => {
     // handle users data
     if (users !== null) {
       let newUsers = users.users.map(item => {
-        return { ...item, label: item.name, value: item._id }
+        if(item.name !== undefined){
+        return { ...item, label: item.name+'  '+ item.phone , value: item._id }
+       }
+       else {
+        return { ...item, label: item.phone , value: item._id }
+       }
       })
       setUsersData([...newUsers])
     }
@@ -265,6 +270,24 @@ const CreateCoupon = () => {
       message: 'تم اضافه الكوبون  ',
       type: 'success'
     })
+    setUser([]);
+    setProduct([]);
+    setCategory([]);
+    setIsDelvery(false);
+    setIsOrder(false);
+    setIsPrecent(false);
+    setsaved(0);
+    setforWallet(0);
+    setforPoints(0);
+    setminimum(50);
+    setuserCount(1);
+    setlimit('');
+    setdateLimit('');
+    setCode('');
+    setmessage('');
+    setunexpectUsers([]);
+    setunexcepectProduct([]);
+    setunexcepectCategory([]);
   }
   return (
     <React.Fragment>

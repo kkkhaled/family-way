@@ -128,12 +128,15 @@ const GetProducts = () => {
     removeProducts,
     products,
     setCurrentProduct,
-    searchProducts
+    searchProducts,
+    productdata
   } = useContext(productContext)
   const [id, setId] = useState(null)
   const [text, setText] = useState([{ name: 'تحميل !!' }])
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(11)
+
+
   useEffect(
     () => {
       loadUser()
@@ -169,6 +172,12 @@ const GetProducts = () => {
       GetProductThird(item._id, page, limit)
     }
   }
+
+  // handle remove
+  //  const RemoveItem=(id)=>{
+  //   removeProducts(id);
+  //   products.products.filter(product=> product._id !== id);
+  //  } 
 
   const convertDiscountEnd = end => {
     return `سينتهي العرض ${moment(end).fromNow()}`
@@ -208,8 +217,8 @@ const GetProducts = () => {
       </Grid>
       <Divider className={classes.divider} />
       <Grid container style={{ gridGap: 10 }}>
-        {products !== null
-          ? products.products.map(product => (
+        {products !== null && productdata.length > 0
+          ? productdata.map(product => (
               <Grid
                 item
                 key={product._id}

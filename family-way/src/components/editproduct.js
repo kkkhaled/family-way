@@ -37,18 +37,19 @@ const useStyles = makeStyles((theme) => ({
    // for handle visiable
    const [isVisible, setIsVisible] = useState(false);
     // for give unit value
-   const [units, setUnits] = useState([
-     { id: "1", name: "كيلو" },
-     { id: "2", name: "حبه" },
-     { id: "3", name: "كرتونه" },
-   ])
-   const [barCode,setBarCode]=useState('');
+    const [units, setUnits] = useState([
+      { id: '1', name: 'حبه' },
+      { id: '2', name: 'اوتر' },
+      { id: '3', name: 'كيلو' },
+      { id: '4', name: 'كرتونه' }
+    ])
+   const [barCode,setBarCode]=useState(null);
    const [title,setTitle]=useState('');
    const [details, setDetails] = useState('');
-   const [price, setPrice] = useState('');
-   const [increaseCount, setincreaseCount] = useState('');
+   const [price, setPrice] = useState(null);
+   const [increaseCount, setincreaseCount] = useState(null);
    const [unit, setUnit] = useState('');
-   const [discount, setDiscount] = useState('');
+   const [discount, setDiscount] = useState(null);
    const [variationId, setVariationId] = useState('');
    const [discountEnds, setDiscountEnds] = useState(''); 
 
@@ -80,7 +81,7 @@ const useStyles = makeStyles((theme) => ({
         message: "تاكد من ادخال اسم المنتج",
         type: "error",
       });
-     }else if (price === '') {
+     }else if (price === null) {
       setAlertData({
         open: true,
         message: "تاكد من ادخال سعر المنتج",
@@ -92,13 +93,13 @@ const useStyles = makeStyles((theme) => ({
         message: "تاكد من ادخال تفاصيل المنتج",
         type: "error",
       });
-    }else if (increaseCount === '') {
+    }else if (increaseCount === null) {
       setAlertData({
         open: true,
         message: "تاكد من ادخال مقدار الزياده ",
         type: "error",
       });
-    }else if(barCode === ''){
+    }else if(barCode === null){
       setAlertData({
         open: true,
         message: "تاكد من ادخال الكود بطريقه صحيحه",
@@ -124,9 +125,16 @@ const useStyles = makeStyles((theme) => ({
         message: "تم تعديل المنتج ",
         type: "success",
       })
+      setBarCode(null);
+      setTitle('') 
+      setDetails('');
+      setPrice(null);
+      setincreaseCount(null);
+      setUnit('');
+      setDiscount(0);
+      setDiscountEnds('');
+      setVariationId('');
     }
-      
-      
   }
    
    const dialogContent = (
