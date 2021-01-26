@@ -98,6 +98,9 @@ const CouponsView = () => {
               <Grid container alignItems='center' direction='column'>
                 <Grid item>
                   <Typography variant='h4' color='primary'>
+                    {coupon.code}
+                  </Typography>
+                  <Typography variant='h4' color='primary'>
                     {coupon.message}
                   </Typography>
                 </Grid>

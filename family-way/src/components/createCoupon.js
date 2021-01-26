@@ -11,6 +11,7 @@ import { Switch } from '@material-ui/core'
 import { FormControlLabel } from '@material-ui/core'
 import { Alert } from '@material-ui/lab'
 import moment from 'moment'
+import 'moment/locale/en-au'
 
 const useStyles = makeStyles(theme => ({
   title: {
@@ -42,9 +43,8 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const CreateCoupon = () => {
-
-   // for handle alert
-   const [alertData, setAlertData] = useState({ open: false })
+  // for handle alert
+  const [alertData, setAlertData] = useState({ open: false })
   // state for handle switches
   const [isUsers, setIsUsers] = useState(false)
   const [isCatagories, setIsCatagories] = useState(false)
@@ -207,32 +207,19 @@ const CreateCoupon = () => {
     if (item) {
       setItemId(item.id)
     }
-    // setIsDelvery(false)
-    // setIsOrder(false)
-    // setUser(value => (value = []))
-    // setProduct(value => (value = []))
-    // setCategory(value => (value = []))
-    // switch (item?.id) {
-    //   case 1:
-    //     setUser(value => (value = []))
-    //     break
-    //   case 2:
-    //     setProduct(value => (value = []))
-    //     break
-    //   case 3:
-    //     setProduct(value => (value = []))
-    //     setUser(value => (value = []))
-    //     break
-
-    //   case 4:
-    //     setIsDelvery(true)
-    //     break
-    //   case 5:
-    //     setIsOrder(true)
-    //     break
-    //   default:
-    //     break
-    // }
+    setIsDelvery(false)
+    setIsOrder(false)
+    setUser(value => (value = []))
+    setProduct(value => (value = []))
+    setCategory(value => (value = []))
+    switch (item?.id) {
+      case 4:
+        setIsDelvery(true)
+        break
+      case 5:
+        setIsOrder(true)
+        break
+    }
   }
   // handle submit form
   const handleSubmit = async e => {

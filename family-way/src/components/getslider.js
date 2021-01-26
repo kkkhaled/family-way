@@ -32,11 +32,12 @@ const useStyles = makeStyles(theme => ({
     marginRight: "10px",
   },
   img: {
-    width: "20em",
-    height: "13em",
+    width: 250,
+    height: 130,
     marginLeft: "5px",
     marginRight: "5px",
     marginTop: "5px",
+    objectFit:"cover"
   },
   title:{
     marginLeft:"6px",
@@ -75,7 +76,7 @@ const GetSlider = () => {
       <Grid container direction="row">
             {sliders.length > 0  ?
             sliders.map((slider)=>(
-              slider.isProduct=== false ?
+              slider.category ?
               <Card 
               className={classes.card}
               key={slider._id}>
@@ -162,7 +163,7 @@ const GetSlider = () => {
           <Grid container direction="row">
             {sliders.length > 0  ?
             sliders.map((slider)=>(
-              slider.isProduct=== undefined ?
+              slider.isProduct=== undefined && !slider.category?
               <Card 
               className={classes.card}
               key={slider._id}>
