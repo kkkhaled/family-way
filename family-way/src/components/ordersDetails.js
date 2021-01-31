@@ -38,13 +38,14 @@ const useStyle = makeStyles(theme => ({
     color: '#6c5ce7'
   },
   listtext: {
-    fontSize: '25px',
+    fontSize: '29px',
     marginLeft: '10px',
     fontWeight: 350
   },
   img: {
-    width: '70px',
-    height: '70px'
+    width: '180px',
+    height: '180px',
+    objectFit: 'contain'
   },
   payment: {
     fontSize: '20px',
@@ -118,11 +119,11 @@ const OrdersDetails = () => {
   const [statusId, setstatusId] = useState(null)
 
   const { loadUser } = useContext(authContext)
-  const { updateOrders, refuseOrder ,order} = useContext(ordersContext)
-  console.log(order);
+  const { updateOrders, refuseOrder, order } = useContext(ordersContext)
+  console.log(order)
 
   useEffect(() => {
-      loadUser()
+    loadUser()
     // eslint-disable-next-line
   }, [])
 
@@ -242,262 +243,290 @@ const OrdersDetails = () => {
 
   return (
     <React.Fragment>
-      {order.length > 0  ? (
-        order.map(order =>(
-        <Card>
-          <Grid container direction='row'>
-            <Typography variant='h5' className={classes.h5}>
-              الطلب رقم {order.id}#
-            </Typography>
-
-            {order.status === 0 ? (
-              <Typography
-                variant='h5'
-                className={classes.h5}
-                style={{ paddingRight: '9px' }}
-              >
-                الحاله تم استلام الطلب
-              </Typography>
-            ) : null}
-            {order.status === 1 ? (
-              <Typography
-                variant='h5'
-                className={classes.h5}
-                style={{ paddingRight: '9px' }}
-              >
-                الحاله مرحلة المراجعة
-              </Typography>
-            ) : null}
-            {order.status === 2 ? (
-              <Typography
-                variant='h5'
-                className={classes.h5}
-                style={{ paddingRight: '9px' }}
-              >
-                الحاله جاري التجهيز
-              </Typography>
-            ) : null}
-            {order.status === 3 ? (
-              <Typography
-                variant='h5'
-                className={classes.h5}
-                style={{ paddingRight: '9px' }}
-              >
-                الحاله في الطريق
-              </Typography>
-            ) : null}
-            {order.status === 4 ? (
-              <Typography
-                variant='h5'
-                className={classes.h5}
-                style={{ paddingRight: '9px' }}
-              >
-                الحاله تم التوصيل
-              </Typography>
-            ) : null}
-            {order.status === 5 ? (
-              <Typography
-                variant='h5'
-                className={classes.h5}
-                style={{ paddingRight: '9px' }}
-              >
-                الحاله تحت المراجعة للاسترجاع
-              </Typography>
-            ) : null}
-            {order.status === 6 ? (
-              <Typography
-                variant='h5'
-                className={classes.h5}
-                style={{ paddingRight: '9px' }}
-              >
-                الحاله تم الاسترجاع
-              </Typography>
-            ) : null}
-            {order.status === 7 ? (
-              <Typography
-                variant='h5'
-                className={classes.h5}
-                style={{ paddingRight: '9px' }}
-              >
-                الحاله لم يتم الاسترجاع
-              </Typography>
-            ) : null}
-            {order.status === 8 ? (
-              <Typography
-                variant='h5'
-                className={classes.h5}
-                style={{ paddingRight: '9px' }}
-              >
-                الحاله تم الرفض
-              </Typography>
-            ) : null}
-          </Grid>
-          <Divider />
-          <Typography variant='h6' className={classes.h6}>
-            المنتجات
-          </Typography>
-          
-          <Box border={0.1} borderColor='grey.500'>
+      {order.length > 0 ? (
+        order.map(order => (
+          <Card>
             <Grid container direction='row'>
-              {order.items.map(item => (
-                <Grid item>
-                  <ListItemText className={classes.listtext} key={item._id}>
-                    - {item.title}
-                  </ListItemText>
-                </Grid>
-              ))}
-            </Grid>
-
-            <Grid container direction='row'>
-              {order.items.map(item => (
-                <img
-                  key={item._id}
-                  className={classes.img}
-                  src={`https://familyway.sa/uploads/products/${item.image}`}
-                  alt='order img'
-                />
-              ))}
-            </Grid>
-          </Box> 
-
-          <Box
-            border={0.1}
-            borderColor='grey.500'
-            style={{ marginTop: 5, padding: 5 }}
-          >
-            <Typography variant='h6' className={classes.h6}>
-              عنوان الشحن
-            </Typography>
-            <Typography variant='h6' className={classes.payment}>
-              {order.shippingAddress.locationName}
-            </Typography>
-          </Box>
-          <Box
-            border={0.1}
-            borderColor='grey.500'
-            style={{ marginTop: 5, padding: 5 }}
-          >
-            <Typography variant='h6' className={classes.h6}>
-              وسيله الدفع
-            </Typography>
-            <Typography variant='h6' className={classes.payment}>
-              {convertPaymentText(order.paymentMethod)}
-            </Typography>
-          </Box>
-          <Box
-            border={0.1}
-            borderColor='grey.500'
-            style={{ marginTop: 5, padding: 5 }}
-          >
-            <Typography variant='h6' className={classes.h6}>
-              اجمالي التكلفه
-            </Typography>
-            <Typography variant='h6' className={classes.payment}>
-              :المبلغ {order.totalCost}
-            </Typography>
-          </Box>
-          <Box
-            border={0.1}
-            borderColor='grey.500'
-            style={{ marginTop: 5, padding: 5 }}
-          >
-            <div>
-              <h5 style={{ color: '#888' }}>
-                <h5 style={{ fontWeight: 'bold' }}>طلبت </h5>
-                {moment(order.createdAt)
-                  .subtract(10, 'days')
-                  .calendar()}
-                {'  '}
-                {moment(order.createdAt).format('dddd')}
-              </h5>
-              <h5 style={{ color: '#333', marginVertical: 4 }}>
-                <h5>التوصيل </h5> {moment(order.time.day).format('dddd')}
-                {'  '}
-                {/* {currentOrder.time.hour.value.from +
-                  ' - ' +
-                  currentOrder.time.hour.value.to} */}
-              </h5>
-              <h5>
-                رقم الأوردر{' '}
-                <h5 style={{ fontWeight: 'bold' }}>{order.id}</h5>
-              </h5>
-            </div>
-          </Box>
-
-          <Box
-            border={0.1}
-            borderColor='grey.500'
-            style={{ marginTop: 5, padding: 5 }}
-          >
-            <Typography variant='h6' className={classes.h6}>
-              ميعاد الوصول
-            </Typography>
-            <Typography variant='h6' className={classes.payment}>
-              {moment(order.arriveAt).fromNow()}
-            </Typography>
-          </Box>
-          <Box
-            border={0.1}
-            borderColor='grey.500'
-            style={{ marginTop: 5, padding: 5 }}
-          >
-            <Typography variant='h6' className={classes.h6}>
-              بيانات المستخدم
-            </Typography>
-            {order.user.name !== undefined ? (
-              <Typography variant='h6' className={classes.payment}>
-                {order.user.name}
+              <Typography variant='h5' className={classes.h5}>
+                الطلب رقم {order.id}#
               </Typography>
-            ) : null}
-            <Typography variant='h6' className={classes.payment}>
-              النقاط {order.user.points}
+
+              {order.status === 0 ? (
+                <Typography
+                  variant='h5'
+                  className={classes.h5}
+                  style={{ paddingRight: '9px' }}
+                >
+                  الحاله تم استلام الطلب
+                </Typography>
+              ) : null}
+              {order.status === 1 ? (
+                <Typography
+                  variant='h5'
+                  className={classes.h5}
+                  style={{ paddingRight: '9px' }}
+                >
+                  الحاله مرحلة المراجعة
+                </Typography>
+              ) : null}
+              {order.status === 2 ? (
+                <Typography
+                  variant='h5'
+                  className={classes.h5}
+                  style={{ paddingRight: '9px' }}
+                >
+                  الحاله جاري التجهيز
+                </Typography>
+              ) : null}
+              {order.status === 3 ? (
+                <Typography
+                  variant='h5'
+                  className={classes.h5}
+                  style={{ paddingRight: '9px' }}
+                >
+                  الحاله في الطريق
+                </Typography>
+              ) : null}
+              {order.status === 4 ? (
+                <Typography
+                  variant='h5'
+                  className={classes.h5}
+                  style={{ paddingRight: '9px' }}
+                >
+                  الحاله تم التوصيل
+                </Typography>
+              ) : null}
+              {order.status === 5 ? (
+                <Typography
+                  variant='h5'
+                  className={classes.h5}
+                  style={{ paddingRight: '9px' }}
+                >
+                  الحاله تحت المراجعة للاسترجاع
+                </Typography>
+              ) : null}
+              {order.status === 6 ? (
+                <Typography
+                  variant='h5'
+                  className={classes.h5}
+                  style={{ paddingRight: '9px' }}
+                >
+                  الحاله تم الاسترجاع
+                </Typography>
+              ) : null}
+              {order.status === 7 ? (
+                <Typography
+                  variant='h5'
+                  className={classes.h5}
+                  style={{ paddingRight: '9px' }}
+                >
+                  الحاله لم يتم الاسترجاع
+                </Typography>
+              ) : null}
+              {order.status === 8 ? (
+                <Typography
+                  variant='h5'
+                  className={classes.h5}
+                  style={{ paddingRight: '9px' }}
+                >
+                  الحاله تم الرفض
+                </Typography>
+              ) : null}
+            </Grid>
+            <Divider />
+            <Typography variant='h6' className={classes.h6}>
+              المنتجات
             </Typography>
-            <Typography variant='h6' className={classes.payment}>
-              رقم الهاتف المسجل {order.user.phone}
-            </Typography>
-          </Box>
-          {order.isDriverRated || order.isProductsRated ? (
+
+            <Box border={0.1} borderColor='grey.500'>
+              <Grid container direction='row'>
+                {order.items.map(item => (
+                  <Grid
+                    item
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}
+                  >
+                    <img
+                      key={item._id}
+                      className={classes.img}
+                      src={`https://familyway.sa/uploads/products/${item.image}`}
+                      alt='order img'
+                    />
+                    <Grid item>
+                      <p style={{ fontSize: 22 }}>
+                        <strong>{item.title}</strong>
+                      </p>
+                    </Grid>
+                  </Grid>
+                ))}
+              </Grid>
+            </Box>
+
             <Box
               border={0.1}
               borderColor='grey.500'
               style={{ marginTop: 5, padding: 5 }}
             >
               <Typography variant='h6' className={classes.h6}>
-                التقيمات
+                عنوان الشحن
               </Typography>
-              {order.isDriverRated ? (
-                <Typography variant='h6' className={classes.payment}>
-                  تقييم السائق {order.driverRate}
-                </Typography>
-              ) : null}
-              {order.isProductsRated ? (
-                <Typography variant='h6' className={classes.payment}>
-                  تقييم السائق {order.productRate}
-                </Typography>
-              ) : null}
+              <Typography variant='h6' className={classes.payment}>
+                {order.shippingAddress.locationName}
+              </Typography>
+              <Typography variant='h6' className={classes.payment}>
+                {order.shippingAddress.addressType}
+              </Typography>
+              <Typography variant='h6' className={classes.payment}>
+                {order.shippingAddress.anyInstructions}
+              </Typography>
+              <Typography variant='h6' className={classes.payment}>
+                {order.shippingAddress.buildNumber}
+              </Typography>
+              <Typography variant='h6' className={classes.payment}>
+                {order.shippingAddress.name}
+              </Typography>
+              <Typography variant='h6' className={classes.payment}>
+                {order.shippingAddress.nearestLandmark}
+              </Typography>
             </Box>
-          ) : null}
-          <Typography variant='h6' className={classes.payment}>
-            المبلغ المتوقع {order.expectedMoney}
-          </Typography>
-          <Typography variant='h6' className={classes.payment}>
-            تفاصيل اضافيه {order.details}
-          </Typography>
-          <Button
-            variant='contained'
-            onClick={handleOpen}
-            className={classes.button}
-          >
-            تعديل
-          </Button>
-          <Button
-            variant='contained'
-            onClick={handleRefuse}
-            className={classes.buttonRefause}
-          >
-            رفض الطلب
-          </Button>
-        </Card>))
+            <Box
+              border={0.1}
+              borderColor='grey.500'
+              style={{ marginTop: 5, padding: 5 }}
+            >
+              <Typography variant='h6' className={classes.h6}>
+                وسيله الدفع
+              </Typography>
+              <Typography variant='h6' className={classes.payment}>
+                {convertPaymentText(order.paymentMethod)}
+              </Typography>
+            </Box>
+            {/* <Box
+              border={0.1}
+              borderColor='grey.500'
+              style={{ marginTop: 5, padding: 5 }}
+            >
+              <div>
+                <h5 style={{ color: '#888' }}>
+                  <h5 style={{ fontWeight: 'bold' }}>طلبت </h5>
+                  {moment(order.createdAt)
+                    .subtract(10, 'days')
+                    .calendar()}
+                  {'  '}
+                  {moment(order.createdAt).format('dddd')}
+                </h5>
+                <h5>التوصيل </h5> {moment(order.time.day).format('dddd')}
+
+              </div>
+            </Box> */}
+
+            <Box
+              border={0.1}
+              borderColor='grey.500'
+              style={{ marginTop: 5, padding: 5 }}
+            >
+              <Typography variant='h6' className={classes.h6}>
+                ميعاد الطلب
+              </Typography>
+              <Typography variant='h6' className={classes.payment}>
+                {moment(order.time.day).format('dddd')}
+              </Typography>
+              <Typography variant='h6' className={classes.payment}>
+                من {order.time.hour.value.from} - الي {order.time.hour.value.to}
+              </Typography>
+            </Box>
+            <Box
+              border={0.1}
+              borderColor='grey.500'
+              style={{ marginTop: 5, padding: 5 }}
+            >
+              <Typography variant='h6' className={classes.h6}>
+                بيانات المستخدم
+              </Typography>
+              {order.user.name !== undefined ? (
+                <Typography variant='h6' className={classes.payment}>
+                  {order.user.name}
+                </Typography>
+              ) : null}
+              <Typography variant='h6' className={classes.payment}>
+                النقاط {order.user.points}
+              </Typography>
+              <Typography variant='h6' className={classes.payment}>
+                رقم الهاتف المسجل {order.user.phone}
+              </Typography>
+            </Box>
+            {order.isDriverRated || order.isProductsRated ? (
+              <Box
+                border={0.1}
+                borderColor='grey.500'
+                style={{ marginTop: 5, padding: 5 }}
+              >
+                <Typography variant='h6' className={classes.h6}>
+                  التقيمات
+                </Typography>
+                {order.isDriverRated ? (
+                  <Typography variant='h6' className={classes.payment}>
+                    تقييم السائق {order.driverRate}
+                  </Typography>
+                ) : null}
+                {order.isProductsRated ? (
+                  <Typography variant='h6' className={classes.payment}>
+                    تقييم السائق {order.productRate}
+                  </Typography>
+                ) : null}
+              </Box>
+            ) : null}
+            <Typography variant='h6' className={classes.payment}>
+              المبلغ المتوقع {order.expectedMoney}
+            </Typography>
+            <Typography variant='h6' className={classes.payment}>
+              تفاصيل اضافيه {order.details}
+            </Typography>
+            <Box
+              border={0.1}
+              borderColor='grey.500'
+              style={{ marginTop: 5, padding: 5 }}
+            >
+              <Typography variant='h6' className={classes.h6}>
+                سعر المتجات
+              </Typography>
+              <Typography variant='h6' className={classes.payment}>
+                المبلغ {order.productsCost.toFixed(2)}
+              </Typography>
+              <Typography variant='h6' className={classes.h6}>
+                سعر التوصيل
+              </Typography>
+              <Typography variant='h6' className={classes.payment}>
+                {' '}
+                {order.delivery == 0 ? 'مجاناً' : order.delivery.toFixed(2)}
+              </Typography>
+              <Typography variant='h6' className={classes.h6}>
+                اجمالي التكلفه
+              </Typography>
+              <Typography variant='h6' className={classes.payment}>
+                المبلغ {order.totalCost.toFixed(2)}
+              </Typography>
+            </Box>
+            <Button
+              variant='contained'
+              onClick={handleOpen}
+              className={classes.button}
+            >
+              تعديل
+            </Button>
+            <Button
+              variant='contained'
+              onClick={handleRefuse}
+              className={classes.buttonRefause}
+            >
+              رفض الطلب
+            </Button>
+          </Card>
+        ))
       ) : (
         <Animations />
       )}
