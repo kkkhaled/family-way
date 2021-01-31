@@ -5,7 +5,6 @@ import {
   Card,
   Typography,
   TextField,
-  Button
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { catagoriesContext } from '../contexts/catagories/catagoriesState';
@@ -55,14 +54,6 @@ const useStyles = makeStyles((theme) => ({
   spacerLeft: {
     paddingLeft: "8px"
   },
-  buttondelete: {
-    color: 'white',
-    width: '0.8em',
-    border: 7,
-    marginTop: '2px',
-    marginBottom: '5px',
-    backgroundColor: theme.palette.red.light
-  },
   root: {
     width: '78.7%',
     '& > * + *': {
@@ -79,6 +70,7 @@ const SubCatagoryView = () => {
   const {
     getAllCatagories
     , catagories,
+    loading,
   } = useContext(catagoriesContext);
 
 
@@ -86,7 +78,6 @@ const SubCatagoryView = () => {
   const {
     getFilteredSubSatagories,
     filterdata,
-    removeOne
   } = useContext(subcatagoriesContext)
 
   // loading catagories
@@ -109,18 +100,12 @@ const SubCatagoryView = () => {
       <Grid container direction='row'>
         {filterdata.length > 0 ?
           filterdata.map((item) => (
-            <Card key={item._id} style={{ margin: 10 ,textAlign:"center"}}>
+            <Card key={item.id} style={{ margin: 10 ,textAlign:"center"}}>
               <img
                 style={{ width: 200, height: 100 }}
                 src={`https://familyway.sa/uploads/subCategories/${item.image}`}
                 alt="sub_img" />
               <h5 style={{textAlign:"center",margin:10}}>{item.name}</h5>
-                   <Button variant="contained"
-                    className={classes.buttondelete}
-                    onClick={()=>removeOne(item._id)}
-                   >
-                     مسح
-                   </Button>
             </Card>
           )) : <div style={{ margin: "15px 0px", width: "100%" }}><Alert severity="info">
             <Typography variant='h5'>

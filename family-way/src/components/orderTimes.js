@@ -15,6 +15,8 @@ import EditIcon from '@material-ui/icons/Edit'
 import moment from 'moment'
 import { authContext } from '../contexts/auth/authstate'
 import { ordertimesContext } from '../contexts/orderTimes/ordertimeState'
+import 'moment/locale/ar'
+import { FormControlLabel } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
   field: {
@@ -98,6 +100,7 @@ const OrderTimes = () => {
   const [to, setTo] = useState('')
   const [day, setDay] = useState(null)
   const [maxCount, setMaxCount] = useState(null)
+  const [idDisabled, setIsDisabled] = useState(false)
   const [data, setData] = useState([
     {
       value: {
@@ -191,7 +194,7 @@ const OrderTimes = () => {
 
   const handleSubmit = e => {
     e.preventDefault()
-    if (from === '' || to === '' || day === null || maxCount ===null) {
+    if (from === '' || to === '' || day === null || maxCount === null) {
       setAlertData({
         open: true,
         message: 'تاكد من ادخال البيانات بشكل صحيح   ',
@@ -204,11 +207,11 @@ const OrderTimes = () => {
         message: 'تم الاضافه  ',
         type: 'success'
       })
-      setFrom('');
-      setMaxCount(null);
-      setTo('');
-      setState({isDisabled : false});
-      setDay(null);
+      setFrom('')
+      setMaxCount(null)
+      setTo('')
+      setState({ isDisabled: false })
+      setDay(null)
     }
   }
 
@@ -237,97 +240,85 @@ const OrderTimes = () => {
 
   const ordertimesView = (
     <React.Fragment>
+      <Grid container>
+        <h2 className={classes.title}>اليوم</h2>
+      </Grid>
       <Grid container direction='row'>
-        <Grid container>
-          <h2 className={classes.title}>اليوم</h2>
-        </Grid>
-        {orders.map((items, index) => {
-          return (
-            <Grid item>
-              <h5
-                value='Bold'
-                style={{
-                  fontSize: 19
-                }}
-              >
-                {moment()
-                  .add(index, 'days')
-                  .format('dddd')}
-              </h5>
-              <h5 style={{ textAlign: 'center' }}>
-                {moment()
-                  .add(index, 'days')
-                  .format('l')}
-              </h5>
-            </Grid>
-          )
-        })}
         {data.map(item => (
           <Grid item>
             <Card className={classes.card}>
-              <Grid container justify='space-between'>
-                <Grid item>
-                  <Typography variant='h4' className={classes.fromtitle}>
-                    من
+              <Grid container>
+                <Grid
+                  item
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                    padding: 10
+                  }}
+                >
+                  <Typography
+                    variant='h5'
+                    style={{ display: 'flex', color: '#999' }}
+                  >
+                    {moment()
+                      .add(item.day, 'days')
+                      .format('l')}
+                  </Typography>
+                  <Typography
+                    variant='h5'
+                    style={{ display: 'flex', color: '#999' }}
+                  >
+                    {moment()
+                      .add(item.day, 'days')
+                      .format('dddd')}
                   </Typography>
                 </Grid>
-                <Grid item>
-                  <Typography variant='h5' className={classes.from}>
-                    {item.value.from}
+                <hr style={{ width: '100%', borderColor: 'rgba(0,0,0,.1)' }} />
+                <Grid
+                  item
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                    padding: 10
+                  }}
+                >
+                  <Typography variant='h4' style={{ display: 'flex' }}>
+                    من : {item.value.from}
+                  </Typography>
+                  <Typography variant='h4' style={{ display: 'flex' }}>
+                    الي : {item.value.to}
                   </Typography>
                 </Grid>
-                <Grid item>
-                  <Typography variant='h4'>الي</Typography>
-                </Grid>
-                <Grid item>
-                  <Typography variant='h5' className={classes.to}>
-                    {item.value.to}
+                <Grid item style={{ padding: 10, width: '100%' }}>
+                  <Typography variant='h5' style={{ display: 'flex' }}>
+                    العدد الحالي : {item.currentCount}
                   </Typography>
                 </Grid>
-              </Grid>
-              <Grid item>
-                {item.isDisabled ? (
-                  <Typography variant='h4' className={classes.status}>
-                    متاح الان
-                  </Typography>
-                ) : (
-                  <Typography variant='h4' className={classes.status}>
-                    غير متاح
-                  </Typography>
-                )}
-              </Grid>
-              <Grid container justify='space-between'>
-                <Grid item>
-                  <Typography variant='h4' className={classes.maxtitle}>
-                    الحد الاقصي
+                <Grid item style={{ padding: 10, width: '100%' }}>
+                  <Typography variant='h5' style={{ display: 'flex' }}>
+                    الحد الأقصي : {item.maxCount}
                   </Typography>
                 </Grid>
-                <Grid item>
-                  <Typography variant='h5' className={classes.to}>
-                    {item.maxCount}
-                  </Typography>
+                <Grid item style={{ padding: 10, width: '100%' }}>
+                  <FormControlLabel
+                    style={{  }}
+                    control={
+                      <Switch
+                        checked={idDisabled}
+                        onChange={() => setIsDisabled(value => !value)}
+                        name='checkedB'
+                        color='primary'
+                      />
+                    }
+                    label='ايقاف هذا التوقيت'
+                  />
                 </Grid>
-              </Grid>
-              <Grid container justify='space-between'>
-                <Grid item>
-                  <Typography variant='h4' className={classes.maxtitle}>
-                    المستخدم حاليا
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <Typography variant='h5' className={classes.to}>
-                    {item.currentCount}
-                  </Typography>
-                </Grid>
-              </Grid>
-              <Grid container justify='space-between'>
-                <Grid item>
-                  <Typography variant='h4' className={classes.maxtitle}>
-                    التعديل
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <EditIcon className={classes.editIcon} />
+                <Grid item style={{ width: '100%' }}>
+                  <Button style={{ width: '100%', backgroundColor: '#f6f6f6' }}>
+                    <strong>تعديل</strong>
+                  </Button>
                 </Grid>
               </Grid>
             </Card>
