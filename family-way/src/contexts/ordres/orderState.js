@@ -6,7 +6,7 @@ import server from '../../api/server';
 const initialState = {
     orders : null,
     currentOrder : null,
-    order : null
+    order : []
   }
   // create context
 export const ordersContext = createContext();
@@ -40,7 +40,7 @@ export const OrdersProvider =({children})=>{
          const res = await server.get(`/order/${id}`,config);
          dispatch({
           type: "GET_ONE_ORDER",
-          payload : res.data
+          payload : res.data.order
          }) 
        } catch (err) {
          console.log(err);

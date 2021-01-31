@@ -118,15 +118,13 @@ const OrdersDetails = () => {
   const [statusId, setstatusId] = useState(null)
 
   const { loadUser } = useContext(authContext)
-  const { currentOrder, updateOrders, refuseOrder ,order} = useContext(ordersContext)
+  const { updateOrders, refuseOrder ,order} = useContext(ordersContext)
   console.log(order);
+
   useEffect(() => {
-    if (currentOrder !== null) {
-      console.log(currentOrder)
-    }
-    loadUser()
+      loadUser()
     // eslint-disable-next-line
-  }, [currentOrder, ordersContext])
+  }, [])
 
   // handle dropzone state
   const SelectFilesButtonHandler = () => {
@@ -155,12 +153,12 @@ const OrdersDetails = () => {
   //console.log(statusId);
 
   const handleRefuse = () => {
-    refuseOrder(currentOrder._id, 8)
+    refuseOrder(order._id, 8)
   }
 
   const handleSubmit = e => {
     e.preventDefault()
-    if (currentOrder.bill.length > 0) {
+    if (order.bill.length > 0) {
       setAlertData({
         open: true,
         message: ' لا يمكن التعديل علي الطلب ',
@@ -179,7 +177,7 @@ const OrdersDetails = () => {
         type: 'error'
       })
     } else {
-      updateOrders(currentOrder._id, files, statusId)
+      updateOrders(order._id, files, statusId)
       setAlertData({
         open: true,
         message: 'تم تعديل الطلب ',
@@ -244,14 +242,15 @@ const OrdersDetails = () => {
 
   return (
     <React.Fragment>
-      {currentOrder !== null ? (
+      {order.length > 0  ? (
+        order.map(order =>(
         <Card>
           <Grid container direction='row'>
             <Typography variant='h5' className={classes.h5}>
-              الطلب رقم {currentOrder.id}#
+              الطلب رقم {order.id}#
             </Typography>
 
-            {currentOrder.status === 0 ? (
+            {order.status === 0 ? (
               <Typography
                 variant='h5'
                 className={classes.h5}
@@ -260,7 +259,7 @@ const OrdersDetails = () => {
                 الحاله تم استلام الطلب
               </Typography>
             ) : null}
-            {currentOrder.status === 1 ? (
+            {order.status === 1 ? (
               <Typography
                 variant='h5'
                 className={classes.h5}
@@ -269,7 +268,7 @@ const OrdersDetails = () => {
                 الحاله مرحلة المراجعة
               </Typography>
             ) : null}
-            {currentOrder.status === 2 ? (
+            {order.status === 2 ? (
               <Typography
                 variant='h5'
                 className={classes.h5}
@@ -278,7 +277,7 @@ const OrdersDetails = () => {
                 الحاله جاري التجهيز
               </Typography>
             ) : null}
-            {currentOrder.status === 3 ? (
+            {order.status === 3 ? (
               <Typography
                 variant='h5'
                 className={classes.h5}
@@ -287,7 +286,7 @@ const OrdersDetails = () => {
                 الحاله في الطريق
               </Typography>
             ) : null}
-            {currentOrder.status === 4 ? (
+            {order.status === 4 ? (
               <Typography
                 variant='h5'
                 className={classes.h5}
@@ -296,7 +295,7 @@ const OrdersDetails = () => {
                 الحاله تم التوصيل
               </Typography>
             ) : null}
-            {currentOrder.status === 5 ? (
+            {order.status === 5 ? (
               <Typography
                 variant='h5'
                 className={classes.h5}
@@ -305,7 +304,7 @@ const OrdersDetails = () => {
                 الحاله تحت المراجعة للاسترجاع
               </Typography>
             ) : null}
-            {currentOrder.status === 6 ? (
+            {order.status === 6 ? (
               <Typography
                 variant='h5'
                 className={classes.h5}
@@ -314,7 +313,7 @@ const OrdersDetails = () => {
                 الحاله تم الاسترجاع
               </Typography>
             ) : null}
-            {currentOrder.status === 7 ? (
+            {order.status === 7 ? (
               <Typography
                 variant='h5'
                 className={classes.h5}
@@ -323,7 +322,7 @@ const OrdersDetails = () => {
                 الحاله لم يتم الاسترجاع
               </Typography>
             ) : null}
-            {currentOrder.status === 8 ? (
+            {order.status === 8 ? (
               <Typography
                 variant='h5'
                 className={classes.h5}
@@ -337,9 +336,10 @@ const OrdersDetails = () => {
           <Typography variant='h6' className={classes.h6}>
             المنتجات
           </Typography>
+          
           <Box border={0.1} borderColor='grey.500'>
             <Grid container direction='row'>
-              {currentOrder.items.map(item => (
+              {order.items.map(item => (
                 <Grid item>
                   <ListItemText className={classes.listtext} key={item._id}>
                     - {item.title}
@@ -349,7 +349,7 @@ const OrdersDetails = () => {
             </Grid>
 
             <Grid container direction='row'>
-              {currentOrder.items.map(item => (
+              {order.items.map(item => (
                 <img
                   key={item._id}
                   className={classes.img}
@@ -358,7 +358,8 @@ const OrdersDetails = () => {
                 />
               ))}
             </Grid>
-          </Box>
+          </Box> 
+
           <Box
             border={0.1}
             borderColor='grey.500'
@@ -368,7 +369,7 @@ const OrdersDetails = () => {
               عنوان الشحن
             </Typography>
             <Typography variant='h6' className={classes.payment}>
-              {currentOrder.shippingAddress.locationName}
+              {order.shippingAddress.locationName}
             </Typography>
           </Box>
           <Box
@@ -380,7 +381,7 @@ const OrdersDetails = () => {
               وسيله الدفع
             </Typography>
             <Typography variant='h6' className={classes.payment}>
-              {convertPaymentText(currentOrder.paymentMethod)}
+              {convertPaymentText(order.paymentMethod)}
             </Typography>
           </Box>
           <Box
@@ -392,7 +393,7 @@ const OrdersDetails = () => {
               اجمالي التكلفه
             </Typography>
             <Typography variant='h6' className={classes.payment}>
-              :المبلغ {currentOrder.totalCost}
+              :المبلغ {order.totalCost}
             </Typography>
           </Box>
           <Box
@@ -403,14 +404,14 @@ const OrdersDetails = () => {
             <div>
               <h5 style={{ color: '#888' }}>
                 <h5 style={{ fontWeight: 'bold' }}>طلبت </h5>
-                {moment(currentOrder.createdAt)
+                {moment(order.createdAt)
                   .subtract(10, 'days')
                   .calendar()}
                 {'  '}
-                {moment(currentOrder.createdAt).format('dddd')}
+                {moment(order.createdAt).format('dddd')}
               </h5>
               <h5 style={{ color: '#333', marginVertical: 4 }}>
-                <h5>التوصيل </h5> {moment(currentOrder.time.day).format('dddd')}
+                <h5>التوصيل </h5> {moment(order.time.day).format('dddd')}
                 {'  '}
                 {/* {currentOrder.time.hour.value.from +
                   ' - ' +
@@ -418,7 +419,7 @@ const OrdersDetails = () => {
               </h5>
               <h5>
                 رقم الأوردر{' '}
-                <h5 style={{ fontWeight: 'bold' }}>{currentOrder.id}</h5>
+                <h5 style={{ fontWeight: 'bold' }}>{order.id}</h5>
               </h5>
             </div>
           </Box>
@@ -432,7 +433,7 @@ const OrdersDetails = () => {
               ميعاد الوصول
             </Typography>
             <Typography variant='h6' className={classes.payment}>
-              {moment(currentOrder.arriveAt).fromNow()}
+              {moment(order.arriveAt).fromNow()}
             </Typography>
           </Box>
           <Box
@@ -443,19 +444,19 @@ const OrdersDetails = () => {
             <Typography variant='h6' className={classes.h6}>
               بيانات المستخدم
             </Typography>
-            {currentOrder.user.name !== undefined ? (
+            {order.user.name !== undefined ? (
               <Typography variant='h6' className={classes.payment}>
-                {currentOrder.user.name}
+                {order.user.name}
               </Typography>
             ) : null}
             <Typography variant='h6' className={classes.payment}>
-              النقاط {currentOrder.user.points}
+              النقاط {order.user.points}
             </Typography>
             <Typography variant='h6' className={classes.payment}>
-              رقم الهاتف المسجل {currentOrder.user.phone}
+              رقم الهاتف المسجل {order.user.phone}
             </Typography>
           </Box>
-          {currentOrder.isDriverRated || currentOrder.isProductsRated ? (
+          {order.isDriverRated || order.isProductsRated ? (
             <Box
               border={0.1}
               borderColor='grey.500'
@@ -464,23 +465,23 @@ const OrdersDetails = () => {
               <Typography variant='h6' className={classes.h6}>
                 التقيمات
               </Typography>
-              {currentOrder.isDriverRated ? (
+              {order.isDriverRated ? (
                 <Typography variant='h6' className={classes.payment}>
-                  تقييم السائق {currentOrder.driverRate}
+                  تقييم السائق {order.driverRate}
                 </Typography>
               ) : null}
-              {currentOrder.isProductsRated ? (
+              {order.isProductsRated ? (
                 <Typography variant='h6' className={classes.payment}>
-                  تقييم السائق {currentOrder.productRate}
+                  تقييم السائق {order.productRate}
                 </Typography>
               ) : null}
             </Box>
           ) : null}
           <Typography variant='h6' className={classes.payment}>
-            المبلغ المتوقع {currentOrder.expectedMoney}
+            المبلغ المتوقع {order.expectedMoney}
           </Typography>
           <Typography variant='h6' className={classes.payment}>
-            تفاصيل اضافيه {currentOrder.details}
+            تفاصيل اضافيه {order.details}
           </Typography>
           <Button
             variant='contained'
@@ -496,7 +497,7 @@ const OrdersDetails = () => {
           >
             رفض الطلب
           </Button>
-        </Card>
+        </Card>))
       ) : (
         <Animations />
       )}

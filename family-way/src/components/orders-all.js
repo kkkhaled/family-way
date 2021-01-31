@@ -32,7 +32,7 @@ const useStyle = makeStyles(theme => ({
 const OrdersTable=()=>{
     const classes = useStyle()
     const {loadUser } = useContext(authContext);
-    const {getOrders,orders,SetCurrntOrder,getOrder}=useContext(ordersContext);
+    const {getOrders,orders,getOrder}=useContext(ordersContext);
     // const [status, setstaus] = useState([
     //   {id : 0 , text: 'تم استلام الطلب'},
     //   {id : 1 , text:'مرحلة المراجعه'},
@@ -59,7 +59,7 @@ const OrdersTable=()=>{
         
       const handleGetOrder=(order)=>{
          getOrder(order._id);
-         SetCurrntOrder(order);
+        // SetCurrntOrder(order);
       }   
    
     console.log(orders);
