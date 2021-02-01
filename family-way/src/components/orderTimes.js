@@ -198,13 +198,20 @@ const OrderTimes = () => {
 
   const handleSubmit = e => {
     e.preventDefault()
-    if (from === '' || to === '' || day === null || maxCount === null) {
+    if (from === '' || to === '') {
       setAlertData({
         open: true,
         message: 'تاكد من ادخال البيانات بشكل صحيح   ',
         type: 'error'
       })
-    } else {
+    } else if( day === null || day==='' || maxCount === null || maxCount ===''){
+      setAlertData({
+        open: true,
+        message: 'تاكد من ادخال البيانات بشكل صحيح   ',
+        type: 'error'
+      })
+    }
+    else {
       addNewtime(from, to, day, state.isDisabled, maxCount)
       setAlertData({
         open: true,
@@ -212,10 +219,10 @@ const OrderTimes = () => {
         type: 'success'
       })
       setFrom('')
-      setMaxCount(null)
+      setMaxCount('')
       setTo('')
       setState({ isDisabled: false })
-      setDay(null)
+      setDay('')
     }
   }
 
@@ -244,19 +251,19 @@ const OrderTimes = () => {
 
   const handleEditSubmit = e => {
     e.preventDefault()
-    if (EditFrom === time.value.from || EditFrom === '') {
+    if (EditFrom === '') {
       setAlertEditData({
         open: true,
         message: 'تاكد من تحديث البيانات ',
         type: 'error'
       })
-    } else if (EditTo === time.value.to || EditTo === '') {
+    } else if (EditTo === '') {
       setAlertEditData({
         open: true,
         message: 'تاكد من تحديث البيانات      ',
         type: 'error'
       })
-    } else if (EditMaxCount === time.maxCount) {
+    } else if (EditMaxCount === '') {
       setAlertEditData({
         open: true,
         message: ' تاكد من تحديث الحدالاقصي ',
@@ -271,7 +278,7 @@ const OrderTimes = () => {
       })
       setEditTo('')
       setEditFrom('')
-      setEditMaxCount(null)
+      setEditMaxCount('')
     }
   }
 
@@ -403,20 +410,7 @@ const OrderTimes = () => {
                       الحد الأقصي : {item.maxCount}
                     </Typography>
                   </Grid>
-                  <Grid item style={{ padding: 10, width: '100%' }}>
-                    <FormControlLabel
-                      style={{}}
-                      control={
-                        <Switch
-                          checked={item.isDisabled}
-                          name='checkedB'
-                          color='primary'
-                        />
-                      }
-                      label='ايقاف هذا التوقيت'
-                    />
-                  </Grid>
-                  <Grid item style={{ width: '100%' }}>
+                    <Grid item style={{ width: '100%' }}>
                     <Button
                       style={{ width: '100%', backgroundColor: '#f6f6f6' }}
                       onClick={() => handleOpen(item)}
@@ -446,6 +440,7 @@ const OrderTimes = () => {
             <TextField
               variant='outlined'
               label='من'
+              value={from}
               className={classes.field}
               onChange={e => setFrom(e.target.value)}
             />
@@ -454,6 +449,7 @@ const OrderTimes = () => {
             <TextField
               variant='outlined'
               label='الي'
+              value={to}
               className={classes.field}
               onChange={e => setTo(e.target.value)}
             />
@@ -462,6 +458,7 @@ const OrderTimes = () => {
             <TextField
               variant='outlined'
               label='اليوم'
+              value={day}
               className={classes.field}
               onChange={e => setDay(e.target.value)}
             />
@@ -487,6 +484,7 @@ const OrderTimes = () => {
             <TextField
               variant='outlined'
               label='الحد المسموح في هذا الوقت '
+              value={maxCount}
               className={classes.field}
               onChange={e => setMaxCount(e.target.value)}
             />

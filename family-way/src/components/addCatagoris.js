@@ -120,6 +120,8 @@ const AddCatagiories = () => {
         message: 'تم اضافه الصنف  ',
         type: 'success'
       })
+      setName('');
+      setSort('');
     }
   }
 
@@ -158,6 +160,7 @@ const AddCatagiories = () => {
               style={{ width: '100%' }}
               variant='outlined'
               label='ادخال اسم الصنف'
+              value={name}
               onChange={e => setName(e.target.value)}
             />
           </Grid>
@@ -166,6 +169,7 @@ const AddCatagiories = () => {
               style={{ width: '100%' }}
               variant='outlined'
               label='  الترتيب'
+              value={sort}
               onChange={e => setSort(e.target.value)}
             />
           </Grid>

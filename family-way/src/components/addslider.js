@@ -157,6 +157,7 @@ const AddSlider = () => {
           <Grid item style={{ width: '100%' }}>
             <TextField
               label='الترتيب'
+              value={sort}
               onChange={e => setsort(e.target.value)}
             />
           </Grid>

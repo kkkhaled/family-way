@@ -20,6 +20,13 @@ const useStyles = makeStyles(theme => ({
     marginTop: '5px',
     marginBottom: '5px',
     width: '100%'
+  },
+  button2: {
+    color: 'white',
+    marginTop: '5px',
+    marginBottom: '5px',
+    width: '100%',
+    backgroundColor : theme.palette.red.light
   }
 }))
 
@@ -45,10 +52,29 @@ const Ads = () => {
   const handleDropZoneSave = files => {
     setFiles(files)
     createAds(files)
+    setAlertData({
+      open : true,
+      type : 'success',
+      message : 'تم التعديل'
+    })
   }
   console.log(`${urlImages}AdView/${Ads}`)
+
+  const handleRemove=()=>{
+    removeOne();
+    setAlertData({
+      open : true,
+      type : 'success',
+      message : 'تم المسح'
+    })
+  }
+
+
   return (
     <React.Fragment>
+         {alertData.open ? (
+        <Alert severity={alertData.type}>{alertData.message}</Alert>
+      ) : null}
       <Grid container direction='column' alignItems='center'>
         <Alert severity='info' style={{ margin: '10px 0px' }}>
           <strong>
@@ -69,6 +95,14 @@ const Ads = () => {
           style={{ flex: 1 }}
         >
           ادخل الصور
+        </Button>
+        <Button
+          className={classes.button2}
+          variant='contained'
+          onClick={handleRemove}
+          style={{ flex: 1 }}
+        >
+          مسح الصوره
         </Button>
       </Grid>
       <DroZone

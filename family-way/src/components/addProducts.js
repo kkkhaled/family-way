@@ -122,7 +122,7 @@ const AddProducts = () => {
     if (switchtwo === false) {
       setDiscount(0)
     }
-    if (categories === null) {
+    if (categories === null || categories==='') {
       setAlertData({
         open: true,
         message: 'تاكد من ادخال القسم الثالث',
@@ -134,7 +134,7 @@ const AddProducts = () => {
         message: 'تاكد من رفع الصوره  ',
         type: 'error'
       })
-    } else if (barCode === null) {
+    } else if (barCode === null || barCode=== '') {
       setAlertData({
         open: true,
         message: 'تاكد من ادخال الكود بطريقه صحيحه',
@@ -152,13 +152,13 @@ const AddProducts = () => {
         message: 'تاكد من ادخال تفاصيل المنتج',
         type: 'error'
       })
-    } else if (price === null) {
+    } else if (price === null || price==='') {
       setAlertData({
         open: true,
         message: 'تاكد من ادخال سعر المنتج',
         type: 'error'
       })
-    } else if (increaseCount === null) {
+    } else if (increaseCount === null ||increaseCount==='') {
       setAlertData({
         open: true,
         message: 'تاكد من ادخال مقدار الزياده ',
@@ -190,13 +190,13 @@ const AddProducts = () => {
         message: 'تم اضافه المنتج ',
         type: 'success'
       })
-      setBarCode(null);
+      setBarCode('');
       setTitle('') 
       setFiles([]);
       setDetails('');
-      setPrice(null);
-      setCategories(null);
-      setincreaseCount(null);
+      setPrice('');
+      setCategories('');
+      setincreaseCount('');
       setUnit('');
       setDiscount(0);
       setDiscountEnds('');
@@ -232,6 +232,7 @@ const AddProducts = () => {
           <Grid item className={classes.containerTwoColumns}>
             <TextField
               variant='outlined'
+              value={title}
               label='اسم المنتج'
               onChange={e => setTitle(e.target.value)}
               style={{ flex: 1 }}
@@ -239,6 +240,7 @@ const AddProducts = () => {
             <TextField
               variant='outlined'
               label='التفاصيل'
+              value={details}
               onChange={e => setDetails(e.target.value)}
               style={{ flex: 1 }}
             />
@@ -247,6 +249,7 @@ const AddProducts = () => {
           <Grid item className={classes.containerTwoColumns}>
             <TextField
               variant='outlined'
+              value={price}
               label='ادخل السعر'
               onChange={e => setPrice(e.target.value)}
               style={{ flex: 1 }}
@@ -254,6 +257,7 @@ const AddProducts = () => {
             <TextField
               variant='outlined'
               label=' مقدار الزياده'
+              value={increaseCount}
               onChange={e => setincreaseCount(e.target.value)}
               style={{ flex: 1 }}
             />
@@ -271,6 +275,7 @@ const AddProducts = () => {
           <Grid item className={classes.containerTwoColumns}>
             <TextField
               variant='outlined'
+              value={barCode}
               onChange={e => setBarCode(e.target.value)}
               label='باركود'
               style={{ flex: 1 }}
@@ -309,6 +314,7 @@ const AddProducts = () => {
                 style={{ flex: 1 }}
                 variant='outlined'
                 label=' اوجه التشابه'
+                value={variationId}
                 onChange={e => setVariationId(e.target.value)}
               />
             </Grid>
@@ -340,6 +346,7 @@ const AddProducts = () => {
                 style={{ flex: 1 }}
                 variant='outlined'
                 label='قيمة التخفيض'
+                value={discount}
                 onChange={e => setDiscount(e.target.value)}
                 className={classes.detailsfield}
               />

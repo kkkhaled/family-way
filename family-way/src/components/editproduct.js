@@ -81,7 +81,7 @@ const useStyles = makeStyles((theme) => ({
         message: "تاكد من ادخال اسم المنتج",
         type: "error",
       });
-     }else if (price === null) {
+     }else if (price === null || price === '') {
       setAlertData({
         open: true,
         message: "تاكد من ادخال سعر المنتج",
@@ -93,13 +93,13 @@ const useStyles = makeStyles((theme) => ({
         message: "تاكد من ادخال تفاصيل المنتج",
         type: "error",
       });
-    }else if (increaseCount === null) {
+    }else if (increaseCount === null || increaseCount==='') {
       setAlertData({
         open: true,
         message: "تاكد من ادخال مقدار الزياده ",
         type: "error",
       });
-    }else if(barCode === null){
+    }else if(barCode === null ||barCode===''){
       setAlertData({
         open: true,
         message: "تاكد من ادخال الكود بطريقه صحيحه",
@@ -125,11 +125,11 @@ const useStyles = makeStyles((theme) => ({
         message: "تم تعديل المنتج ",
         type: "success",
       })
-      setBarCode(null);
+      setBarCode('');
       setTitle('') 
       setDetails('');
-      setPrice(null);
-      setincreaseCount(null);
+      setPrice('');
+      setincreaseCount('');
       setUnit('');
       setDiscount(0);
       setDiscountEnds('');
@@ -146,25 +146,30 @@ const useStyles = makeStyles((theme) => ({
           <Grid >
               <TextField label="اسم المنتج" 
                className={classes.field}
+               value={title}
                onChange={(e)=>setTitle(e.target.value)} />
           </Grid>
           <Grid >
               <TextField label="السعر" 
                className={classes.field}
+               value={price}
                onChange={(e)=>setPrice(e.target.value)}               />
           </Grid>
           <Grid >
               <TextField label="التفاصيل"
                 className={classes.field} 
+                value={details}
                 onChange={(e)=>setDetails(e.target.value)}/>
           </Grid>
           <Grid>   
                 <TextField label="مقدار الزياده" 
                  className={classes.field} 
+                 value={increaseCount}
                  onChange={(e)=>setincreaseCount(e.target.value)}/>
           </Grid>
           <Grid>   
                 <TextField label="بار كود " 
+                 value={barCode}
                  className={classes.field}
                  onChange={(e)=>setBarCode(e.target.value)} />
           </Grid>
@@ -184,6 +189,7 @@ const useStyles = makeStyles((theme) => ({
           <React.Fragment>
            <Grid>   
            <TextField label=" التخفيض" 
+           value={discount}
             className={classes.field} 
             onChange={(e)=>setDiscount(e.target.value)}
             />
@@ -218,6 +224,7 @@ const useStyles = makeStyles((theme) => ({
             <Grid>   
             <TextField label="اوجه التشابه" 
              className={classes.field} 
+             value={variationId}
              onChange={(e)=>setVariationId(e.target.value)}/>
            </Grid>
            :null

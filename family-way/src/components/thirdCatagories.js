@@ -186,6 +186,7 @@ const handleSubmit=(e)=>{
               style={{ flex: 1 }}
               variant='outlined'
               label='اسم الصنف'
+              value={name}
               onChange={(e)=>setName(e.target.value)}
                  />
           </Grid>

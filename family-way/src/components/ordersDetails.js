@@ -423,12 +423,13 @@ const OrdersDetails = () => {
 
               </div>
             </Box> */}
-
+            {order.time.hour !== null ? 
             <Box
               border={0.1}
               borderColor='grey.500'
               style={{ marginTop: 5, padding: 5 }}
             >
+             
               <Typography variant='h6' className={classes.h6}>
                 ميعاد الطلب
               </Typography>
@@ -438,7 +439,7 @@ const OrdersDetails = () => {
               <Typography variant='h6' className={classes.payment}>
                 من {order.time.hour.value.from} - الي {order.time.hour.value.to}
               </Typography>
-            </Box>
+            </Box>:null}
             <Box
               border={0.1}
               borderColor='grey.500'
