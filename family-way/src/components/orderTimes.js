@@ -12,7 +12,7 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
+  DialogTitle
 } from '@material-ui/core'
 import { Alert } from '@material-ui/lab'
 //import EditIcon from '@material-ui/icons/Edit'
@@ -146,18 +146,18 @@ const OrderTimes = () => {
   const [alertEditData, setAlertEditData] = useState({ open: false })
 
   const [id, setid] = useState(null)
-   // state for add 
+  // state for add
   const [state, setState] = useState({ isDisabled: false })
   const [from, setFrom] = useState('')
   const [to, setTo] = useState('')
   const [day, setDay] = useState(null)
   const [maxCount, setMaxCount] = useState(null)
   // state for Edit
-  const [idDisabled, setIsDisabled] = useState(false);
-  const [EditTo,setEditTo]= useState('');
-  const [EditFrom,setEditFrom]= useState('');
-  const [EditMaxCount,setEditMaxCount]=useState(null); 
-    const date = moment()
+  const [idDisabled, setIsDisabled] = useState(false)
+  const [EditTo, setEditTo] = useState('')
+  const [EditFrom, setEditFrom] = useState('')
+  const [EditMaxCount, setEditMaxCount] = useState(null)
+  const date = moment()
     .add(3, 'days')
     .calendar({
       sameDay: '[اليوم]LTS',
@@ -169,29 +169,28 @@ const OrderTimes = () => {
   useEffect(() => {
     loadUser()
     getOrderstime()
-    if(time !== null){
-      setEditTo(time.value.to);
+    if (time !== null) {
+      setEditTo(time.value.to)
       setEditFrom(time.value.from)
       setEditMaxCount(time.maxCount)
       setIsDisabled(time.isDisabled)
     }
     // eslint-disable-next-line
-  }, [time,ordertimesContext])
+  }, [time, ordertimesContext])
 
-  console.log(ordertimes);
+  console.log(ordertimes)
 
-    // handle dialog open
-    const handleOpen = item => {
-      setOpenDialog(true)
-      setid(item._id);
-      SetCurrnttime(item)
-    }
-    console.log(id)
-    // handle dialog closed
-    const handleClose = () => {
-      setOpenDialog(false)
-    }
-  
+  // handle dialog open
+  const handleOpen = item => {
+    setOpenDialog(true)
+    setid(item._id)
+    SetCurrnttime(item)
+  }
+  console.log(id)
+  // handle dialog closed
+  const handleClose = () => {
+    setOpenDialog(false)
+  }
 
   const handleChange = event => {
     setState({ ...state, [event.target.name]: event.target.checked })
@@ -243,94 +242,99 @@ const OrderTimes = () => {
     handleOrderTime()
   }, [ordertimes])
 
-  const handleEditSubmit=(e)=>{
-    e.preventDefault();
-    if(EditFrom===time.value.from || EditFrom === ''){
+  const handleEditSubmit = e => {
+    e.preventDefault()
+    if (EditFrom === time.value.from || EditFrom === '') {
       setAlertEditData({
         open: true,
         message: 'تاكد من تحديث البيانات ',
         type: 'error'
       })
-    }else if(EditTo===time.value.to || EditTo === ''){
+    } else if (EditTo === time.value.to || EditTo === '') {
       setAlertEditData({
         open: true,
         message: 'تاكد من تحديث البيانات      ',
         type: 'error'
       })
-    }
-    else if(EditMaxCount === time.maxCount){
+    } else if (EditMaxCount === time.maxCount) {
       setAlertEditData({
         open: true,
         message: ' تاكد من تحديث الحدالاقصي ',
         type: 'error'
       })
-    }else {
-      EditOrdertime(id,EditFrom,EditTo,idDisabled,EditMaxCount)
+    } else {
+      EditOrdertime(id, EditFrom, EditTo, idDisabled, EditMaxCount)
       setAlertEditData({
         open: true,
         message: 'تم التعديل  ',
         type: 'success'
       })
-      setEditTo('');
-      setEditFrom('');
-      setEditMaxCount(null);
-    } 
+      setEditTo('')
+      setEditFrom('')
+      setEditMaxCount(null)
+    }
   }
 
-  const EditView=(
+  const EditView = (
     <React.Fragment>
       {alertEditData.open ? (
         <Alert severity={alertEditData.type}>{alertEditData.message}</Alert>
       ) : null}
       <form onSubmit={handleEditSubmit}>
-          <Grid >
-              <TextField label="من" 
-               className={classes.fieldedit}
-               value ={EditFrom}
-                onChange={(e)=>setEditFrom(e.target.value)} 
+        <Grid>
+          <TextField
+            label='من'
+            className={classes.fieldedit}
+            value={EditFrom}
+            onChange={e => setEditFrom(e.target.value)}
+          />
+        </Grid>
+        <Grid>
+          <TextField
+            label='الي'
+            className={classes.fieldedit}
+            value={EditTo}
+            onChange={e => setEditTo(e.target.value)}
+          />
+        </Grid>
+        <Grid>
+          <TextField
+            label='الحد المسموح في هذا الوقت '
+            className={classes.fieldedit}
+            value={EditMaxCount}
+            onChange={e => setEditMaxCount(e.target.value)}
+          />
+        </Grid>
+        <Grid item style={{ padding: 10, width: '100%' }}>
+          <FormControlLabel
+            style={{}}
+            control={
+              <Switch
+                checked={idDisabled}
+                onChange={() => setIsDisabled(value => !value)}
+                name='checkedB'
+                color='primary'
               />
+            }
+            label='ايقاف هذا التوقيت'
+          />
+        </Grid>
+        <Alert severity='info' style={{ margin: '10px 0px' }}>
+          <strong>لا تقوم بمسح وقت من الاوقات وهوا مستخدم . قم بأيقافه اولاً حتي ينتهي جميع الموصلين بالتوصيل الطلبات علي هذا الوقت وبعدها قم بمسحه ان اردت</strong>
+        </Alert>
+        <Grid container justify='center'>
+          <Grid item>
+            <Button
+              variant='contained'
+              color='primary'
+              className={classes.formButton}
+              type='submit'
+            >
+              حفظ
+            </Button>
           </Grid>
-          <Grid >
-              <TextField label="الي" 
-               className={classes.fieldedit}
-               value ={EditTo}
-                onChange={(e)=>setEditTo(e.target.value)}            
-                 />
-          </Grid>
-          <Grid >
-              <TextField   label='الحد المسموح في هذا الوقت '
-                className={classes.fieldedit}
-                value={EditMaxCount} 
-                 onChange={(e)=>setEditMaxCount(e.target.value)}
-                />
-          </Grid>
-          <Grid item style={{ padding: 10, width: '100%' }}>
-                  <FormControlLabel
-                    style={{  }}
-                    control={
-                      <Switch
-                        checked={idDisabled}
-                        onChange={() => setIsDisabled(value => !value)}
-                        name='checkedB'
-                        color='primary'
-                      />
-                    }
-                    label='ايقاف هذا التوقيت'
-                  />
-                </Grid>
-                <Grid container justify='center'>
-                <Grid item>
-                  <Button
-                    variant='contained'
-                    color='primary'
-                    className={classes.formButton}
-                    type="submit"
-                  >
-                    حفظ
-                  </Button>
-                </Grid>
-                </Grid>
-         </form> 
+        </Grid>
+      </form>
     </React.Fragment>
   )
   const ordertimesView = (
@@ -339,87 +343,94 @@ const OrderTimes = () => {
         <h2 className={classes.title}>اليوم</h2>
       </Grid>
       <Grid container direction='row'>
-      {orders.length > 0 ?
-        ordertimes.map(item => (
-          <Grid item>
-            <Card className={classes.card}>
-              <Grid container>
-                <Grid
-                  item
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    width: '100%',
-                    padding: 10
-                  }}
-                >
-                  <Typography
-                    variant='h5'
-                    style={{ display: 'flex', color: '#999' }}
+        {orders.length > 0 ? (
+          ordertimes.map(item => (
+            <Grid item>
+              <Card className={classes.card}>
+                <Grid container>
+                  <Grid
+                    item
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      width: '100%',
+                      padding: 10
+                    }}
                   >
-                    {moment()
-                      .add(item.day, 'days')
-                      .format('l')}
-                  </Typography>
-                  <Typography
-                    variant='h5'
-                    style={{ display: 'flex', color: '#999' }}
-                  >
-                    {moment()
-                      .add(item.day, 'days')
-                      .format('dddd')}
-                  </Typography>
-                </Grid>
-                <hr style={{ width: '100%', borderColor: 'rgba(0,0,0,.1)' }} />
-                <Grid
-                  item
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    width: '100%',
-                    padding: 10
-                  }}
-                >
-                  <Typography variant='h4' style={{ display: 'flex' }}>
-                    من : {item.value.from}
-                  </Typography>
-                  <Typography variant='h4' style={{ display: 'flex' }}>
-                    الي : {item.value.to}
-                  </Typography>
-                </Grid>
-                <Grid item style={{ padding: 10, width: '100%' }}>
-                  <Typography variant='h5' style={{ display: 'flex' }}>
-                    العدد الحالي : {item.currentCount}
-                  </Typography>
-                </Grid>
-                <Grid item style={{ padding: 10, width: '100%' }}>
-                  <Typography variant='h5' style={{ display: 'flex' }}>
-                    الحد الأقصي : {item.maxCount}
-                  </Typography>
-                </Grid>
-                <Grid item style={{ padding: 10, width: '100%' }}>
-                  <FormControlLabel
-                    style={{  }}
-                    control={
-                      <Switch
-                        checked={item.isDisabled}
-                        name='checkedB'
-                        color='primary'
-                      />
-                    }
-                    label='ايقاف هذا التوقيت'
+                    <Typography
+                      variant='h5'
+                      style={{ display: 'flex', color: '#999' }}
+                    >
+                      {moment()
+                        .add(item.day, 'days')
+                        .format('l')}
+                    </Typography>
+                    <Typography
+                      variant='h5'
+                      style={{ display: 'flex', color: '#999' }}
+                    >
+                      {moment()
+                        .add(item.day, 'days')
+                        .format('dddd')}
+                    </Typography>
+                  </Grid>
+                  <hr
+                    style={{ width: '100%', borderColor: 'rgba(0,0,0,.1)' }}
                   />
+                  <Grid
+                    item
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      width: '100%',
+                      padding: 10
+                    }}
+                  >
+                    <Typography variant='h4' style={{ display: 'flex' }}>
+                      من : {item.value.from}
+                    </Typography>
+                    <Typography variant='h4' style={{ display: 'flex' }}>
+                      الي : {item.value.to}
+                    </Typography>
+                  </Grid>
+                  <Grid item style={{ padding: 10, width: '100%' }}>
+                    <Typography variant='h5' style={{ display: 'flex' }}>
+                      العدد الحالي : {item.currentCount}
+                    </Typography>
+                  </Grid>
+                  <Grid item style={{ padding: 10, width: '100%' }}>
+                    <Typography variant='h5' style={{ display: 'flex' }}>
+                      الحد الأقصي : {item.maxCount}
+                    </Typography>
+                  </Grid>
+                  <Grid item style={{ padding: 10, width: '100%' }}>
+                    <FormControlLabel
+                      style={{}}
+                      control={
+                        <Switch
+                          checked={item.isDisabled}
+                          name='checkedB'
+                          color='primary'
+                        />
+                      }
+                      label='ايقاف هذا التوقيت'
+                    />
+                  </Grid>
+                  <Grid item style={{ width: '100%' }}>
+                    <Button
+                      style={{ width: '100%', backgroundColor: '#f6f6f6' }}
+                      onClick={() => handleOpen(item)}
+                    >
+                      <strong>تعديل</strong>
+                    </Button>
+                  </Grid>
                 </Grid>
-                <Grid item style={{ width: '100%' }}>
-                  <Button style={{ width: '100%', backgroundColor: '#f6f6f6' }}
-                  onClick={()=>handleOpen(item)}>
-                    <strong>تعديل</strong>
-                  </Button>
-                </Grid>
-              </Grid>
-            </Card>
-          </Grid>
-        )):<Animations/>}
+              </Card>
+            </Grid>
+          ))
+        ) : (
+          <Animations />
+        )}
       </Grid>
     </React.Fragment>
   )
@@ -503,30 +514,28 @@ const OrderTimes = () => {
       >
         <DialogTitle style={{ cursor: 'move' }} id='draggable-dialog-title'>
           <Typography variant='h5' color='primary'>
-            هل حقا تريد التعديل او المسح 
-           </Typography>
+            هل حقا تريد التعديل او المسح
+          </Typography>
         </DialogTitle>
-        <DialogContent>
-            {EditView}
-        </DialogContent>
+        <DialogContent>{EditView}</DialogContent>
         <DialogActions>
-         <Grid container justify="flex-end" >
-         <Button
-              style={{marginLeft:'15px'}}
-              onClick={()=>removetime(id)}
+          <Grid container justify='flex-end'>
+            <Button
+              style={{ marginLeft: '15px' }}
+              onClick={() => removetime(id)}
               variant='contained'
               className={classes.removeButon}
             >
               مسح
             </Button>
-          <Button
-            onClick={handleClose}
-            variant='contained'
-            className={classes.buttondialogsubmit}
-          >
-            تم
-          </Button>
-      </Grid> 
+            <Button
+              onClick={handleClose}
+              variant='contained'
+              className={classes.buttondialogsubmit}
+            >
+              تم
+            </Button>
+          </Grid>
         </DialogActions>
       </Dialog>
     </React.Fragment>
