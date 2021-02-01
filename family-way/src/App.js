@@ -139,7 +139,7 @@ export default function MiniDrawer () {
                             />
                              <Route
                               exact
-                              path='/order-details'
+                              path='/order-details/:id'
                               component={OrdersDetail}
                             />
                             <Route

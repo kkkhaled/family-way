@@ -140,7 +140,7 @@ const OrdersTable = () => {
                   <TableCell align='center'>
                     <Button
                       component={Link}
-                      to='/order-details'
+                      to={`/order-details/${row._id}`}
                       onClick={() => handleGetOrder(row)}
                     >
                       <VisibilityRoundedIcon />

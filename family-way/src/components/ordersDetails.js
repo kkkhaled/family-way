@@ -98,7 +98,7 @@ function PaperComponent (props) {
   )
 }
 
-const OrdersDetails = () => {
+const OrdersDetails = props => {
   const classes = useStyle()
   const [openDialog, setOpenDialog] = useState(false)
   const [alertData, setAlertData] = useState({ open: false })
@@ -123,7 +123,7 @@ const OrdersDetails = () => {
   console.log(order)
 
   useEffect(() => {
-    loadUser()
+    loadUser();
     // eslint-disable-next-line
   }, [])
 

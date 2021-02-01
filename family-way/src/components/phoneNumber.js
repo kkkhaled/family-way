@@ -55,7 +55,7 @@ const PhoneNumber = props => {
       console.log(phone)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authContext, phone, isAuthenticated, props.history])
+  }, [authContext, phone, isAuthenticated,user,props.history])
 
   // handle phone state and addPhone func
   const handleSubmit = e => {
