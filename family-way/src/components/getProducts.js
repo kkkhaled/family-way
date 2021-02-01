@@ -194,9 +194,8 @@ const GetProducts = () => {
             variant='outlined'
             onChange={handlenameSearch}
           >
-            <SearchIcon />
           </TextField>
-        </Grid>
+          </Grid>
         <Grid item style={{ width: '50%' }}>
           <Typography variant='h4'>بحث عن طريق الصنف</Typography>
           <Autocomplete

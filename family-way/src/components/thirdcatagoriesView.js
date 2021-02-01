@@ -100,7 +100,7 @@ const ThirdCatagoriesView = () => {
          }
      } 
 
-         const thirdCatagView=(
+       const thirdCatagView=(
         <React.Fragment>
           <Grid container direction='row'>
             {filteredthird.length > 0 ?

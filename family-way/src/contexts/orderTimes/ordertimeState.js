@@ -4,7 +4,8 @@ import server from '../../api/server'
 
 //initial State
 const initialState = {
-  ordertimes: []
+  ordertimes: [],
+  time : null
 }
 // create context
 export const ordertimesContext = createContext()
@@ -58,17 +59,13 @@ export const OrdertimesProvider = ({ children }) => {
     id,
     from,
     to,
-    day,
     isDisabled,
     maxCount,
-    currentCount
   ) => {
     const data = {
       value: { from, to },
-      day,
       isDisabled,
       maxCount,
-      currentCount
     }
     try {
       const res = await server.put(`/orderTimes/${id}`, data, {
@@ -88,7 +85,11 @@ export const OrdertimesProvider = ({ children }) => {
   // remove order times
   const removetime = async _id => {
     try {
-      const res = await server.delete(`/orderTimes/${_id}`)
+      const res = await server.delete(`/orderTimes/${_id}`,{
+        headers: {
+          Authorization: 'Bearer ' + localStorage.token
+        }
+      })
       dispatch({
         type: 'REMOVE_TIME',
         payload: _id
@@ -97,15 +98,26 @@ export const OrdertimesProvider = ({ children }) => {
       console.log(err)
     }
   }
+  
+  // set current ordertime
+  const SetCurrnttime=(time)=>{
+    dispatch({
+     type :"SET_CURRENT",
+     payload : time
+    })
+ }
+
 
   return (
     <ordertimesContext.Provider
       value={{
         ordertimes: state.ordertimes,
+        time : state.time,
         getOrderstime,
         addNewtime,
         EditOrdertime,
-        removetime
+        removetime,
+        SetCurrnttime
       }}
     >
       {children}

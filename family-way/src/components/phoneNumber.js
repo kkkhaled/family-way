@@ -42,13 +42,13 @@ const PhoneNumber = props => {
     message: 'من فضلك ادخل رقم الهاتف و كود التفعيل'
   })
   //getting function from context
-  const { addPhoneNumber, phone, addCodeNumber, isAuthenticated } = useContext(
+  const { addPhoneNumber, phone, addCodeNumber, isAuthenticated , user} = useContext(
     authContext
   )
 
   //loadphone
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && user.role === 'ADMIN') {
       props.history.push('/')
     }
     if (phone !== null) {
@@ -69,6 +69,11 @@ const PhoneNumber = props => {
 
   return (
     <div className={classes.page}>
+      {user !== null && user.role !== 'ADMIN' ?
+      <Alert severity="error">
+        لا يمكن تسجيل الدخول لغير الادمن 
+      </Alert>
+      :null}
       <Grid container justify='center' alignItems='center' direction='column'>
         <form
           noValidate

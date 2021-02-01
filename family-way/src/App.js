@@ -22,6 +22,9 @@ import CreateCoupons from './pages/createCoupons'
 import CouponsPage from './pages/couponview'
 import AddSliders from './pages/addslider'
 import SliderPage from './pages/getSlider'
+import AddSliderCatagories from './pages/addSliderCatagories'
+import SliderCatagoriesPage from './pages/sliderCatagories'
+import Adss from './pages/Ads'
 import { AuthProvider } from './contexts/auth/authstate'
 import { CatagoriesProvider } from './contexts/catagories/catagoriesState'
 import { SubCatagoriesProvider } from './contexts/subcatagories/subcatagoriesState'
@@ -32,6 +35,8 @@ import { OrdertimesProvider } from './contexts/orderTimes/ordertimeState'
 import {OrdersProvider} from './contexts/ordres/orderState'
 import {CouponsProvider} from './contexts/coupons/couponState'
 import {SliderProvider} from './contexts/sliders/sliderstate'
+import {SliderCatagoryProvider} from './contexts/sliderCatagories/sliderCatagoriesState'
+import {AdsProvider} from './contexts/Ads/adsState'
 import setAuthToken from './api/setAuthToken'
 import PrivateRoute from './routing/privateRoute'
 
@@ -72,6 +77,8 @@ export default function MiniDrawer () {
   const classes = useStyles()
   return (
     <AuthProvider>
+     <AdsProvider> 
+     <SliderCatagoryProvider>
       <SliderProvider>
       <CouponsProvider>
       <OrdersProvider>
@@ -160,6 +167,21 @@ export default function MiniDrawer () {
                               path='/sliders-view' 
                               component={SliderPage}
                             />
+                               <Route
+                              exact
+                              path='/add-slider-catagories' 
+                              component={AddSliderCatagories}
+                            />
+                              <Route
+                              exact
+                              path='/sliders-catagories-view' 
+                              component={SliderCatagoriesPage}
+                            />
+                               <Route
+                              exact
+                              path='/ads' 
+                              component={Adss}
+                            />
                           </Switch>
                            </main>
                       </RTL>
@@ -175,6 +197,8 @@ export default function MiniDrawer () {
       </OrdersProvider>
       </CouponsProvider>
       </SliderProvider>
+      </SliderCatagoryProvider> 
+      </AdsProvider>
     </AuthProvider>
   )
 }

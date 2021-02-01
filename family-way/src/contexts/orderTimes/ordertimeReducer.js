@@ -14,6 +14,11 @@ export default (state, action) => {
               ...state,
               ordertimes: state.ordertimes.filter((time) => time._id !== action.payload),
             }
+            case "SET_CURRENT":
+              return{
+                ...state,
+                time: action.payload
+              }
             default:
         return state;
     }

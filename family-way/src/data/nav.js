@@ -13,6 +13,7 @@ import LibraryAddCheckIcon from '@material-ui/icons/LibraryAddCheck';
 import AddIcon from '@material-ui/icons/Add';
 import AddRoundedIcon from '@material-ui/icons/AddRounded';
 import ViewWeekIcon from '@material-ui/icons/ViewWeek';
+import DialpadIcon from '@material-ui/icons/Dialpad';
 export default {
   catagiories: [
     {
@@ -125,6 +126,29 @@ export default {
       to: "/sliders-view", 
       id: shortid.generate(),
     },
+  ],
+  addslidercatagories: [
+    {
+      title: " انشاء السلايدر الاصناف الثالثه",
+      icon: AddRoundedIcon ,
+      to: "/add-slider-catagories", 
+      id: shortid.generate(),
+    },
+  ],
+  getslidercatagories: [
+    {
+      title: "  السلايدر الاصناف الثالثه",
+      icon: ViewWeekIcon ,
+      to: "/sliders-catagories-view", 
+      id: shortid.generate(),
+    },
+  ],
+  Ads: [
+    {
+      title: " الاعلانات ",
+      icon: DialpadIcon ,
+      to: "/ads", 
+      id: shortid.generate(),
+    },
   ]
- 
 };

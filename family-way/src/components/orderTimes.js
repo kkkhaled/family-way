@@ -8,21 +8,56 @@ import {
   Button,
   Divider,
   Card,
-  IconButton
+  Paper,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
 } from '@material-ui/core'
 import { Alert } from '@material-ui/lab'
-import EditIcon from '@material-ui/icons/Edit'
+//import EditIcon from '@material-ui/icons/Edit'
 import moment from 'moment'
 import { authContext } from '../contexts/auth/authstate'
 import { ordertimesContext } from '../contexts/orderTimes/ordertimeState'
 import 'moment/locale/ar'
 import { FormControlLabel } from '@material-ui/core'
+import Animations from './loader'
+import Draggable from 'react-draggable'
 
 const useStyles = makeStyles(theme => ({
   field: {
     width: '60em',
     marginTop: '10px',
     marginBottom: '10px'
+  },
+  fieldedit: {
+    width: '25em',
+    marginTop: '8px',
+    marginBottom: '8px'
+  },
+  buttondelete: {
+    color: 'white',
+    width: '0.9em',
+    border: 8,
+    marginTop: '5px',
+    marginBottom: '10px',
+    backgroundColor: theme.palette.red.light
+  },
+  removeButon: {
+    backgroundColor: theme.palette.red.light,
+    color: 'white',
+    border: 5,
+    marginLeft: '5px'
+  },
+  formButton: {
+    color: 'white',
+    border: 5,
+    marginTop: '8px'
+  },
+  buttondialogsubmit: {
+    color: 'white',
+    backgroundColor: theme.palette.green.main,
+    border: 5
   },
   font: {
     marginTop: '5px'
@@ -81,6 +116,17 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
+function PaperComponent (props) {
+  return (
+    <Draggable
+      handle='#draggable-dialog-title'
+      cancel={'[class*="MuiDialogContent-root"]'}
+    >
+      <Paper {...props} />
+    </Draggable>
+  )
+}
+
 const OrderTimes = () => {
   const classes = useStyles()
   // define context with state and func
@@ -88,93 +134,30 @@ const OrderTimes = () => {
     ordertimes,
     getOrderstime,
     addNewtime,
+    time,
+    SetCurrnttime,
     EditOrdertime,
     removetime
   } = useContext(ordertimesContext)
   const { loadUser } = useContext(authContext)
 
+  const [openDialog, setOpenDialog] = useState(false)
   const [alertData, setAlertData] = useState({ open: false })
+  const [alertEditData, setAlertEditData] = useState({ open: false })
 
+  const [id, setid] = useState(null)
+   // state for add 
   const [state, setState] = useState({ isDisabled: false })
   const [from, setFrom] = useState('')
   const [to, setTo] = useState('')
   const [day, setDay] = useState(null)
   const [maxCount, setMaxCount] = useState(null)
-  const [idDisabled, setIsDisabled] = useState(false)
-  const [data, setData] = useState([
-    {
-      value: {
-        from: '9ص',
-        to: '12م'
-      },
-      isDisabled: false,
-      currentCount: 11,
-      day: 1,
-      maxCount: 50
-    },
-    {
-      value: {
-        from: '12م',
-        to: '3م'
-      },
-      isDisabled: false,
-      currentCount: 2,
-      day: 2,
-      maxCount: 50
-    },
-    {
-      value: {
-        from: '3م',
-        to: '6م'
-      },
-      isDisabled: true,
-      currentCount: 26,
-      day: 2,
-      maxCount: 50
-    },
-    {
-      value: {
-        from: '3م',
-        to: '6م'
-      },
-      isDisabled: true,
-      currentCount: 2,
-      day: 3,
-      maxCount: 50
-    },
-    {
-      value: {
-        from: '3م',
-        to: '6م'
-      },
-      isDisabled: true,
-      currentCount: 8,
-      day: 3,
-      maxCount: 50
-    },
-    {
-      value: {
-        from: '6م',
-        to: '12م'
-      },
-      isDisabled: true,
-      currentCount: 37,
-      day: 2,
-      maxCount: 50
-    },
-    {
-      value: {
-        from: '9',
-        to: '12ص'
-      },
-      isDisabled: false,
-      currentCount: 50,
-      day: 1,
-      maxCount: 50
-    }
-  ])
-
-  const date = moment()
+  // state for Edit
+  const [idDisabled, setIsDisabled] = useState(false);
+  const [EditTo,setEditTo]= useState('');
+  const [EditFrom,setEditFrom]= useState('');
+  const [EditMaxCount,setEditMaxCount]=useState(null); 
+    const date = moment()
     .add(3, 'days')
     .calendar({
       sameDay: '[اليوم]LTS',
@@ -186,8 +169,30 @@ const OrderTimes = () => {
   useEffect(() => {
     loadUser()
     getOrderstime()
+    if(time !== null){
+      setEditTo(time.value.to);
+      setEditFrom(time.value.from)
+      setEditMaxCount(time.maxCount)
+      setIsDisabled(time.isDisabled)
+    }
     // eslint-disable-next-line
-  }, [])
+  }, [time,ordertimesContext])
+
+  console.log(ordertimes);
+
+    // handle dialog open
+    const handleOpen = item => {
+      setOpenDialog(true)
+      setid(item._id);
+      SetCurrnttime(item)
+    }
+    console.log(id)
+    // handle dialog closed
+    const handleClose = () => {
+      setOpenDialog(false)
+    }
+  
+
   const handleChange = event => {
     setState({ ...state, [event.target.name]: event.target.checked })
   }
@@ -238,13 +243,104 @@ const OrderTimes = () => {
     handleOrderTime()
   }, [ordertimes])
 
+  const handleEditSubmit=(e)=>{
+    e.preventDefault();
+    if(EditFrom===time.value.from || EditFrom === ''){
+      setAlertEditData({
+        open: true,
+        message: 'تاكد من تحديث البيانات ',
+        type: 'error'
+      })
+    }else if(EditTo===time.value.to || EditTo === ''){
+      setAlertEditData({
+        open: true,
+        message: 'تاكد من تحديث البيانات      ',
+        type: 'error'
+      })
+    }
+    else if(EditMaxCount === time.maxCount){
+      setAlertEditData({
+        open: true,
+        message: ' تاكد من تحديث الحدالاقصي ',
+        type: 'error'
+      })
+    }else {
+      EditOrdertime(id,EditFrom,EditTo,idDisabled,EditMaxCount)
+      setAlertEditData({
+        open: true,
+        message: 'تم التعديل  ',
+        type: 'success'
+      })
+      setEditTo('');
+      setEditFrom('');
+      setEditMaxCount(null);
+    } 
+  }
+
+  const EditView=(
+    <React.Fragment>
+      {alertEditData.open ? (
+        <Alert severity={alertEditData.type}>{alertEditData.message}</Alert>
+      ) : null}
+      <form onSubmit={handleEditSubmit}>
+          <Grid >
+              <TextField label="من" 
+               className={classes.fieldedit}
+               value ={EditFrom}
+                onChange={(e)=>setEditFrom(e.target.value)} 
+              />
+          </Grid>
+          <Grid >
+              <TextField label="الي" 
+               className={classes.fieldedit}
+               value ={EditTo}
+                onChange={(e)=>setEditTo(e.target.value)}            
+                 />
+          </Grid>
+          <Grid >
+              <TextField   label='الحد المسموح في هذا الوقت '
+                className={classes.fieldedit}
+                value={EditMaxCount} 
+                 onChange={(e)=>setEditMaxCount(e.target.value)}
+                />
+          </Grid>
+          <Grid item style={{ padding: 10, width: '100%' }}>
+                  <FormControlLabel
+                    style={{  }}
+                    control={
+                      <Switch
+                        checked={idDisabled}
+                        onChange={() => setIsDisabled(value => !value)}
+                        name='checkedB'
+                        color='primary'
+                      />
+                    }
+                    label='ايقاف هذا التوقيت'
+                  />
+                </Grid>
+                <Grid container justify='center'>
+                <Grid item>
+                  <Button
+                    variant='contained'
+                    color='primary'
+                    className={classes.formButton}
+                    type="submit"
+                  >
+                    حفظ
+                  </Button>
+                </Grid>
+                </Grid>
+         </form> 
+    </React.Fragment>
+  )
   const ordertimesView = (
     <React.Fragment>
       <Grid container>
         <h2 className={classes.title}>اليوم</h2>
       </Grid>
       <Grid container direction='row'>
-        {data.map(item => (
+      {orders.length > 0 ?
+        ordertimes.map(item => (
           <Grid item>
             <Card className={classes.card}>
               <Grid container>
@@ -306,8 +402,7 @@ const OrderTimes = () => {
                     style={{  }}
                     control={
                       <Switch
-                        checked={idDisabled}
-                        onChange={() => setIsDisabled(value => !value)}
+                        checked={item.isDisabled}
                         name='checkedB'
                         color='primary'
                       />
@@ -316,14 +411,15 @@ const OrderTimes = () => {
                   />
                 </Grid>
                 <Grid item style={{ width: '100%' }}>
-                  <Button style={{ width: '100%', backgroundColor: '#f6f6f6' }}>
+                  <Button style={{ width: '100%', backgroundColor: '#f6f6f6' }}
+                  onClick={()=>handleOpen(item)}>
                     <strong>تعديل</strong>
                   </Button>
                 </Grid>
               </Grid>
             </Card>
           </Grid>
-        ))}
+        )):<Animations/>}
       </Grid>
     </React.Fragment>
   )
@@ -399,6 +495,40 @@ const OrderTimes = () => {
       </form>
       <Divider />
       {ordertimesView}
+      <Dialog
+        open={openDialog}
+        onClose={handleClose}
+        PaperComponent={PaperComponent}
+        aria-labelledby='draggable-dialog-title'
+      >
+        <DialogTitle style={{ cursor: 'move' }} id='draggable-dialog-title'>
+          <Typography variant='h5' color='primary'>
+            هل حقا تريد التعديل او المسح 
+           </Typography>
+        </DialogTitle>
+        <DialogContent>
+            {EditView}
+        </DialogContent>
+        <DialogActions>
+         <Grid container justify="flex-end" >
+         <Button
+              style={{marginLeft:'15px'}}
+              onClick={()=>removetime(id)}
+              variant='contained'
+              className={classes.removeButon}
+            >
+              مسح
+            </Button>
+          <Button
+            onClick={handleClose}
+            variant='contained'
+            className={classes.buttondialogsubmit}
+          >
+            تم
+          </Button>
+      </Grid> 
+        </DialogActions>
+      </Dialog>
     </React.Fragment>
   )
 }

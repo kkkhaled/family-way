@@ -241,6 +241,24 @@ const SideBar = () => {
           </ListItem>
         ))}
       </List>
+      <Divider className={classes.Divider} />
+      <List>
+        {NavData.orders.map((item, index) => (
+          <ListItem
+            onClick={e => handleClick(e, item.id)}
+            selected={selected === item.id}
+            component={Link}
+            to={item.to}
+            button
+            key={item.id}
+          >
+            <ListItemIcon className={classes.sideIcon}>
+              {<item.icon />}
+            </ListItemIcon>
+            <ListItemText className={classes.sideText} primary={item.title} />
+          </ListItem>
+        ))}
+      </List>
       
       <Divider className={classes.Divider} />
       <List>
@@ -316,6 +334,42 @@ const SideBar = () => {
       </List>
       <Divider className={classes.Divider} />
       <List>
+        {NavData.addslidercatagories.map((item, index) => (
+          <ListItem
+            onClick={e => handleClick(e, item.id)}
+            selected={selected === item.id}
+            component={Link}
+            to={item.to}
+            button
+            key={item.id}
+          >
+            <ListItemIcon className={classes.sideIcon}>
+              {<item.icon />}
+            </ListItemIcon>
+            <ListItemText className={classes.sideText} primary={item.title} />
+          </ListItem>
+        ))}
+      </List>
+      <Divider className={classes.Divider} />
+      <List>
+        {NavData.getslidercatagories.map((item, index) => (
+          <ListItem
+            onClick={e => handleClick(e, item.id)}
+            selected={selected === item.id}
+            component={Link}
+            to={item.to}
+            button
+            key={item.id}
+          >
+            <ListItemIcon className={classes.sideIcon}>
+              {<item.icon />}
+            </ListItemIcon>
+            <ListItemText className={classes.sideText} primary={item.title} />
+          </ListItem>
+        ))}
+      </List>
+      <Divider className={classes.Divider} />
+      <List>
         {NavData.constants.map((item, index) => (
           <ListItem
             onClick={e => handleClick(e, item.id)}
@@ -333,7 +387,6 @@ const SideBar = () => {
         ))}
       </List>
       <Divider className={classes.Divider} />
-
       <List>
         {NavData.ordertimes.map((item, index) => (
           <ListItem
@@ -352,9 +405,8 @@ const SideBar = () => {
         ))}
       </List>
       <Divider className={classes.Divider} />
-        
       <List>
-        {NavData.orders.map((item, index) => (
+        {NavData.Ads.map((item, index) => (
           <ListItem
             onClick={e => handleClick(e, item.id)}
             selected={selected === item.id}
@@ -370,6 +422,7 @@ const SideBar = () => {
           </ListItem>
         ))}
       </List>
+        
         <CustomizedButton component={Link} to='/login' onClick={handleLogout}>
         تسجيل الخروج
       </CustomizedButton>
