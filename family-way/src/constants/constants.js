@@ -1,4 +1,4 @@
-export const url = 'https://familyway.sa/api/user/'
+export const url = 'localhost:8080/api/user/'
 
 export const urlImages = 'https://familyway.sa/uploads/'
 

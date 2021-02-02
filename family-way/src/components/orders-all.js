@@ -98,7 +98,7 @@ const OrdersTable = () => {
           <TableBody>
             {orders !== null ? (
               orders.orders.map((row, i) => (
-                <TableRow key={row.name}>
+                <TableRow key={row._id}>
                   <TableCell align='center'> {row.id}</TableCell>
                   <TableCell align='center'> 1234</TableCell>
                   <TableCell align='center'> {row.time.day}</TableCell>

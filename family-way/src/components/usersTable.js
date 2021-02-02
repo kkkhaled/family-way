@@ -182,7 +182,7 @@ const UsersTable = () => {
               options={options}
               getOptionLabel={option => option.label}
               renderInput={params => (
-                <TextField {...params} label='هدف الكوبون' variant='outlined' />
+                <TextField {...params} label='تعيينه كا مسؤال' variant='outlined' />
               )}
             />
           </Grid>
@@ -301,7 +301,7 @@ const UsersTable = () => {
             <TableBody>
               {searchuser.length > 0 && search === 'done' ? (
                 searchuser.map((row, i) => (
-                  <TableRow key={row.name}>
+                  <TableRow key={row._id}>
                     <TableCell component='th' scope='row' align='center'>
                       {i + 1}
                     </TableCell>
@@ -366,7 +366,7 @@ const UsersTable = () => {
               <TableBody>
                 {users !== null ? (
                   users.users.map((row, i) => (
-                    <TableRow key={row.name}>
+                    <TableRow key={row._id}>
                       <TableCell component='th' scope='row' align='center'>
                         {i + 1}
                       </TableCell>

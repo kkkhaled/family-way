@@ -115,20 +115,29 @@ const OrdersDetails = props => {
     { id: 7, text: 'لم يتم الأسترجاع' },
     { id: 8, text: 'تم الرفض' }
   ])
-
   const [statusId, setstatusId] = useState(null)
 
   const { loadUser } = useContext(authContext)
-  const { updateOrders, refuseOrder, order } = useContext(ordersContext)
-  console.log(order)
-  // console.log(props.match.params.id);  
+  const { updateOrders, refuseOrder, order, getOrder } = useContext(
+    ordersContext
+  )
+
   useEffect(() => {
-    loadUser();
-  //  console.log(props.match.params.id); 
-  // console.log(props);  
+    const getMyOrder = async () => {
+      const path = window.location.pathname
+      const _id = path.replace('/order-details/', '')
+      await getOrder(_id)
+    }
+    getMyOrder()
+  }, [])
+
+  useEffect(() => {
+    loadUser()
+    //  console.log(props.match.params.id);
+    // console.log(props);
     // eslint-disable-next-line
   }, [])
-  //console.log(props);  
+  //console.log(props);
 
   // handle dropzone state
   const SelectFilesButtonHandler = () => {
@@ -248,7 +257,7 @@ const OrdersDetails = props => {
     <React.Fragment>
       {order.length > 0 ? (
         order.map(order => (
-          <Card>
+          <Card key={order._id}>
             <Grid container direction='row'>
               <Typography variant='h5' className={classes.h5}>
                 الطلب رقم {order.id}#
@@ -345,6 +354,7 @@ const OrdersDetails = props => {
               <Grid container direction='row'>
                 {order.items.map(item => (
                   <Grid
+                  key={item._id}
                     item
                     style={{
                       display: 'flex',
@@ -426,23 +436,24 @@ const OrdersDetails = props => {
 
               </div>
             </Box> */}
-            {order.time.hour !== null ? 
-            <Box
-              border={0.1}
-              borderColor='grey.500'
-              style={{ marginTop: 5, padding: 5 }}
-            >
-             
-              <Typography variant='h6' className={classes.h6}>
-                ميعاد الطلب
-              </Typography>
-              <Typography variant='h6' className={classes.payment}>
-                {moment(order.time.day).format('dddd')}
-              </Typography>
-              <Typography variant='h6' className={classes.payment}>
-                من {order.time.hour.value.from} - الي {order.time.hour.value.to}
-              </Typography>
-            </Box>:null}
+            {order.time.hour !== null ? (
+              <Box
+                border={0.1}
+                borderColor='grey.500'
+                style={{ marginTop: 5, padding: 5 }}
+              >
+                <Typography variant='h6' className={classes.h6}>
+                  ميعاد الطلب
+                </Typography>
+                <Typography variant='h6' className={classes.payment}>
+                  {moment(order.time.day).format('dddd')}
+                </Typography>
+                <Typography variant='h6' className={classes.payment}>
+                  من {order.time.hour.value.from} - الي{' '}
+                  {order.time.hour.value.to}
+                </Typography>
+              </Box>
+            ) : null}
             <Box
               border={0.1}
               borderColor='grey.500'

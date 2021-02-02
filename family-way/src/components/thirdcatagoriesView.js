@@ -106,7 +106,7 @@ const ThirdCatagoriesView = () => {
             {filteredthird.length > 0 ?
             filteredthird.map((catag)=>(
               <Card style={{ margin: 10 ,textAlign:"center"}} key={catag._id}>
-                <img  style={{ width: 200, height: 100 }}
+                <img  style={{ width: 50, height: 50 }}
                  src={`https://familyway.sa/uploads/thirdCategory/${catag.image}`} 
                   alt="subimg" />
                <h5 style={{textAlign:"center",margin:10}}>{catag.name}</h5>
