@@ -185,7 +185,7 @@ const SideBar = () => {
           </ListItem>
         ))}
       </List> 
-      {/* 
+    
       <Divider className={classes.Divider} />
       <List>
         {NavData.notifcations.map((item, index) => (
@@ -204,7 +204,7 @@ const SideBar = () => {
           </ListItem>
         ))}
       </List>
-      */}
+    
       <Divider className={classes.Divider} />
       <List>
         {NavData.addproducts.map((item, index) => (

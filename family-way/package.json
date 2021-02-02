@@ -15,8 +15,6 @@
     "jss-rtl": "^0.3.0",
     "material-ui-dropzone": "^3.5.0",
     "moment": "^2.29.1",
-    "patch-package": "^6.2.2",
-    "postinstall-postinstall": "^2.1.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-draggable": "^4.4.3",
@@ -28,11 +26,9 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.4",
     "react-select": "^3.1.1",
-    "shortid": "^2.2.15",
-    "use-state-if-mounted": "^1.0.4"
+    "shortid": "^2.2.15"
   },
   "scripts": {
-    "postinstall": "patch-package",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

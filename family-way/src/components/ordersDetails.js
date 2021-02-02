@@ -121,11 +121,14 @@ const OrdersDetails = props => {
   const { loadUser } = useContext(authContext)
   const { updateOrders, refuseOrder, order } = useContext(ordersContext)
   console.log(order)
-
+  // console.log(props.match.params.id);  
   useEffect(() => {
     loadUser();
+  //  console.log(props.match.params.id); 
+  // console.log(props);  
     // eslint-disable-next-line
   }, [])
+  //console.log(props);  
 
   // handle dropzone state
   const SelectFilesButtonHandler = () => {
