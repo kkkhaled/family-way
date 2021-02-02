@@ -101,83 +101,83 @@ export default function MiniDrawer () {
                               path='/'
                               component={Addcatagiories}
                             />
-                            <Route
+                            <PrivateRoute
                               exact
                               path='/Getsubcatagiories'
                               component={Getsubcatagiories}
                             />
-                            <Route
+                            <PrivateRoute
                               exact
                               path='/Getthirdcatagiories'
                               component={Getthirdcatagiories}
                             />
-                            <Route exact path='/users' component={Userstable} />
-                            <Route
+                            <PrivateRoute exact path='/users' component={Userstable} />
+                            <PrivateRoute
                               exact
                               path='/addproducts'
                               component={Addproducts}
                             />
-                            <Route
+                            <PrivateRoute
                               exact
                               path='/getproducts'
                               component={Getproducts}
-                            />
-                            <Route
+                            /> 
+                            <PrivateRoute
                               exact
                               path='/constants'
                               component={ContantsPage}
                             />
-                            <Route
+                            <PrivateRoute
                               exact
                               path='/ordertimes'
                               component={Ordertimes}
                             />
-                            <Route
+                            <PrivateRoute
                               exact
                               path='/orders'
                               component={OrdersPage}
                             />
-                             <Route
+                             <PrivateRoute
                               exact
                               path='/order-details/:id'
                               component={OrdersDetail}
                             />
-                            <Route
+                            <PrivateRoute
                               exact
                               path='/pushNot'
                               component={PushNotification}
                             /> 
-                             <Route
+                             <PrivateRoute
                               exact
                               path='/create-coupons' 
                               component={CreateCoupons}
                             /> 
-                              <Route
+                              <PrivateRoute
                               exact
                               path='/view-coupons' 
                               component={CouponsPage}
                             />
-                              <Route
+                              <PrivateRoute
                               exact
                               path='/add-slider' 
                               component={AddSliders}
                             />
-                              <Route
+                              <PrivateRoute
                               exact
                               path='/sliders-view' 
                               component={SliderPage}
                             />
-                               <Route
+                               <PrivateRoute
                               exact
                               path='/add-slider-catagories' 
                               component={AddSliderCatagories}
                             />
-                              <Route
+                              <PrivateRoute
                               exact
                               path='/sliders-catagories-view' 
                               component={SliderCatagoriesPage}
                             />
-                               <Route
+                               <PrivateRoute
                               exact
                               path='/ads' 
                               component={Adss}

@@ -50,6 +50,11 @@ export default (state, action) => {
         searchuser : action.payload,
         loading : false
       }
+      case "SET_CURRENT_USER":
+        return{
+          ...state,
+          editUser: action.payload
+        }
     default:
       return state
   }

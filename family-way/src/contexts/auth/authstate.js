@@ -11,6 +11,7 @@ const initialState = {
   user: null,
   code: null,
   users :null,
+  editUser: null,
   searchuser:[]
 }
 
@@ -119,10 +120,17 @@ export const AuthProvider = ({ children }) => {
       console.log(err)
     }
   }
+  // getUser for edit
+   const getUser=async user=>{
+    dispatch({
+      type: 'SET_CURRENT_USER',
+      payload: user
+    })
+   } 
 
   // edit users
-  const EditUsers=async(phone,wallet,points,spins,isBlocked)=>{
-        const data={wallet,points,spins,isBlocked}
+  const EditUsers=async(phone,wallet,points,role)=>{
+        const data={wallet,points,role}
         try {
           const res = await server.put(`updateUser/${phone}`,data,{'headers': {
             'Authorization': 'Bearer ' + localStorage.token
@@ -169,12 +177,14 @@ export const AuthProvider = ({ children }) => {
         loading: state.loading,
         user: state.user,
         users:state.users, 
+        editUser : state.editUser,
         searchuser: state.searchuser,
         addCodeNumber,
         addPhoneNumber,
         loadUser,
         getAllUsers,
         getUnpagenatedUsers,
+        getUser,
         EditUsers,
         searchviaName,
         searchviaPhone,

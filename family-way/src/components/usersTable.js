@@ -78,11 +78,13 @@ function PaperComponent (props) {
 }
 
 const UsersTable = () => {
-  const classes = useStyle()
-  const [isBlocked, setIsBlocked] = useState(false)
-  const [wallet, setWallet] = useState('')
-  const [spin, setSpins] = useState('')
-  const [points, setPoints] = useState('')
+  const classes = useStyle();
+  //const [isBlocked, setIsBlocked] = useState(false);
+  const [alertData, setAlertData] = useState({ open: false })
+  const [wallet, setWallet] = useState('');
+  //const [spin, setSpins] = useState('')
+  const [points, setPoints] = useState('');
+  const [role,setRole]=useState('');
   const {
     getAllUsers,
     EditUsers,
@@ -92,16 +94,16 @@ const UsersTable = () => {
     searchuser,
     loadUser
   } = useContext(authContext)
-  const [userPhone, setUserPhone] = useState('')
+  const [userPhone, setUserPhone] = useState('');
   //for hanle pop-up
-  const [openDialog, setOpenDialog] = useState(false)
+  const [openDialog, setOpenDialog] = useState(false);
   // for pagenate
-  const [limit, setLimit] = useState(12)
+  const [limit, setLimit] = useState(12);
   const [options, setOptions] = useState([
     { label: 'USER' },
     { label: 'ADMIN' }
-  ])
-  const [search, setsearch] = useState('')
+  ]);
+  const [search, setsearch] = useState('');
 
   // load user data
   useEffect(() => {
@@ -129,8 +131,25 @@ const UsersTable = () => {
   }
 
   const handleUpate = e => {
-    e.preventDefault()
-    EditUsers(userPhone, wallet, points, spin, isBlocked)
+    e.preventDefault();
+    if(points === '' || wallet === '' || role===''){
+      setAlertData({
+        open: true,
+        message: 'تاكد من ادخال البيانات بشكل صحيح',
+        type: 'error'
+      })
+    }else {
+      EditUsers(userPhone, wallet, points,role);
+      setAlertData({
+        open: true,
+        message: '  تم التعديل ',
+        type: 'success'
+      })
+      setWallet('');
+      setPoints('');
+      setRole('');
+      setUserPhone(''); 
+    }
   }
 
   // handle search via name
@@ -159,16 +178,27 @@ const UsersTable = () => {
     }
   }
 
+  // handle role
+  const handleRole=(event,item)=>{
+    if(item){
+      setRole(item.label);
+    }
+  }
+
   //console.log(users);
 
   const dialogContent = (
     <React.Fragment>
+         {alertData.open ? (
+        <Alert severity={alertData.type}>{alertData.message}</Alert>
+      ) : null}
       <form onSubmit={handleUpate}>
         <Grid container direction='column'>
           <Grid item>
             <TextField
               variant='outlined'
               label=' المحفظه'
+              value={wallet}
               style={{ width: '100%', marginBottom: 10 }}
               onChange={e => {
                 setWallet(e.target.value)
@@ -181,6 +211,7 @@ const UsersTable = () => {
               id='combo-box-demo'
               options={options}
               getOptionLabel={option => option.label}
+              onChange={handleRole}
               renderInput={params => (
                 <TextField {...params} label='تعيينه كا مسؤال' variant='outlined' />
               )}
@@ -195,10 +226,11 @@ const UsersTable = () => {
           <Grid item>
             <TextField
               variant='outlined'
-              label='تعيينه كا مسؤال'
+              label='النقاط'
+              value={points}
               style={{ width: '100%' }}
               onChange={e => {
-                setSpins(e.target.value)
+                setPoints(e.target.value)
               }}
             />
           </Grid>
