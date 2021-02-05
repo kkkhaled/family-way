@@ -3,14 +3,14 @@ import BasePage from './basePage'
 import Section from '../components/section'
 import OrdersTable from '../components/orders-all'
 
-const OrdersPage = () => {
+const OrderArchived = () => {
   return (
-    <BasePage pageTitle=' عرض الطلبات'>
+    <BasePage pageTitle='الطلبات المأرشفة'>
       <Section>
-        <OrdersTable isArchived={false} />
+        <OrdersTable isArchived={true} />
       </Section>
     </BasePage>
   )
 }
 
-export default OrdersPage
+export default OrderArchived

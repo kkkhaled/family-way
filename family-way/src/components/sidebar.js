@@ -49,7 +49,7 @@ const useStyle = makeStyles(theme => ({
     backgroundColor: '#999'
   },
   sideBarText: {
-    color: '#999',
+    color: '#999'
   }
 }))
 
@@ -184,8 +184,8 @@ const SideBar = () => {
             <ListItemText className={classes.sideText} primary={item.title} />
           </ListItem>
         ))}
-      </List> 
-    
+      </List>
+
       <Divider className={classes.Divider} />
       <List>
         {NavData.notifcations.map((item, index) => (
@@ -204,7 +204,7 @@ const SideBar = () => {
           </ListItem>
         ))}
       </List>
-    
+
       <Divider className={classes.Divider} />
       <List>
         {NavData.addproducts.map((item, index) => (
@@ -259,7 +259,26 @@ const SideBar = () => {
           </ListItem>
         ))}
       </List>
-      
+
+      <Divider className={classes.Divider} />
+      <List>
+        {NavData.ordersArchived.map((item, index) => (
+          <ListItem
+            onClick={e => handleClick(e, item.id)}
+            selected={selected === item.id}
+            component={Link}
+            to={item.to}
+            button
+            key={item.id}
+          >
+            <ListItemIcon className={classes.sideIcon}>
+              {<item.icon />}
+            </ListItemIcon>
+            <ListItemText className={classes.sideText} primary={item.title} />
+          </ListItem>
+        ))}
+      </List>
+
       <Divider className={classes.Divider} />
       <List>
         {NavData.addcoupons.map((item, index) => (
@@ -422,8 +441,8 @@ const SideBar = () => {
           </ListItem>
         ))}
       </List>
-        
-        <CustomizedButton component={Link} to='/login' onClick={handleLogout}>
+
+      <CustomizedButton component={Link} to='/login' onClick={handleLogout}>
         تسجيل الخروج
       </CustomizedButton>
     </Drawer>

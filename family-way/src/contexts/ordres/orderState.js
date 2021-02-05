@@ -16,10 +16,10 @@ export const OrdersProvider = ({ children }) => {
   // actions
 
   // get All Orders
-  const getOrders = async (page, limit) => {
+  const getOrders = async (page, limit, isArchived) => {
     try {
       const res = await server.get(
-        `/getOrdersForAdmin?page=${page}&limit=${limit}`
+        `/getOrdersForAdmin?page=${page}&limit=${limit}&isArchived=${isArchived}`
       )
       dispatch({
         type: 'GET_ORDERS',

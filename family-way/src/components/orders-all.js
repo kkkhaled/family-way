@@ -9,7 +9,8 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Button
+  Button,
+  Snackbar
 } from '@material-ui/core'
 import Pagination from '@material-ui/lab/Pagination'
 import VisibilityRoundedIcon from '@material-ui/icons/VisibilityRounded'
@@ -17,6 +18,9 @@ import { authContext } from '../contexts/auth/authstate'
 import { ordersContext } from '../contexts/ordres/orderState'
 import Animations from './loader'
 import { Link } from 'react-router-dom'
+import axios from 'axios'
+import { url } from '../constants/constants'
+import { Alert } from '@material-ui/lab'
 
 const useStyle = makeStyles(theme => ({
   pagenation: {
@@ -29,22 +33,11 @@ const useStyle = makeStyles(theme => ({
   }
 }))
 
-const OrdersTable = () => {
+const OrdersTable = ({ isArchived }) => {
+  const [alertData, setAlertData] = useState({ open: false })
   const classes = useStyle()
   const { loadUser } = useContext(authContext)
   const { getOrders, orders, getOrder } = useContext(ordersContext)
-  // const [status, setstaus] = useState([
-  //   {id : 0 , text: 'تم استلام الطلب'},
-  //   {id : 1 , text:'مرحلة المراجعه'},
-  //   {id : 2 , text:'جاري التجهيز'},
-  //   {id : 3 , text:   'في الطريق'},
-  //   {id : 4 , text:'تم التوصيل'},
-  //   {id : 5 , text:'تحت المراجعة للأسترجاع'},
-  //   {id : 6 , text:'تم الأسترجاع'},
-  //   {id : 7 , text:'لم يتم الأسترجاع'},
-  //   {id : 8 , text:'تم الرفض'},
-  //  ]);
-
   const [limit, setLimit] = useState(12)
 
   useEffect(() => {
@@ -54,7 +47,7 @@ const OrdersTable = () => {
   }, [])
 
   const loadPagenateOrders = page => {
-    getOrders(page, limit)
+    getOrders(page, limit, isArchived)
   }
 
   const handleGetOrder = order => {
@@ -62,8 +55,22 @@ const OrdersTable = () => {
     // SetCurrntOrder(order);
   }
 
-  console.log(orders)
-
+  const archiveOrder = async id => {
+    try {
+      const response = await axios.put(`${url}order/${id}`, {
+        isArchived: true
+      })
+      console.log(response.data)
+      setAlertData({
+        open: true,
+        message: 'تمت الأرشفه',
+        type: 'success'
+      })
+      loadPagenateOrders()
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
   return (
     <React.Fragment>
       <TableContainer elevation={0} component={Paper}>
@@ -93,6 +100,11 @@ const OrdersTable = () => {
               <TableCell align='center'>
                 <Typography variant='h5'>مشاهده</Typography>
               </TableCell>
+              {!isArchived ? (
+                <TableCell align='center'>
+                  <Typography variant='h5'>أرشفة الطلب</Typography>
+                </TableCell>
+              ) : null}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -146,6 +158,16 @@ const OrdersTable = () => {
                       <VisibilityRoundedIcon />
                     </Button>
                   </TableCell>
+                  {!isArchived ? (
+                    <TableCell align='center'>
+                      <Button
+                        onClick={() => archiveOrder(row._id)}
+                        variant='outlinedPrimary'
+                      >
+                        أرشفه
+                      </Button>
+                    </TableCell>
+                  ) : null}
                 </TableRow>
               ))
             ) : (
@@ -166,6 +188,18 @@ const OrdersTable = () => {
       ) : (
         ''
       )}
+      <Snackbar
+        open={alertData.open}
+        autoHideDuration={6000}
+        onClose={() => setAlertData(value => (value = false))}
+      >
+        <Alert
+          onClose={() => setAlertData(value => (value = false))}
+          severity='success'
+        >
+          تم أرشفة الطلب بنجاح
+        </Alert>
+      </Snackbar>
     </React.Fragment>
   )
 }
