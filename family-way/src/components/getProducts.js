@@ -136,7 +136,6 @@ const GetProducts = () => {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(11)
 
-
   useEffect(
     () => {
       loadUser()
@@ -177,7 +176,7 @@ const GetProducts = () => {
   //  const RemoveItem=(id)=>{
   //   removeProducts(id);
   //   products.products.filter(product=> product._id !== id);
-  //  } 
+  //  }
 
   const convertDiscountEnd = end => {
     return `سينتهي العرض ${moment(end).fromNow()}`
@@ -193,9 +192,8 @@ const GetProducts = () => {
             style={{ width: '100%', margin: '20px 0px' }}
             variant='outlined'
             onChange={handlenameSearch}
-          >
-          </TextField>
-          </Grid>
+          ></TextField>
+        </Grid>
         <Grid item style={{ width: '50%' }}>
           <Typography variant='h4'>بحث عن طريق الصنف</Typography>
           <Autocomplete
@@ -227,6 +225,23 @@ const GetProducts = () => {
                   <div
                     style={{ height: 200, width: '100%', position: 'relative' }}
                   >
+                    {product.variationId.length > 1 ? (
+                      <p
+                        style={{
+                          position: 'absolute',
+                          right: 5,
+                          top: 0,
+                          backgroundColor: '#E91E63',
+                          color: '#FFF',
+                          fontSize: 13,
+                          borderRadius: 12,
+                          padding: 6
+                        }}
+                      >
+                        {product.variationId}
+                      </p>
+                    ) : null}
+
                     {products.discountEnds ? (
                       <div
                         style={{
@@ -252,7 +267,11 @@ const GetProducts = () => {
                       style={{ height: 200, objectFit: 'contain' }}
                     />
                   </div>
-                  <Grid container direction='column'>
+                  <Grid
+                    container
+                    direction='column'
+                    style={{ position: 'relative' }}
+                  >
                     {product.discount > 0 ? (
                       <div style={{ display: 'flex' }}>
                         <Typography
@@ -283,13 +302,13 @@ const GetProducts = () => {
                         {product.price}
                       </Typography>
                     )}
-
                     <Grid item>
                       <Typography variant='h4'>{product.title}</Typography>
                     </Grid>
                     <Grid item>
                       <Typography variant='h5'>{product.details}</Typography>
                     </Grid>
+
                     <Grid item>
                       <Grid container direction='row'>
                         <Button

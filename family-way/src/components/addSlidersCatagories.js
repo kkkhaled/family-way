@@ -12,7 +12,7 @@ import Alert from '@material-ui/lab/Alert'
 import { makeStyles } from '@material-ui/core/styles'
 import { sliderContext } from '../contexts/sliderCatagories/sliderCatagoriesState'
 import { thirdcatagoriesContext } from '../contexts/thirdcatagories/thirdState'
-import {subcatagoriesContext} from '../contexts/subcatagories/subcatagoriesState';
+import { subcatagoriesContext } from '../contexts/subcatagories/subcatagoriesState'
 import { productContext } from '../contexts/products/productState'
 import { authContext } from '../contexts/auth/authstate'
 import DroZone from './DropZone'
@@ -22,8 +22,7 @@ const useStyles = makeStyles(theme => ({
     color: 'white',
     width: '20em',
     border: 8,
-    marginTop: '20px',
-
+    marginTop: '20px'
   },
   buttonsubmit: {
     color: 'white',
@@ -49,30 +48,30 @@ const AddSlider = () => {
   const [alertData, setAlertData] = useState({ open: false })
   const [dropZoneState, setDropZoneState] = useState(false)
   const [text, setText] = useState([{ name: 'تحميل !!' }])
- 
-  const [files, setFiles] = useState([]);
-  const [isProduct, setisProduct] = useState(false);
-  const [sort, setsort] = useState('');
-  const [category, setcategory] = useState(null);
-  const [action, setaction] = useState(null);
+
+  const [files, setFiles] = useState([])
+  const [isProduct, setisProduct] = useState(false)
+  const [sort, setsort] = useState('')
+  const [category, setcategory] = useState(null)
+  const [action, setaction] = useState(null)
 
   const { loadUser } = useContext(authContext)
-  const { addNewSliderCatagories,addNewSlider } = useContext(
-    sliderContext
-  )
+  const { addNewSliderCatagories, addNewSlider } = useContext(sliderContext)
 
-  const {getAllSubCatagories,subcatagories}=useContext(subcatagoriesContext);
+  const { getAllSubCatagories, subcatagories } = useContext(
+    subcatagoriesContext
+  )
 
   const { getAllThirdCatagories, thirdcatagories } = useContext(
     thirdcatagoriesContext
   )
-  const { GetProductViaCat, nonPagenateProducts } = useContext(productContext);
+  const { GetProductViaCat, nonPagenateProducts } = useContext(productContext)
 
   useEffect(
     () => {
-      getAllSubCatagories();
-      getAllThirdCatagories();
-      loadUser();
+      getAllSubCatagories()
+      getAllThirdCatagories()
+      loadUser()
     },
     // eslint-disable-next-line
     []
@@ -105,8 +104,8 @@ const AddSlider = () => {
       setaction(item._id)
     }
   }
-  
-   const handleSubmit = e => {
+
+  const handleSubmit = e => {
     e.preventDefault()
     if (sort === '') {
       setAlertData({
@@ -120,40 +119,37 @@ const AddSlider = () => {
         message: 'تاكد من رفع الصوره  ',
         type: 'error'
       })
-    }else if (category === null) {
-        setAlertData({
-          open: true,
-          message: 'تاكد من اختيار الصنف الثالث   ',
-          type: 'error'
-        })
+    } else if (category === null) {
+      setAlertData({
+        open: true,
+        message: 'تاكد من اختيار الصنف الثالث   ',
+        type: 'error'
+      })
+    } else if (isProduct) {
+      addNewSliderCatagories(category, files, isProduct, sort, action)
+      setAlertData({
+        open: true,
+        message: 'تم الاضافه',
+        type: 'success'
+      })
+      setFiles([])
+      setisProduct(false)
+      setsort('')
+      setcategory(null)
+      setaction(null)
+    } else if (!isProduct) {
+      addNewSlider(category, files, sort)
+      setAlertData({
+        open: true,
+        message: 'تم الاضافه  ',
+        type: 'success'
+      })
+      setFiles([])
+      setisProduct(false)
+      setsort('')
+      setcategory(null)
+      setaction(null)
     }
-     else if (isProduct) {
-      addNewSliderCatagories(category,files,isProduct,sort,action)  
-      setAlertData({
-        open: true,
-        message: 'تم الاضافه  ',
-        type: 'success'
-      })
-      setFiles([]);
-      setisProduct(false);
-      setsort('');
-      setcategory(null)
-      setaction(null);
-    }else if(!isProduct){
-     addNewSlider(category,files,sort)  
-      setAlertData({
-        open: true,
-        message: 'تم الاضافه  ',
-        type: 'success'
-      })
-      setFiles([]);
-      setisProduct(false);
-      setsort('');
-      setcategory(null)
-      setaction(null);
-    } 
-    
-  
   }
 
   return (
@@ -167,7 +163,7 @@ const AddSlider = () => {
             <TextField
               label='الترتيب'
               value={sort}
-              onChange={e => setsort(e.target.value)}
+              onChange={e => setsort(~~e.target.value)}
             />
           </Grid>
         </Grid>
@@ -182,21 +178,21 @@ const AddSlider = () => {
           </Button>
         </Grid>
         {subcatagories.length > 0 ? (
-              <Autocomplete
-              style={{ width: '100%', margin: '20px 0px' }}
-                id='combo-box-demo'
-                onChange={handleRef}
-                options={subcatagories}
-                getOptionLabel={option => option.name}
-                renderInput={params => (
-                  <TextField
-                    {...params}
-                    label='اختر الصنف الفرعي'
-                    variant='outlined'
-                  />
-                )}
+          <Autocomplete
+            style={{ width: '100%', margin: '20px 0px' }}
+            id='combo-box-demo'
+            onChange={handleRef}
+            options={subcatagories}
+            getOptionLabel={option => option.name}
+            renderInput={params => (
+              <TextField
+                {...params}
+                label='اختر الصنف الفرعي'
+                variant='outlined'
               />
-            ) : null}
+            )}
+          />
+        ) : null}
         <Grid container direction='column' justify='center'>
           <Grid item>
             <FormControlLabel
@@ -211,8 +207,8 @@ const AddSlider = () => {
             />
             {isProduct && thirdcatagories.length > 0 ? (
               <Autocomplete
-              style={{ width: '100%', margin: '20px 0px' }}
-              id='combo-box-demo'
+                style={{ width: '100%', margin: '20px 0px' }}
+                id='combo-box-demo'
                 onChange={handleFilter}
                 options={thirdcatagories}
                 getOptionLabel={option => option.name}
@@ -229,8 +225,8 @@ const AddSlider = () => {
           <Grid item>
             {nonPagenateProducts.length > 0 ? (
               <Autocomplete
-              style={{ width: '100%', margin: '20px 0px' }}
-              id='combo-box-demo'
+                style={{ width: '100%', margin: '20px 0px' }}
+                id='combo-box-demo'
                 onChange={handleProduct}
                 options={nonPagenateProducts}
                 getOptionLabel={option => option.title}
@@ -244,7 +240,6 @@ const AddSlider = () => {
               />
             ) : null}
           </Grid>
-         
         </Grid>
         <Grid container justify='center'>
           <Button

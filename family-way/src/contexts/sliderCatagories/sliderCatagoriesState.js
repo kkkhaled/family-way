@@ -28,14 +28,19 @@ export const SliderCatagoryProvider = ({ children }) => {
 
   // case add slider
   const addNewSliderCatagories = async (ref, file, isProduct, sort, action) => {
+    console.log(ref, file, isProduct, sort, action)
     const formData = new FormData()
     Array.from(file).forEach(file => {
       formData.append('file', file)
     })
     formData.append('ref', ref)
-    formData.append('isProduct', isProduct)
     formData.append('sort', sort)
-    formData.append('action', action)
+
+    if (isProduct) {
+      formData.append('isProduct', isProduct)
+      formData.append('action', action)
+    }
+    console.log('formData', formData)
     const config = {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -43,7 +48,7 @@ export const SliderCatagoryProvider = ({ children }) => {
       }
     }
     try {
-      const res = await server.post('/sliderCategory', formData, config)
+      const res = await server.post('/sliderCategory', formData)
       //console.log(res);
     } catch (err) {
       console.log(err)
@@ -54,7 +59,7 @@ export const SliderCatagoryProvider = ({ children }) => {
   const addNewSlider = async (ref, file, sort) => {
     const formData = new FormData()
     Array.from(file).forEach(file => {
-      formData.append('image', file)
+      formData.append('file', file)
     })
     formData.append('ref', ref)
     formData.append('sort', sort)
@@ -64,9 +69,10 @@ export const SliderCatagoryProvider = ({ children }) => {
         Authorization: 'Bearer ' + localStorage.token
       }
     }
+    console.log(ref, file, sort)
     try {
-      const res = await server.post('/sliderCategory', formData, config)
-      //console.log(res);
+      const res = await server.post('/sliderCategory', formData)
+      console.log(res);
     } catch (err) {
       console.log(err)
     }
