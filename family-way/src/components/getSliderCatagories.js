@@ -12,6 +12,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete'
 import { sliderContext } from '../contexts/sliderCatagories/sliderCatagoriesState'
 import { thirdcatagoriesContext } from '../contexts/thirdcatagories/thirdState'
 import { authContext } from '../contexts/auth/authstate'
+import {subcatagoriesContext} from '../contexts/subcatagories/subcatagoriesState';
 import Alert from '@material-ui/lab/Alert'
 import Animations from './loader'
 const useStyles = makeStyles(theme => ({
@@ -68,17 +69,22 @@ const GetSlider = () => {
   const classes = useStyles()
   const { loadUser } = useContext(authContext)
   const { getslider, sliders, removeslider } = useContext(sliderContext)
-  const { getAllThirdCatagories, thirdcatagories } = useContext(
-    thirdcatagoriesContext
-  )
+  const {getAllSubCatagories,subcatagories}=useContext(subcatagoriesContext);
+
+  const [loader,setLoader]= useState({name : 'تحميل'})
+
+  // const { getAllThirdCatagories, thirdcatagories } = useContext(
+  //   thirdcatagoriesContext
+  // )
 
   useEffect(() => {
     loadUser()
-    getAllThirdCatagories()
+    //getAllThirdCatagories();
+    getAllSubCatagories();
     // eslint-disable-next-line
   }, [])
   console.log(sliders)
-  console.log(thirdcatagories)
+  //console.log(thirdcatagories)
 
   // handle filter input
   const handleFilter = (event, item) => {
@@ -124,7 +130,7 @@ const GetSlider = () => {
         ) : (
           <div style={{ margin: '15px 0px', width: '100%' }}>
             <Alert severity='info'>
-              <Typography variant='h5'>ادخل الصنف الثالث من فضلك</Typography>
+              <Typography variant='h5'>ادخل الصنف الفرعي من فضلك</Typography>
             </Alert>
           </div>
         )}
@@ -136,23 +142,38 @@ const GetSlider = () => {
     <React.Fragment>
       <Grid container direction='column'>
         <Typography variant='h4' className={classes.head}>
-          عرض الاصناف الفرعيه
+           الاصناف الفرعيه
         </Typography>
         <Grid item>
+          {subcatagories.length > 0 ? 
           <Autocomplete
             id='combo-box-demo'
             style={{ width: '100%', margin: '15px 0' }}
-            options={thirdcatagories}
+            options={subcatagories}
             getOptionLabel={option => option.name}
             onChange={handleFilter}
             renderInput={params => (
               <TextField
                 {...params}
-                label='اختر الصنف الثالث'
+                label='اختر الصنف الفرعي'
                 variant='outlined'
               />
             )}
           />
+          : <Autocomplete
+          id='combo-box-demo'
+          style={{ width: '100%', margin: '15px 0' }}
+          options={loader}
+          getOptionLabel={option => option.name}
+          onChange={handleFilter}
+          renderInput={params => (
+            <TextField
+              {...params}
+              label='اختر الصنف الفرعي'
+              variant='outlined'
+            />
+          )}
+        />}
         </Grid>
         {sliderViews}
       </Grid>

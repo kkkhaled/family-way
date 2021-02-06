@@ -12,6 +12,7 @@ import Alert from '@material-ui/lab/Alert'
 import { makeStyles } from '@material-ui/core/styles'
 import { sliderContext } from '../contexts/sliderCatagories/sliderCatagoriesState'
 import { thirdcatagoriesContext } from '../contexts/thirdcatagories/thirdState'
+import {subcatagoriesContext} from '../contexts/subcatagories/subcatagoriesState';
 import { productContext } from '../contexts/products/productState'
 import { authContext } from '../contexts/auth/authstate'
 import DroZone from './DropZone'
@@ -59,6 +60,9 @@ const AddSlider = () => {
   const { addNewSliderCatagories,addNewSlider } = useContext(
     sliderContext
   )
+
+  const {getAllSubCatagories,subcatagories}=useContext(subcatagoriesContext);
+
   const { getAllThirdCatagories, thirdcatagories } = useContext(
     thirdcatagoriesContext
   )
@@ -66,8 +70,9 @@ const AddSlider = () => {
 
   useEffect(
     () => {
-      getAllThirdCatagories()
-      loadUser()
+      getAllSubCatagories();
+      getAllThirdCatagories();
+      loadUser();
     },
     // eslint-disable-next-line
     []
@@ -176,17 +181,17 @@ const AddSlider = () => {
             اضافه الملف
           </Button>
         </Grid>
-        {thirdcatagories.length > 0 ? (
+        {subcatagories.length > 0 ? (
               <Autocomplete
               style={{ width: '100%', margin: '20px 0px' }}
                 id='combo-box-demo'
                 onChange={handleRef}
-                options={thirdcatagories}
+                options={subcatagories}
                 getOptionLabel={option => option.name}
                 renderInput={params => (
                   <TextField
                     {...params}
-                    label='اختر الصنف الثالث'
+                    label='اختر الصنف الفرعي'
                     variant='outlined'
                   />
                 )}
