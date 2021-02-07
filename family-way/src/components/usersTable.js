@@ -88,6 +88,8 @@ const UsersTable = () => {
   const {
     getAllUsers,
     EditUsers,
+    editUser,
+    getUser,
     users,
     searchviaName,
     searchviaPhone,
@@ -112,6 +114,15 @@ const UsersTable = () => {
     // eslint-disable-next-line
   }, [])
 
+  useEffect(()=>{
+    if(editUser !== null){
+      console.log(editUser);
+      setWallet(editUser.wallet)
+      setPoints(editUser.points)
+      setRole(editUser.role)
+    }
+    // eslint-disable-next-line
+  },[editUser,authContext])
   //console.log(users);
 
   const loadPagenate = page => {
@@ -119,9 +130,10 @@ const UsersTable = () => {
   }
 
   // handle dialog open
-  const handleClickOpen = phone => {
+  const handleClickOpen = user => {
     setOpenDialog(true)
-    setUserPhone(phone)
+    setUserPhone(user.phone)
+    getUser(user)
   }
   // console.log(userPhone);
 
@@ -142,20 +154,20 @@ const UsersTable = () => {
       EditUsers(userPhone, wallet, points, role)
       setAlertData({
         open: true,
-        message: '  تم التعديل ',
+        message: ' تم التعديل ',
         type: 'success'
       })
-      setWallet('')
-      setPoints('')
-      setRole('')
-      setUserPhone('')
+      // setWallet('')
+      // setPoints('')
+      //setRole('')
+      //setUserPhone('')
     }
   }
 
   // handle search via name
   const handlenameSearch = e => {
     const name = e.target.value
-    if (!name.match('[A-Za-z0-9_.-]+')) {
+    if (!name.match('[0-9a-zA-Z\u0600-\u06FF]')) {
       console.log('invalid name')
       setsearch('')
     } else {
@@ -206,10 +218,14 @@ const UsersTable = () => {
             />
           </Grid>
           <Grid item>
+           {editUser !== null ? 
             <Autocomplete
               style={{ marginRight: 10, flex: 1 }}
               id='combo-box-demo'
               options={options}
+              defaultValue={
+                options.find(option=>option.label == editUser.role)
+              }
               getOptionLabel={option => option.label}
               onChange={handleRole}
               renderInput={params => (
@@ -219,7 +235,21 @@ const UsersTable = () => {
                   variant='outlined'
                 />
               )}
-            />
+            /> :
+            <Autocomplete
+            style={{ marginRight: 10, flex: 1 }}
+            id='combo-box-demo'
+            options={options}
+            getOptionLabel={option => option.label}
+            onChange={handleRole}
+            renderInput={params => (
+              <TextField
+                {...params}
+                label='تعيينه كا مسؤال'
+                variant='outlined'
+              />
+            )}
+          /> }
           </Grid>
           <Alert severity='info' style={{ margin: '10px 0px' }}>
             <strong>
@@ -351,7 +381,7 @@ const UsersTable = () => {
                     <TableCell align='center'>
                       <EditIcon
                         className={classes.editicon}
-                        onClick={() => handleClickOpen(row.phone)}
+                        onClick={() => handleClickOpen(row)}
                       />
                     </TableCell>
                   </TableRow>
@@ -416,7 +446,7 @@ const UsersTable = () => {
                       <TableCell align='center'>
                         <EditIcon
                           className={classes.editicon}
-                          onClick={() => handleClickOpen(row.phone)}
+                          onClick={() => handleClickOpen(row)}
                         />
                       </TableCell>
                     </TableRow>

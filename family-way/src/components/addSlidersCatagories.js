@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import {
   Grid,
@@ -45,9 +45,16 @@ const useStyles = makeStyles(theme => ({
 
 const AddSlider = () => {
   const classes = useStyles()
+
+  const autoCom = useRef(null);
+  const autoCom2 = useRef(null);
+  const autoCom3 = useRef(null);
+
+  const [control,setControl]=useState(false);
+
   const [alertData, setAlertData] = useState({ open: false })
   const [dropZoneState, setDropZoneState] = useState(false)
-  const [text, setText] = useState([{ name: 'تحميل !!' }])
+ // const [text, setText] = useState([{ name: 'تحميل !!' }])
 
   const [files, setFiles] = useState([])
   const [isProduct, setisProduct] = useState(false)
@@ -77,7 +84,7 @@ const AddSlider = () => {
     []
   )
 
-  // handle dropzone state
+   // handle dropzone state
   const SelectFilesButtonHandler = () => {
     setDropZoneState(true)
   }
@@ -96,6 +103,7 @@ const AddSlider = () => {
   const handleFilter = (event, item) => {
     if (item) {
       GetProductViaCat(item._id)
+      if(control === false){setControl(true)}
     }
   }
 
@@ -137,6 +145,18 @@ const AddSlider = () => {
       setsort('')
       setcategory(null)
       setaction(null)
+      
+      if(control === true){setControl(false)}
+
+      const ele =autoCom.current.getElementsByClassName('MuiAutocomplete-clearIndicator')[0];
+      if(ele) ele.click(); 
+
+      const ele2 =autoCom2.current.getElementsByClassName('MuiAutocomplete-clearIndicator')[0];
+      if(ele2) ele2.click(); 
+
+      const ele3 =autoCom3.current.getElementsByClassName('MuiAutocomplete-clearIndicator')[0];
+      if(ele3) ele3.click(); 
+
     } else if (!isProduct) {
       addNewSlider(category, files, sort)
       setAlertData({
@@ -145,10 +165,12 @@ const AddSlider = () => {
         type: 'success'
       })
       setFiles([])
-      setisProduct(false)
       setsort('')
       setcategory(null)
-      setaction(null)
+
+      const ele =autoCom.current.getElementsByClassName('MuiAutocomplete-clearIndicator')[0];
+      if(ele) ele.click();
+
     }
   }
 
@@ -179,6 +201,7 @@ const AddSlider = () => {
         </Grid>
         {subcatagories.length > 0 ? (
           <Autocomplete
+          ref={autoCom}
             style={{ width: '100%', margin: '20px 0px' }}
             id='combo-box-demo'
             onChange={handleRef}
@@ -207,6 +230,7 @@ const AddSlider = () => {
             />
             {isProduct && thirdcatagories.length > 0 ? (
               <Autocomplete
+              ref={autoCom2}
                 style={{ width: '100%', margin: '20px 0px' }}
                 id='combo-box-demo'
                 onChange={handleFilter}
@@ -223,8 +247,9 @@ const AddSlider = () => {
             ) : null}
           </Grid>
           <Grid item>
-            {nonPagenateProducts.length > 0 ? (
+            {nonPagenateProducts.length > 0  && control ? (
               <Autocomplete
+              ref={autoCom3}
                 style={{ width: '100%', margin: '20px 0px' }}
                 id='combo-box-demo'
                 onChange={handleProduct}

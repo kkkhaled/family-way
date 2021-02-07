@@ -106,7 +106,7 @@ const SubCatagoryView = () => {
               <Button
                 onClick={() => removeSubCategory(item._id)}
                 variant='contained'
-                style={{ backgroundColor: '#E91E63', color: '#FFF' }}
+                style={{ backgroundColor: '#E91E63', color: '#FFF' ,marginBottom:5  }}
               >
                 مسح
               </Button>

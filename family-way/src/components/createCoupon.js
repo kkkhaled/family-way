@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect ,useRef } from 'react'
 import { Grid, TextField, Button, Typography, Divider } from '@material-ui/core'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import { makeStyles } from '@material-ui/core/styles'
@@ -43,6 +43,8 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const CreateCoupon = () => {
+
+  const autoCom = useRef(null);
   // for handle alert
   const [alertData, setAlertData] = useState({ open: false })
   // state for handle switches
@@ -288,6 +290,9 @@ const CreateCoupon = () => {
     setunexpectUsers([]);
     setunexcepectProduct([]);
     setunexcepectCategory([]);
+    
+    const ele =autoCom.current.getElementsByClassName('MuiAutocomplete-clearIndicator')[0];
+      if(ele) ele.click();  
   }
   return (
     <React.Fragment>
@@ -306,6 +311,7 @@ const CreateCoupon = () => {
               onChange={e => setCode(e.target.value)}
             />
             <Autocomplete
+                  ref={autoCom}
               style={{ marginRight: 10, flex: 1 }}
               className={classes.firstOfCoupon}
               onChange={handleForWhoSelect}

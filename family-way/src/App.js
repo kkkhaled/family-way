@@ -89,6 +89,7 @@ export default function MiniDrawer () {
                         <SubCatagoriesProvider>
                           <ThirdCatagoriesProvider>
                             <ThemeProvider theme={AppTheme}>
+                            <RTL>
                               <BrowserRouter>
                                 <Route
                                   exact
@@ -97,7 +98,6 @@ export default function MiniDrawer () {
                                 />
                                 <div className={classes.root}>
                                   <CssBaseline />
-                                  <RTL>
                                     <main className={classes.content}>
                                       <Switch>
                                         <PrivateRoute
@@ -197,9 +197,9 @@ export default function MiniDrawer () {
                                         />
                                       </Switch>
                                     </main>
-                                  </RTL>
-                                </div>
+                                   </div>
                               </BrowserRouter>
+                              </RTL>
                             </ThemeProvider>
                           </ThirdCatagoriesProvider>
                         </SubCatagoriesProvider>

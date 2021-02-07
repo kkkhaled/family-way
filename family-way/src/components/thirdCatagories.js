@@ -1,4 +1,4 @@
-import React, { useState,useEffect,useContext } from "react";
+import React, { useState,useEffect,useContext , useRef } from "react";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import {
   Grid,
@@ -86,7 +86,7 @@ const useStyles = makeStyles((theme) => ({
 
 const GetThirdCatagories = () => {
     const classes = useStyles();
-   
+    const autoCom = useRef(null);
       // define component state
       const [alertData, setAlertData] = useState({ open: false });
       const [text,setText]=useState({name:"انتظر تحميل البيانات"})
@@ -154,6 +154,9 @@ const handleSubmit=(e)=>{
     setFiles([]);
     setName('');
     setSubId(null);
+    
+    const ele =autoCom.current.getElementsByClassName('MuiAutocomplete-clearIndicator')[0];
+      if(ele) ele.click();  
    }
 }
  
@@ -169,6 +172,7 @@ const handleSubmit=(e)=>{
         <Grid container direction='column'>
           <Grid item style={{ display: 'flex', gridGap: '10px' }}>
             <Autocomplete
+               ref={autoCom}
               style={{ flex: 1 }}
               id='combo-box-demo'
               options={subcatagories}

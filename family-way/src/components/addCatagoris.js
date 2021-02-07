@@ -122,7 +122,7 @@ const AddCatagiories = () => {
       })
       setName('');
       setSort('');
-    }
+        }
   }
 
   const handleUpdate = async () => {
@@ -234,7 +234,7 @@ const AddCatagiories = () => {
         </DialogActions>
       </Dialog>
       <Grid container direction='row' style={{ gridGap: '6px' }}>
-        {catagories.length > 1 && !loading ? (
+        {catagories.length > 0 && !loading ? (
           catagories.map(catag => (
             <Grid item className={classes.cardOfCategories} key={catag._id}>
               <Typography variant='h5' className={classes.name}>

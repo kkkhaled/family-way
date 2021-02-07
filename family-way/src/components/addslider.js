@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext , useRef } from 'react'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import {
   Grid,
@@ -45,9 +45,14 @@ const useStyles = makeStyles(theme => ({
 
 const AddSlider = () => {
   const classes = useStyles()
+  const autoCom = useRef(null);
+  const autoCom2 = useRef(null);
+  const autoCom3 = useRef(null);
   const [alertData, setAlertData] = useState({ open: false })
   const [dropZoneState, setDropZoneState] = useState(false)
+
   const [text, setText] = useState([{ name: 'تحميل !!' }])
+  const [control,setControl]=useState(false);
 
   const [files, setFiles] = useState([]);
   const [isProduct, setisProduct] = useState(false);
@@ -87,6 +92,7 @@ const AddSlider = () => {
   const handleFilter = (event, item) => {
     if (item) {
       GetProductViaCat(item._id)
+      if(control === false){setControl(true)}
     }
   }
 
@@ -124,6 +130,20 @@ const AddSlider = () => {
         message: 'تم الاضافه  ',
         type: 'success'
       })
+      setFiles([]);
+      setisProduct(false);
+      setIscatagory(false);
+      setsort('');
+      setaction('');
+
+      if(control === true){setControl(false)}
+
+      const ele =autoCom.current.getElementsByClassName('MuiAutocomplete-clearIndicator')[0];
+      if(ele) ele.click()
+  
+      const ele2 =autoCom2.current.getElementsByClassName('MuiAutocomplete-clearIndicator')[0];
+      if(ele2) ele2.click()
+
     } else if (isCatagory) {
       addNewSliderCatag(files, category, sort)
       setAlertData({
@@ -131,6 +151,12 @@ const AddSlider = () => {
         message: 'تم الاضافه  ',
         type: 'success'
       })
+      setFiles([]);
+      setIscatagory(false);
+      setsort('');
+      setcategory('');
+      const ele3 =autoCom3.current.getElementsByClassName('MuiAutocomplete-clearIndicator')[0];
+      if(ele3) ele3.click()
     } else if (!isProduct && !isCatagory) {
       addNewSlider(files, sort)
       setAlertData({
@@ -138,14 +164,10 @@ const AddSlider = () => {
         message: 'تم الاضافه  ',
         type: 'success'
       })
+      setFiles([]);
+      setsort('');
     }
-    setFiles([]);
-    setisProduct(false);
-    setIscatagory(false);
-    setsort('');
-    setcategory('');
-    setaction('');
-  }
+   }
 
   return (
     <React.Fragment>
@@ -186,6 +208,7 @@ const AddSlider = () => {
             />
             {isProduct && thirdcatagories.length > 0 ? (
               <Autocomplete
+              ref={autoCom}
               style={{ width: '100%', margin: '20px 0px' }}
               id='combo-box-demo'
                 onChange={handleFilter}
@@ -202,8 +225,9 @@ const AddSlider = () => {
             ) : null}
           </Grid>
           <Grid item>
-            {nonPagenateProducts.length > 0 ? (
+            {nonPagenateProducts.length > 0 && control=== true ? (
               <Autocomplete
+              ref={autoCom2}
               style={{ width: '100%', margin: '20px 0px' }}
               id='combo-box-demo'
                 onChange={handleProduct}
@@ -233,6 +257,7 @@ const AddSlider = () => {
           </Grid>
           {isCatagory && thirdcatagories.length > 0 ? (
             <Autocomplete
+            ref={autoCom3}
             style={{ width: '100%', margin: '20px 0px' }}
               id='combo-box-demo'
               onChange={handleCatagory}

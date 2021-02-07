@@ -38,18 +38,18 @@ const useStyles = makeStyles((theme) => ({
    const [isVisible, setIsVisible] = useState(false);
     // for give unit value
     const [units, setUnits] = useState([
-      { id: '1', name: 'حبه' },
-      { id: '2', name: 'اوتر' },
-      { id: '3', name: 'كيلو' },
-      { id: '4', name: 'كرتونه' }
+      { id: 1, name: 'حبه' },
+      { id: 2, name: 'اوتر' },
+      { id: 3, name: 'كيلو' },
+      { id: 4, name: 'كرتونه' }
     ])
    const [barCode,setBarCode]=useState(null);
    const [title,setTitle]=useState('');
    const [details, setDetails] = useState('');
    const [price, setPrice] = useState(null);
    const [increaseCount, setincreaseCount] = useState(null);
-   const [unit, setUnit] = useState('');
-   const [discount, setDiscount] = useState(null);
+   const [unit, setUnit] = useState(null);
+   const [discount, setDiscount] = useState(0);
    const [variationId, setVariationId] = useState('');
    const [discountEnds, setDiscountEnds] = useState(''); 
 
@@ -58,11 +58,28 @@ const useStyles = makeStyles((theme) => ({
    useEffect(()=>{
     if (currentProduct !== null) {
       console.log(currentProduct);
+      setBarCode(currentProduct.barCode)
+      setTitle(currentProduct.title)
+      setDetails(currentProduct.details)
+      setPrice(currentProduct.price)
+      setincreaseCount(currentProduct.increaseCount)
+      setDiscount(currentProduct.discount) 
+      setVariationId(currentProduct.variationId)
+      setIsVisible(currentProduct.isVisible)
+      setUnit(currentProduct.unit)
+    }
+    if(currentProduct.discountEnds !== undefined){
+      setDiscountEnds(currentProduct.discountEnds);
+    }
+    if(currentProduct.discount > 0){
+      setSwitch(true)
+    }
+    if(currentProduct.variationId !== ""){
+      setISwitchOne(true)  
     }
     },
     // eslint-disable-next-line
   [currentProduct,productContext])
-
 
   const handleUnit=(event,item)=>{
     if (item) {
@@ -72,10 +89,7 @@ const useStyles = makeStyles((theme) => ({
 
   const handleSubmit=(e)=>{
       e.preventDefault();
-      if (discountSwitch === false) {
-        setDiscount(0);
-     }
-     if(title===''){
+      if(title===''){
       setAlertData({
         open: true,
         message: "تاكد من ادخال اسم المنتج",
@@ -125,15 +139,15 @@ const useStyles = makeStyles((theme) => ({
         message: "تم تعديل المنتج ",
         type: "success",
       })
-      setBarCode('');
-      setTitle('') 
-      setDetails('');
-      setPrice('');
-      setincreaseCount('');
-      setUnit('');
-      setDiscount(0);
-      setDiscountEnds('');
-      setVariationId('');
+      // setBarCode('');
+      // setTitle('') 
+      // setDetails('');
+      // setPrice('');
+      // setincreaseCount('');
+      // setUnit('');
+      // setDiscount('');
+      // setDiscountEnds('');
+      // setVariationId('');
     }
   }
    
@@ -197,6 +211,7 @@ const useStyles = makeStyles((theme) => ({
            <Grid container justify="center">
            <TextField
              id="datetime-local"
+             defaultValue={discountEnds}
              label="موعد انتهاء التخفيض"
              type="datetime-local"
              onChange={(e)=>setDiscountEnds(e.target.value)}
@@ -243,16 +258,28 @@ const useStyles = makeStyles((theme) => ({
           </Grid>
           
           <Grid>
+           {currentProduct !== null ? 
           <Autocomplete
             className={classes.field}
             onChange={handleUnit}
             id="combo-box-demo"
             options={units}
+            defaultValue={units.find(u => u.id == currentProduct.unit)}
             getOptionLabel={(option) => option.name}
             renderInput={(params) => (
               <TextField {...params} label="   الوحده" variant="outlined" />
             )}
-          />
+          />:
+          <Autocomplete
+          className={classes.field}
+          onChange={handleUnit}
+          id="combo-box-demo"
+          options={units}
+          getOptionLabel={(option) => option.name}
+          renderInput={(params) => (
+            <TextField {...params} label="   الوحده" variant="outlined" />
+          )}
+        />}
         </Grid>
         <Grid container justify='center'>
                 <Grid item>

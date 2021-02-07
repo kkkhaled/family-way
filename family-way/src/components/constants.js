@@ -1,5 +1,5 @@
 import React, { useState,useEffect,useContext } from "react";
-import { TextField, Grid, Typography, Button } from "@material-ui/core";
+import { TextField, Grid, Typography, Button, TextareaAutosize  } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Alert } from "@material-ui/lab";
 import {constantsContext} from '../contexts/constants/constantState';
@@ -42,6 +42,7 @@ const Constants = () => {
   const [pointsToMoney,setPointsToMoney]=useState('');
   const [mobile,setMobile]=useState('')
   const [daysForReturns,setdaysForReturns]=useState('');
+  const [message,setMessage]=useState('')
 
   useEffect(() => {
     loadUser();
@@ -51,7 +52,7 @@ const Constants = () => {
   useEffect(() => {
      server.get('/constants',{'headers': {
       'Authorization': 'Bearer ' + localStorage.token }}).then(res =>{
-        //console.log(res)
+        console.log(res)
         setHigh(res.data.deliveryPrice.high)
         setLow(res.data.deliveryPrice.low)
         setfreeOrder(res.data.order.freeOrder)
@@ -60,6 +61,7 @@ const Constants = () => {
         setPointsToMoney(res.data.convertorMoney.pointsToMoney)
         setMobile(res.data.mobileNumber)
         setdaysForReturns(res.data.daysForReturns)
+        setMessage(res.data.giftMessage)
         }
         ).catch(err => console.log(err))
      // eslint-disable-next-line
@@ -69,7 +71,7 @@ const Constants = () => {
   // handle submit
   const handleSubmit=(e)=>{
      e.preventDefault();
-     AddConstants(high,low,freeOrder,midOrder,minimum,pointsToMoney,daysForReturns,mobile);
+     AddConstants(high,low,freeOrder,midOrder,minimum,pointsToMoney,daysForReturns,mobile,message);
      setAlertData({
       open: true,
       message: 'تم التعديل',
@@ -167,6 +169,15 @@ const Constants = () => {
               onChange={(e)=>setdaysForReturns(e.target.value)}
               variant="outlined"
               label="  ايام الرجوع "
+            />
+          </Grid>
+          <Grid item>
+            <TextField
+              style={{width :'100%',marginRight:"7px"}}
+              value={message}
+              onChange={(e)=>setMessage(e.target.value)}
+              variant="outlined"
+              label=" الرساله"
             />
           </Grid>
           <Grid item>

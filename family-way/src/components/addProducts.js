@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import { Grid, TextField, Button, Divider } from '@material-ui/core'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import { makeStyles } from '@material-ui/core/styles'
@@ -43,6 +43,8 @@ const useStyles = makeStyles(theme => ({
 
 const AddProducts = () => {
   const classes = useStyles()
+  const autoCom = useRef(null);
+  const autoCom2 = useRef(null);
 
   const { loadUser } = useContext(authContext)
   const { getAllThirdCatagories, thirdcatagories } = useContext(
@@ -60,7 +62,7 @@ const AddProducts = () => {
   const [categories, setCategories] = useState(null)
   const [price, setPrice] = useState(null)
   const [increaseCount, setincreaseCount] = useState(null)
-  const [unit, setUnit] = useState('')
+  const [unit, setUnit] = useState(null)
   //const [userMax, setUserMax] = useState('');
   //const [inStock, setinStock] = useState('');
   //const [boxUnit, setboxUnit] = useState('');
@@ -71,16 +73,16 @@ const AddProducts = () => {
 
   const [dropZoneState, setDropZoneState] = useState(false)
 
-  const [text, setText] = useState([{ name: 'تحميل !!' }])
+  const [text, setText] = useState(null);
 
   const [switchOne, setISwitchOne] = useState(false)
   const [switchtwo, setISwitchtwo] = useState(false)
 
   const [units, setUnits] = useState([
-    { id: '1', name: 'حبه' },
-    { id: '2', name: 'اوتر' },
-    { id: '3', name: 'كيلو' },
-    { id: '4', name: 'كرتونه' }
+    { id: 1, name: 'حبه' },
+    { id: 2, name: 'اوتر' },
+    { id: 3, name: 'كيلو' },
+    { id: 4, name: 'كرتونه' }
   ])
 
   useEffect(
@@ -94,7 +96,7 @@ const AddProducts = () => {
 
   // handle filter input
   const handleFilter = (event, item) => {
-    if (item) {
+     if (item) {
       //setThirdId(item._id);
       setCategories(item._id)
     }
@@ -197,15 +199,21 @@ const AddProducts = () => {
       setPrice('');
       setCategories('');
       setincreaseCount('');
-      setUnit('');
+      setUnit(null);
       setDiscount(0);
       setDiscountEnds('');
       setVariationId('');
       setISwitchOne(false);
       setISwitchtwo(false);
+      setText(null);
+      //autoCom.searchText = '';
+      const ele2 =autoCom2.current.getElementsByClassName('MuiAutocomplete-clearIndicator')[0];
+      if(ele2) ele2.click(); 
+
+      const ele =autoCom.current.getElementsByClassName('MuiAutocomplete-clearIndicator')[0];
+      if(ele) ele.click();
     }
   }
-
   return (
     <React.Fragment>
       {alertData.open ? (
@@ -215,10 +223,12 @@ const AddProducts = () => {
         <Grid container>
           <Grid item style={{ width: '100%' }}>
             <Autocomplete
+               ref={autoCom}
               className={classes.detailsfield}
               id='combo-box-demo'
-              onChange={handleFilter}
+               onChange={handleFilter}
               options={thirdcatagories}
+              searchText={text}
               getOptionLabel={option => option.name}
               renderInput={params => (
                 <TextField
@@ -263,6 +273,7 @@ const AddProducts = () => {
             />
             <Autocomplete
               id='combo-box-demo'
+              ref={autoCom2}
               options={units}
               onChange={handleUnit}
               style={{ flex: 1 }}

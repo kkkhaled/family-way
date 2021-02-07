@@ -1,5 +1,5 @@
 import { Grid } from '@material-ui/core'
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext,useRef } from 'react'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import { Typography, TextField, Button, Divider } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
@@ -83,6 +83,9 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const GetSubCatagories = () => {
+
+  const autoCom = useRef(null);
+
   // define component state
   const [alertData, setAlertData] = useState({ open: false });
   const [text, setText] = useState({ name: 'انتظر تحميل البيانات' })
@@ -171,6 +174,8 @@ const GetSubCatagories = () => {
       setName('');
       setParentId(null);
       setFiles([]);
+      const ele =autoCom.current.getElementsByClassName('MuiAutocomplete-clearIndicator')[0];
+      if(ele) ele.click();  
     }
  }
 
@@ -186,6 +191,7 @@ const GetSubCatagories = () => {
         <Grid container direction='column'>
           <Grid item style={{ display: 'flex', gridGap: '10px' }}>
             <Autocomplete
+              ref={autoCom}
               style={{ flex: 1 }}
               id='combo-box-demo'
               options={catagories}
