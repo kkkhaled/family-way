@@ -122,6 +122,9 @@ const AddCatagiories = () => {
       })
       setName('');
       setSort('');
+      if(isCompany === true){
+        setIsCompany(false);
+      }
         }
   }
 

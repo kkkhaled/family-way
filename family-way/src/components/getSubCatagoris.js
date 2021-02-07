@@ -88,7 +88,7 @@ const GetSubCatagories = () => {
 
   // define component state
   const [alertData, setAlertData] = useState({ open: false });
-  const [text, setText] = useState({ name: 'انتظر تحميل البيانات' })
+  //const [text, setText] = useState({ name: 'انتظر تحميل البيانات' })
   const [isWide, setIsWide] = useState(false)
   const [files, setFiles] = useState([])
   const [dropZoneState, setDropZoneState] = useState(false)
@@ -174,6 +174,9 @@ const GetSubCatagories = () => {
       setName('');
       setParentId(null);
       setFiles([]);
+     if(isWide === true){
+      setIsWide(false)
+      }
       const ele =autoCom.current.getElementsByClassName('MuiAutocomplete-clearIndicator')[0];
       if(ele) ele.click();  
     }
