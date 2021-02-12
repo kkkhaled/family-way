@@ -219,6 +219,7 @@ const OrderTimes = () => {
         message: 'تم الاضافه  ',
         type: 'success'
       })
+     // getOrderstime();
       setFrom('')
       setMaxCount('')
       setTo('')

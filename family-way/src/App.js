@@ -40,6 +40,7 @@ import { AdsProvider } from './contexts/Ads/adsState'
 import setAuthToken from './api/setAuthToken'
 import PrivateRoute from './routing/privateRoute'
 import OrderArchived from './pages/orderArchived'
+import Userdetails from './pages/userDetails'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -119,6 +120,11 @@ export default function MiniDrawer () {
                                           exact
                                           path='/users'
                                           component={Userstable}
+                                        />
+                                         <PrivateRoute
+                                          exact
+                                          path='/user-details/:id'
+                                          component={Userdetails}
                                         />
                                         <PrivateRoute
                                           exact

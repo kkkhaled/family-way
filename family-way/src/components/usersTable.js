@@ -23,6 +23,8 @@ import SearchIcon from '@material-ui/icons/Search'
 import { authContext } from '../contexts/auth/authstate'
 import { Switch } from '@material-ui/core'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
+import VisibilityRoundedIcon from '@material-ui/icons/VisibilityRounded'
+import { Link } from 'react-router-dom'
 import Animations from './loader'
 import Draggable from 'react-draggable'
 import { Alert, Autocomplete } from '@material-ui/lab'
@@ -360,6 +362,9 @@ const UsersTable = () => {
                   <Typography variant='h5'>نوع الهاتف</Typography>
                 </TableCell>
                 <TableCell align='center'>
+                  <Typography variant='h5'>مشاهده </Typography>
+                </TableCell>
+                <TableCell align='center'>
                   <Typography variant='h5'>التعديل</Typography>
                 </TableCell>
               </TableRow>
@@ -378,6 +383,14 @@ const UsersTable = () => {
                     <TableCell align='center'> {row.spins}</TableCell>
                     <TableCell align='center'> {row.points}</TableCell>
                     <TableCell align='center'> {row.os}</TableCell>
+                    <TableCell align='center'>
+                    <Button
+                      component={Link}
+                      to={`/user-details/${row._id}`}
+                    >
+                      <VisibilityRoundedIcon />
+                    </Button>
+                  </TableCell>
                     <TableCell align='center'>
                       <EditIcon
                         className={classes.editicon}
@@ -425,6 +438,9 @@ const UsersTable = () => {
                     <Typography variant='h5'>نوع الهاتف</Typography>
                   </TableCell>
                   <TableCell align='center'>
+                  <Typography variant='h5'>مشاهده </Typography>
+                </TableCell>
+                  <TableCell align='center'>
                     <Typography variant='h5'>التعديل</Typography>
                   </TableCell>
                 </TableRow>
@@ -444,6 +460,14 @@ const UsersTable = () => {
                       <TableCell align='center'> {row.points}</TableCell>
                       <TableCell align='center'> {row.os}</TableCell>
                       <TableCell align='center'>
+                    <Button
+                      component={Link}
+                      to={`/user-details/${row._id}`}
+                    >
+                      <VisibilityRoundedIcon />
+                    </Button>
+                  </TableCell>
+                      <TableCell align='center'>
                         <EditIcon
                           className={classes.editicon}
                           onClick={() => handleClickOpen(row)}
@@ -457,6 +481,12 @@ const UsersTable = () => {
               </TableBody>
             </Table>
           </TableContainer>
+           <Button variant="contained"
+               color='primary'
+               style={{color:"#FFF",padding:'10px',margin:"15px 0px",width:220}}
+           >
+              نسخ البيانات
+           </Button> 
           {users !== null && users.pagination !== null ? (
             <Pagination
               onChange={(i, page) => {
