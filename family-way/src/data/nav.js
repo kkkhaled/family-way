@@ -14,6 +14,7 @@ import AddIcon from '@material-ui/icons/Add'
 import AddRoundedIcon from '@material-ui/icons/AddRounded'
 import ViewWeekIcon from '@material-ui/icons/ViewWeek'
 import DialpadIcon from '@material-ui/icons/Dialpad'
+import AddBoxSharpIcon from '@material-ui/icons/AddBoxSharp';
 export default {
   catagiories: [
     {
@@ -158,5 +159,11 @@ export default {
       to: '/ads',
       id: shortid.generate()
     }
-  ]
+  ],
+  Additations : [{
+    title: ' الاضافات ',
+      icon: AddBoxSharpIcon,
+      to: '/additations',
+      id: shortid.generate()
+  }]
 }

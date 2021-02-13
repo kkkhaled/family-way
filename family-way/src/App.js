@@ -41,7 +41,7 @@ import setAuthToken from './api/setAuthToken'
 import PrivateRoute from './routing/privateRoute'
 import OrderArchived from './pages/orderArchived'
 import Userdetails from './pages/userDetails'
-
+import Additaton from './pages/additatons'
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex'
@@ -200,6 +200,11 @@ export default function MiniDrawer () {
                                           exact
                                           path='/ads'
                                           component={Adss}
+                                        />
+                                         <PrivateRoute
+                                          exact
+                                          path='/additations'
+                                          component={Additaton}
                                         />
                                       </Switch>
                                     </main>
