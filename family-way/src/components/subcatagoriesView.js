@@ -1,4 +1,4 @@
-import { Button, Grid } from '@material-ui/core'
+import { Button, FormControlLabel, Grid, Switch } from '@material-ui/core'
 import React, { useState, useEffect, useContext } from 'react'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import { Card, Typography, TextField } from '@material-ui/core'
@@ -6,6 +6,8 @@ import { makeStyles } from '@material-ui/core/styles'
 import { catagoriesContext } from '../contexts/catagories/catagoriesState'
 import { subcatagoriesContext } from '../contexts/subcatagories/subcatagoriesState'
 import Alert from '@material-ui/lab/Alert'
+import axios from 'axios'
+import { url } from '../constants/constants'
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -91,6 +93,17 @@ const SubCatagoryView = () => {
     }
   }
 
+  const hideSubCat = async item => {
+    try {
+      const response = await axios.put(`${url}subCategory/${item._id}`, {
+        isHidden: !item.isHidden
+      })
+      window.location.reload(false)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const subCatagView = (
     <React.Fragment>
       <Grid container direction='row'>
@@ -102,14 +115,32 @@ const SubCatagoryView = () => {
                 src={`https://familyway.sa/uploads/subCategories/${item.image}`}
                 alt='sub_img'
               />
-              <h5 style={{ textAlign: 'center', margin: 10 }}>{item.name}</h5>
-              <Button
-                onClick={() => removeSubCategory(item._id)}
-                variant='contained'
-                style={{ backgroundColor: '#E91E63', color: '#FFF' ,marginBottom:5  }}
-              >
-                مسح
-              </Button>
+              <div>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={item.isHidden}
+                      onChange={() => {
+                        hideSubCat(item)
+                      }}
+                      name='checkedA'
+                    />
+                  }
+                  label='اخفاء'
+                />
+                <h5 style={{ textAlign: 'center', margin: 10 }}>{item.name}</h5>
+                <Button
+                  onClick={() => removeSubCategory(item._id)}
+                  variant='contained'
+                  style={{
+                    backgroundColor: '#E91E63',
+                    color: '#FFF',
+                    marginBottom: 5
+                  }}
+                >
+                  مسح
+                </Button>
+              </div>
             </Card>
           ))
         ) : (

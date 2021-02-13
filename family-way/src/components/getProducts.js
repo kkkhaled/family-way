@@ -110,6 +110,9 @@ const useStyles = makeStyles(theme => ({
     paddingTop: '35px',
     width: 'max-content',
     margin: 'auto'
+  },
+  onep: {
+    margin: 2
   }
 }))
 
@@ -213,19 +216,25 @@ const GetProducts = () => {
         </Grid>
       </Grid>
       <Divider className={classes.divider} />
-      <Grid container style={{ gridGap: 10 }}>
+      <Grid
+        container
+        style={{ gridGap: 10, display: 'grid', gridTemplateColumns: '1fr 1fr' }}
+      >
         {products !== null && productdata.length > 0
           ? productdata.map(product => (
-              <Grid
-                item
-                key={product._id}
-                style={{ flex: '1 1 19%', marginBottom: 20 }}
-              >
+              <Grid item key={product._id}>
                 <Card>
                   <div
-                    style={{ height: 200, width: '100%', position: 'relative' }}
+                    style={{
+                      height: 200,
+                      width: '100%',
+                      position: 'relative',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center'
+                    }}
                   >
-                    {product.variationId.length > 1 ? (
+                    {/* {product.variationId.length > 1 ? (
                       <p
                         style={{
                           position: 'absolute',
@@ -240,7 +249,41 @@ const GetProducts = () => {
                       >
                         {product.variationId}
                       </p>
+                    ) : null} */}
+                    {/* 
+                    {product.isHidden ? (
+                      <p
+                        style={{
+                          position: 'absolute',
+                          right: 5,
+                          top: 20,
+                          backgroundColor: '#E91E63',
+                          color: '#FFF',
+                          fontSize: 13,
+                          borderRadius: 12,
+                          padding: 6
+                        }}
+                      >
+                        منتج مخفي
+                      </p>
                     ) : null}
+
+                    {!product.isVisible ? (
+                      <p
+                        style={{
+                          position: 'absolute',
+                          right: 5,
+                          top: 40,
+                          backgroundColor: '#E91E63',
+                          color: '#FFF',
+                          fontSize: 13,
+                          borderRadius: 12,
+                          padding: 6
+                        }}
+                      >
+                        منتج غير متوفر الأن
+                      </p>
+                    ) : null} */}
 
                     {products.discountEnds ? (
                       <div
@@ -264,7 +307,7 @@ const GetProducts = () => {
                     <img
                       src={`https://familyway.sa/uploads/products/${product.images}`}
                       alt='subimg'
-                      style={{ height: 200, objectFit: 'contain' }}
+                      style={{ height: 250, objectFit: 'contain' }}
                     />
                   </div>
                   <Grid
@@ -308,7 +351,52 @@ const GetProducts = () => {
                     <Grid item>
                       <Typography variant='h5'>{product.details}</Typography>
                     </Grid>
-
+                    <Grid item>
+                      <div
+                        style={{
+                          border: '1px solid rgba(0,0,0,,15)',
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center'
+                        }}
+                      >
+                        <p className={classes.onep}>هل للمنتج تشابه ؟</p>
+                        <p
+                          className={classes.onep}
+                          style={{ fontSize: 13, textAlign: 'left' }}
+                        >
+                          {product.variationId.length > 1
+                            ? product.variationId
+                            : 'لا يوجد'}
+                        </p>
+                      </div>
+                      <div
+                        style={{
+                          border: '1px solid rgba(0,0,0,,15)',
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center'
+                        }}
+                      >
+                        <p className={classes.onep}>هل المنتج متاح ؟</p>
+                        <p className={classes.onep}>
+                          {product.isVisible ? 'متاح' : 'ليس متاح'}
+                        </p>
+                      </div>
+                      <div
+                        style={{
+                          border: '1px solid rgba(0,0,0,,15)',
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center'
+                        }}
+                      >
+                        <p className={classes.onep}>هل المنتج مخفي ؟</p>
+                        <p className={classes.onep}>
+                          {product.isHidden ? ' مخفي' : 'ليس مخفي'}
+                        </p>
+                      </div>
+                    </Grid>
                     <Grid item>
                       <Grid container direction='row'>
                         <Button

@@ -10,9 +10,9 @@ const initialState = {
   loading: true,
   user: null,
   code: null,
-  users :null,
+  users: null,
   editUser: null,
-  searchuser:[]
+  searchuser: []
 }
 
 // create context
@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
         type: 'CONFIRM_PHONE',
         payload: res.data
       })
-     // alert(res.data.code)
+      // alert(res.data.code)
     } catch (err) {
       console.log(err)
     }
@@ -42,16 +42,18 @@ export const AuthProvider = ({ children }) => {
 
   //load user
   const loadUser = async () => {
-   /* if (localStorage.token) {
+    /* if (localStorage.token) {
       setAuthToken(localStorage.token)
     }
     console.log(localStorage.token);
     */
     try {
-      const res = await server.get('/data',{'headers': {
-        'Authorization': 'Bearer ' + localStorage.token
-      }})
-      
+      const res = await server.get('/data', {
+        headers: {
+          Authorization: 'Bearer ' + (await localStorage.token)
+        }
+      })
+
       dispatch({
         type: 'USER_LOADED',
         payload: res.data
@@ -65,7 +67,7 @@ export const AuthProvider = ({ children }) => {
 
   //send code
   const addCodeNumber = async (phone, code) => {
-   // console.log(phone, code)
+    // console.log(phone, code)
     try {
       const res = await server.post('/phonenumber/validate', {
         phone,
@@ -77,7 +79,7 @@ export const AuthProvider = ({ children }) => {
         type: 'LOGIN_SUCCESS',
         payload: res.data
       })
-      loadUser();
+      loadUser()
     } catch (err) {
       console.log(err)
       dispatch({
@@ -87,16 +89,20 @@ export const AuthProvider = ({ children }) => {
   }
 
   //logout
-   const logout=()=>{
-     dispatch({
-      type:"LOGOUT"
-     })
-   }
+  const logout = () => {
+    dispatch({
+      type: 'LOGOUT'
+    })
+  }
   //get all users
-  const getAllUsers = async (page,limit) => {
+  const getAllUsers = async (page, limit) => {
     try {
-      const res = await server.get(`/users?page=${page}&limit=${limit}`);
-    //  console.log(res);
+      const res = await server.get(`/users?page=${page}&limit=${limit}`, {
+        headers: {
+          Authorization: 'Bearer ' + (await localStorage.token)
+        }
+      })
+      //  console.log(res);
       dispatch({
         type: 'SUCCESSFUL_USERS',
         payload: res.data
@@ -106,12 +112,11 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
-
-   // get unpagenated users 
-   const getUnpagenatedUsers = async () => {
+  // get unpagenated users
+  const getUnpagenatedUsers = async () => {
     try {
-      const res = await server.get(`/users`);
-    //  console.log(res);
+      const res = await server.get(`/users`)
+      //  console.log(res);
       dispatch({
         type: 'GET_USERS',
         payload: res.data
@@ -121,52 +126,54 @@ export const AuthProvider = ({ children }) => {
     }
   }
   // getUser for edit
-   const getUser=async user=>{
+  const getUser = async user => {
     dispatch({
       type: 'SET_CURRENT_USER',
       payload: user
     })
-   } 
+  }
 
   // edit users
-  const EditUsers=async(phone,wallet,points,role)=>{
-        const data={wallet,points,role}
-        try {
-          const res = await server.put(`updateUser/${phone}`,data,{'headers': {
-            'Authorization': 'Bearer ' + localStorage.token
-          }})
-          console.log(res);
-        } catch (err) {
-          console.log(err);
+  const EditUsers = async (phone, wallet, points, role) => {
+    const data = { wallet, points, role }
+    try {
+      const res = await server.put(`updateUser/${phone}`, data, {
+        headers: {
+          Authorization: 'Bearer ' + localStorage.token
         }
+      })
+      console.log(res)
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   // search users
-  const searchviaPhone=async(phone)=>{
-     try {
-        const res = await server.get(`/users?phoneSearch=${phone}`);
-       // console.log(res);
-          dispatch({
-          type:"PHONE_SEARCH",
-          payload : res.data.users
-        })
-     } catch (err) {
-       console.log(err);
-     }
+  const searchviaPhone = async phone => {
+    try {
+      const res = await server.get(`/users?phoneSearch=${phone}`)
+      // console.log(res);
+      dispatch({
+        type: 'PHONE_SEARCH',
+        payload: res.data.users
+      })
+    } catch (err) {
+      console.log(err)
+    }
   }
 
-  const searchviaName=async(name)=>{
+  const searchviaName = async name => {
     try {
-         const res = await server.get(`/users?nameSearch=${name}`);
-     // console.log(res);
-     dispatch({
-       type:"Name_SEARCH",
-       payload : res.data.users
-     })}
-     catch (err) {
-      console.log(err);
+      const res = await server.get(`/users?nameSearch=${name}`)
+      // console.log(res);
+      dispatch({
+        type: 'Name_SEARCH',
+        payload: res.data.users
+      })
+    } catch (err) {
+      console.log(err)
     }
- }
+  }
 
   return (
     <authContext.Provider
@@ -176,8 +183,8 @@ export const AuthProvider = ({ children }) => {
         isAuthenticated: state.isAuthenticated,
         loading: state.loading,
         user: state.user,
-        users:state.users, 
-        editUser : state.editUser,
+        users: state.users,
+        editUser: state.editUser,
         searchuser: state.searchuser,
         addCodeNumber,
         addPhoneNumber,

@@ -1,57 +1,69 @@
-import React, { useState,useEffect,useContext } from "react";
-import { TextField, Grid, Typography, Button, TextareaAutosize  } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import { Alert } from "@material-ui/lab";
-import {constantsContext} from '../contexts/constants/constantState';
+import React, { useState, useEffect, useContext } from 'react'
+import {
+  TextField,
+  Grid,
+  Typography,
+  Button,
+  TextareaAutosize
+} from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import { Alert } from '@material-ui/lab'
+import { constantsContext } from '../contexts/constants/constantState'
 import { authContext } from '../contexts/auth/authstate'
 //import Animations from './loader'
 import server from '../api/server'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   font: {
-    marginLeft: "10px",
-    marginTop: "10px",
+    marginLeft: '10px',
+    marginTop: '10px'
   },
   field: {
-    width: "22em",
-    marginLeft: "12px",
-    marginRight: "25px",
-    marginTop: "15px",
-    marginBottom: "15px",
+    width: '22em',
+    marginLeft: '12px',
+    marginRight: '25px',
+    marginTop: '15px',
+    marginBottom: '15px'
   },
   button: {
-    color: "white",
-    width: "22em",
-    marginBottom: "15px",
-    backgroundColor: theme.palette.green.main,
-  },
-}));
+    color: 'white',
+    width: '22em',
+    marginBottom: '15px',
+    backgroundColor: theme.palette.green.main
+  }
+}))
 
 const Constants = () => {
-  const classes = useStyles();
-   const { loadUser } = useContext(authContext)
-   const {AddConstants}= useContext(constantsContext);
+  const classes = useStyles()
+  const { loadUser } = useContext(authContext)
+  const { AddConstants } = useContext(constantsContext)
 
-  const [alertData, setAlertData] = useState({ open: false });
+  const [alertData, setAlertData] = useState({ open: false })
 
-  const [high,setHigh]=useState('');
-  const [low,setLow]=useState('');
-  const [freeOrder,setfreeOrder]=useState('');
-  const [midOrder,setMidOrder]=useState('');
-  const [minimum,setMinimum]=useState('');
-  const [pointsToMoney,setPointsToMoney]=useState('');
-  const [mobile,setMobile]=useState('')
-  const [daysForReturns,setdaysForReturns]=useState('');
-  const [message,setMessage]=useState('')
+  const [high, setHigh] = useState('')
+  const [low, setLow] = useState('')
+  const [freeOrder, setfreeOrder] = useState('')
+  const [midOrder, setMidOrder] = useState('')
+  const [minimum, setMinimum] = useState('')
+  const [pointsToMoney, setPointsToMoney] = useState('')
+  const [mobile, setMobile] = useState('')
+  const [daysForReturns, setdaysForReturns] = useState('')
+  const [message, setMessage] = useState('')
+  const [giftPrice, setGiftPrice] = useState(null)
 
   useEffect(() => {
-    loadUser();
-         // eslint-disable-next-line
+    loadUser()
+    // eslint-disable-next-line
   }, [])
 
   useEffect(() => {
-     server.get('/constants',{'headers': {
-      'Authorization': 'Bearer ' + localStorage.token }}).then(res =>{
+    server
+      .get('/constants', {
+        headers: {
+          Authorization: 'Bearer ' + localStorage.token
+        }
+      })
+      .then(res => {
         console.log(res)
         setHigh(res.data.deliveryPrice.high)
         setLow(res.data.deliveryPrice.low)
@@ -62,17 +74,28 @@ const Constants = () => {
         setMobile(res.data.mobileNumber)
         setdaysForReturns(res.data.daysForReturns)
         setMessage(res.data.giftMessage)
-        }
-        ).catch(err => console.log(err))
-     // eslint-disable-next-line
+        setGiftPrice(res.data.formGift)
+      })
+      .catch(err => console.log(err))
+    // eslint-disable-next-line
   }, [])
 
-
   // handle submit
-  const handleSubmit=(e)=>{
-     e.preventDefault();
-     AddConstants(high,low,freeOrder,midOrder,minimum,pointsToMoney,daysForReturns,mobile,message);
-     setAlertData({
+  const handleSubmit = e => {
+    e.preventDefault()
+    AddConstants(
+      high,
+      low,
+      freeOrder,
+      midOrder,
+      minimum,
+      pointsToMoney,
+      daysForReturns,
+      mobile,
+      message,
+      giftPrice
+    )
+    setAlertData({
       open: true,
       message: 'تم التعديل',
       type: 'success'
@@ -81,66 +104,66 @@ const Constants = () => {
 
   return (
     <React.Fragment>
-        {alertData.open ? (
+      {alertData.open ? (
         <Alert severity={alertData.type}>{alertData.message}</Alert>
       ) : null}
-      <form onSubmit={handleSubmit} >
-        <Grid container direction="column">
+      <form onSubmit={handleSubmit}>
+        <Grid container direction='column'>
           <Grid item>
-            <Typography variant="h4" className={classes.font}>
+            <Typography variant='h4' className={classes.font}>
               سعر التوصيل
             </Typography>
           </Grid>
           <Grid item>
-            <Grid container direction="row">
+            <Grid container direction='row'>
               <TextField
                 className={classes.field}
                 value={high}
-                onChange={(e)=>setHigh(e.target.value)}
-                variant="outlined"
-                label="السعر الاعلي"
+                onChange={e => setHigh(e.target.value)}
+                variant='outlined'
+                label='السعر الاعلي'
               />
               <TextField
                 className={classes.field}
                 value={low}
-                onChange={(e)=>setLow(e.target.value)}
-                variant="outlined"
-                label="السعر الاقل"
+                onChange={e => setLow(e.target.value)}
+                variant='outlined'
+                label='السعر الاقل'
               />
             </Grid>
           </Grid>
           <Grid item>
-            <Typography variant="h4" className={classes.font}>
+            <Typography variant='h4' className={classes.font}>
               الطلبات
             </Typography>
           </Grid>
           <Grid item>
-            <Grid container direction="row">
+            <Grid container direction='row'>
               <TextField
                 className={classes.field}
                 value={freeOrder}
-                onChange={(e)=>setfreeOrder(e.target.value)}
-                variant="outlined"
-                label="الاوردر المجاني "
+                onChange={e => setfreeOrder(e.target.value)}
+                variant='outlined'
+                label='الاوردر المجاني '
               />
               <TextField
                 className={classes.field}
                 value={midOrder}
-                onChange={(e)=>setMidOrder(e.target.value)}
-                variant="outlined"
-                label=" متوسط سعر لل اوردر"
+                onChange={e => setMidOrder(e.target.value)}
+                variant='outlined'
+                label=' متوسط سعر لل اوردر'
               />
               <TextField
                 className={classes.field}
                 value={minimum}
-                onChange={(e)=>setMinimum(e.target.value)}
-                variant="outlined"
-                label=" اقل سعر لل اوردر   "
+                onChange={e => setMinimum(e.target.value)}
+                variant='outlined'
+                label=' اقل سعر لل اوردر   '
               />
             </Grid>
           </Grid>
           <Grid item>
-            <Typography variant="h4" className={classes.font}>
+            <Typography variant='h4' className={classes.font}>
               النقط المحوله
             </Typography>
           </Grid>
@@ -148,52 +171,64 @@ const Constants = () => {
             <TextField
               className={classes.field}
               value={pointsToMoney}
-              onChange={(e)=>setPointsToMoney(e.target.value)}
-              variant="outlined"
-              label=" قيمه النقط "
+              onChange={e => setPointsToMoney(e.target.value)}
+              variant='outlined'
+              label=' قيمه النقط '
             />
           </Grid>
           <Grid item>
             <TextField
               className={classes.field}
               value={mobile}
-              onChange={(e)=>setMobile(e.target.value)}
-              variant="outlined"
-              label="  رقم الهاتف "
+              onChange={e => setMobile(e.target.value)}
+              variant='outlined'
+              label='  رقم الهاتف '
             />
           </Grid>
           <Grid item>
             <TextField
               className={classes.field}
               value={daysForReturns}
-              onChange={(e)=>setdaysForReturns(e.target.value)}
-              variant="outlined"
-              label="  ايام الرجوع "
+              onChange={e => setdaysForReturns(e.target.value)}
+              variant='outlined'
+              label='  ايام الرجوع '
             />
           </Grid>
           <Grid item>
             <TextField
-              style={{width :'100%',marginRight:"7px"}}
+              className={classes.field}
               value={message}
-              onChange={(e)=>setMessage(e.target.value)}
-              variant="outlined"
-              label=" الرساله"
+              onChange={e => setMessage(e.target.value)}
+              variant='outlined'
+              label=' الرساله'
             />
           </Grid>
           <Grid item>
-            <Grid container justify="center">
+            <TextField
+              className={classes.field}
+              value={giftPrice}
+              onChange={e => setGiftPrice(~~e.target.value)}
+              variant='outlined'
+              label='  هدية البيانات '
+            />
+          </Grid>
+          <Grid item>
+            <Grid container justify='center'>
               <Grid item>
-                <Button variant="contained" className={classes.button} type="submit" >
+                <Button
+                  variant='contained'
+                  className={classes.button}
+                  type='submit'
+                >
                   تم
                 </Button>
               </Grid>
             </Grid>
           </Grid>
         </Grid>
-      </form> 
-     
+      </form>
     </React.Fragment>
-  );
-};
+  )
+}
 
-export default Constants;
+export default Constants

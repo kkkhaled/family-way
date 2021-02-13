@@ -116,15 +116,15 @@ const UsersTable = () => {
     // eslint-disable-next-line
   }, [])
 
-  useEffect(()=>{
-    if(editUser !== null){
-      console.log(editUser);
+  useEffect(() => {
+    if (editUser !== null) {
+      console.log(editUser)
       setWallet(editUser.wallet)
       setPoints(editUser.points)
       setRole(editUser.role)
     }
     // eslint-disable-next-line
-  },[editUser,authContext])
+  }, [editUser, authContext])
   //console.log(users);
 
   const loadPagenate = page => {
@@ -220,38 +220,40 @@ const UsersTable = () => {
             />
           </Grid>
           <Grid item>
-           {editUser !== null ? 
-            <Autocomplete
-              style={{ marginRight: 10, flex: 1 }}
-              id='combo-box-demo'
-              options={options}
-              defaultValue={
-                options.find(option=>option.label == editUser.role)
-              }
-              getOptionLabel={option => option.label}
-              onChange={handleRole}
-              renderInput={params => (
-                <TextField
-                  {...params}
-                  label='تعيينه كا مسؤال'
-                  variant='outlined'
-                />
-              )}
-            /> :
-            <Autocomplete
-            style={{ marginRight: 10, flex: 1 }}
-            id='combo-box-demo'
-            options={options}
-            getOptionLabel={option => option.label}
-            onChange={handleRole}
-            renderInput={params => (
-              <TextField
-                {...params}
-                label='تعيينه كا مسؤال'
-                variant='outlined'
+            {editUser !== null ? (
+              <Autocomplete
+                style={{ marginRight: 10, flex: 1 }}
+                id='combo-box-demo'
+                options={options}
+                defaultValue={options.find(
+                  option => option.label == editUser.role
+                )}
+                getOptionLabel={option => option.label}
+                onChange={handleRole}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    label='تعيينه كا مسؤال'
+                    variant='outlined'
+                  />
+                )}
+              />
+            ) : (
+              <Autocomplete
+                style={{ marginRight: 10, flex: 1 }}
+                id='combo-box-demo'
+                options={options}
+                getOptionLabel={option => option.label}
+                onChange={handleRole}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    label='تعيينه كا مسؤال'
+                    variant='outlined'
+                  />
+                )}
               />
             )}
-          /> }
           </Grid>
           <Alert severity='info' style={{ margin: '10px 0px' }}>
             <strong>
@@ -384,13 +386,10 @@ const UsersTable = () => {
                     <TableCell align='center'> {row.points}</TableCell>
                     <TableCell align='center'> {row.os}</TableCell>
                     <TableCell align='center'>
-                    <Button
-                      component={Link}
-                      to={`/user-details/${row._id}`}
-                    >
-                      <VisibilityRoundedIcon />
-                    </Button>
-                  </TableCell>
+                      <Button component={Link} to={`/user-details/${row._id}`}>
+                        <VisibilityRoundedIcon />
+                      </Button>
+                    </TableCell>
                     <TableCell align='center'>
                       <EditIcon
                         className={classes.editicon}
@@ -438,55 +437,60 @@ const UsersTable = () => {
                     <Typography variant='h5'>نوع الهاتف</Typography>
                   </TableCell>
                   <TableCell align='center'>
-                  <Typography variant='h5'>مشاهده </Typography>
-                </TableCell>
+                    <Typography variant='h5'>مشاهده </Typography>
+                  </TableCell>
                   <TableCell align='center'>
                     <Typography variant='h5'>التعديل</Typography>
                   </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {users !== null ? (
-                  users.users.map((row, i) => (
-                    <TableRow key={row._id}>
-                      <TableCell component='th' scope='row' align='center'>
-                        {i + 1}
-                      </TableCell>
-                      <TableCell align='center'> {row.name}</TableCell>
-                      <TableCell align='center'> {row.phone}</TableCell>
-                      <TableCell align='center'> {row.role}</TableCell>
-                      <TableCell align='center'> {row.wallet}</TableCell>
-                      {/* <TableCell align='center'> {row.spins}</TableCell> */}
-                      <TableCell align='center'> {row.points}</TableCell>
-                      <TableCell align='center'> {row.os}</TableCell>
-                      <TableCell align='center'>
-                    <Button
-                      component={Link}
-                      to={`/user-details/${row._id}`}
-                    >
-                      <VisibilityRoundedIcon />
-                    </Button>
-                  </TableCell>
-                      <TableCell align='center'>
-                        <EditIcon
-                          className={classes.editicon}
-                          onClick={() => handleClickOpen(row)}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  ))
-                ) : (
-                  <Animations />
-                )}
+                {users !== null
+                  ? users.users.map((row, i) => (
+                      <TableRow key={row._id}>
+                        <TableCell component='th' scope='row' align='center'>
+                          {i + 1}
+                        </TableCell>
+                        <TableCell align='center'> {row.name}</TableCell>
+                        <TableCell align='center'> {row.phone}</TableCell>
+                        <TableCell align='center'> {row.role}</TableCell>
+                        <TableCell align='center'> {row.wallet}</TableCell>
+                        {/* <TableCell align='center'> {row.spins}</TableCell> */}
+                        <TableCell align='center'> {row.points}</TableCell>
+                        <TableCell align='center'> {row.os}</TableCell>
+                        <TableCell align='center'>
+                          <Button
+                            component={Link}
+                            to={`/user-details/${row._id}`}
+                          >
+                            <VisibilityRoundedIcon />
+                          </Button>
+                        </TableCell>
+                        <TableCell align='center'>
+                          <EditIcon
+                            className={classes.editicon}
+                            onClick={() => handleClickOpen(row)}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  : null}
               </TableBody>
             </Table>
+            {users == null ? <Animations /> : null}
           </TableContainer>
-           <Button variant="contained"
-               color='primary'
-               style={{color:"#FFF",padding:'10px',margin:"15px 0px",width:220}}
-           >
-              نسخ البيانات
-           </Button> 
+          <Button
+            variant='contained'
+            color='primary'
+            style={{
+              color: '#FFF',
+              padding: '10px',
+              margin: '15px 0px',
+              width: 220
+            }}
+          >
+            نسخ البيانات
+          </Button>
           {users !== null && users.pagination !== null ? (
             <Pagination
               onChange={(i, page) => {

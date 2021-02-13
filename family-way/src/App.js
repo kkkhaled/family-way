@@ -65,6 +65,7 @@ export default function MiniDrawer () {
   useEffect(() => {
     const isAuth = async () => {
       var token = await localStorage.token
+      console.log(token)
       if (token) {
         setAuthToken(token)
         // setAuthed(1);
