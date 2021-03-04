@@ -4,7 +4,8 @@ import {
   Grid,
   Typography,
   Button,
-  TextareaAutosize
+  TextareaAutosize,
+  Switch
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Alert } from '@material-ui/lab'
@@ -50,6 +51,14 @@ const Constants = () => {
   const [daysForReturns, setdaysForReturns] = useState('')
   const [message, setMessage] = useState('')
   const [giftPrice, setGiftPrice] = useState(null)
+  const [whoUsText, setWhoUsText] = useState(null)
+  const [usageAgreementText, setUsageAgreementText] = useState(null)
+  const [privacyPolicyText, setPrivacyPolicyText] = useState(null)
+  const [commonQuestionsText, setCommonQuestionsText] = useState(null)
+  const [termsAndConditionsText, setTermsAndConditionsText] = useState(null)
+  const [suggestedToUsText, setSuggestedToUsText] = useState(null)
+  const [contactUsText, setContactUsText] = useState(null)
+  const [canIOrder, setCanIOrder] = useState(true)
 
   useEffect(() => {
     loadUser()
@@ -75,6 +84,14 @@ const Constants = () => {
         setdaysForReturns(res.data.daysForReturns)
         setMessage(res.data.giftMessage)
         setGiftPrice(res.data.formGift)
+        setWhoUsText(res.data.whoUsText)
+        setUsageAgreementText(res.data.usageAgreementText)
+        setPrivacyPolicyText(res.data.privacyPolicyText)
+        setCommonQuestionsText(res.data.commonQuestionsText)
+        setTermsAndConditionsText(res.data.termsAndConditionsText)
+        setSuggestedToUsText(res.data.suggestedToUsText)
+        setContactUsText(res.data.contactUsText)
+        setCanIOrder(res.data.canIOrder)
       })
       .catch(err => console.log(err))
     // eslint-disable-next-line
@@ -93,7 +110,15 @@ const Constants = () => {
       daysForReturns,
       mobile,
       message,
-      giftPrice
+      giftPrice,
+      whoUsText,
+      usageAgreementText,
+      privacyPolicyText,
+      commonQuestionsText,
+      termsAndConditionsText,
+      suggestedToUsText,
+      contactUsText,
+      canIOrder
     )
     setAlertData({
       open: true,
@@ -109,6 +134,17 @@ const Constants = () => {
       ) : null}
       <form onSubmit={handleSubmit}>
         <Grid container direction='column'>
+          <Grid item>
+            <Typography variant='h4' className={classes.font}>
+              ايقاف المتجر
+            </Typography>
+            <Switch
+              checked={canIOrder}
+              onChange={() => setCanIOrder(value => !value)}
+              name='checkedB'
+              color='secondary'
+            />
+          </Grid>
           <Grid item>
             <Typography variant='h4' className={classes.font}>
               سعر التوصيل
@@ -212,6 +248,103 @@ const Constants = () => {
               label='  هدية البيانات '
             />
           </Grid>
+          <Grid item>
+            <Typography variant='h4' className={classes.font}>
+              السياسات
+            </Typography>
+          </Grid>
+          <Grid item style={{ width: '100%' }}>
+            <Typography variant='h5' className={classes.font}>
+              من نحن
+            </Typography>
+            <TextareaAutosize
+              style={{ width: '100%', height: 120 }}
+              rowsMax={4}
+              aria-label='maximum height'
+              placeholder='Maximum 4 rows'
+              onChange={text => setWhoUsText(text.target.value)}
+              defaultValue={whoUsText}
+            />
+          </Grid>
+          <Grid item style={{ width: '100%' }}>
+            <Typography variant='h5' className={classes.font}>
+              اتفاقية الاستخدام
+            </Typography>
+            <TextareaAutosize
+              style={{ width: '100%', height: 120 }}
+              rowsMax={4}
+              aria-label='maximum height'
+              placeholder='Maximum 4 rows'
+              onChange={text => setUsageAgreementText(text.target.value)}
+              defaultValue={usageAgreementText}
+            />
+          </Grid>
+          <Grid item style={{ width: '100%' }}>
+            <Typography variant='h5' className={classes.font}>
+              سياسة الخصوصية
+            </Typography>
+            <TextareaAutosize
+              style={{ width: '100%', height: 120 }}
+              rowsMax={4}
+              aria-label='maximum height'
+              placeholder='Maximum 4 rows'
+              onChange={text => setPrivacyPolicyText(text.target.value)}
+              defaultValue={privacyPolicyText}
+            />
+          </Grid>
+          <Grid item style={{ width: '100%' }}>
+            <Typography variant='h5' className={classes.font}>
+              الأسئلة الشائعة
+            </Typography>
+            <TextareaAutosize
+              style={{ width: '100%', height: 120 }}
+              rowsMax={4}
+              aria-label='maximum height'
+              placeholder='Maximum 4 rows'
+              onChange={text => setCommonQuestionsText(text.target.value)}
+              defaultValue={commonQuestionsText}
+            />
+          </Grid>
+          <Grid item style={{ width: '100%' }}>
+            <Typography variant='h5' className={classes.font}>
+              الشروط و الاحكام
+            </Typography>
+            <TextareaAutosize
+              style={{ width: '100%', height: 120 }}
+              rowsMax={4}
+              aria-label='maximum height'
+              placeholder='Maximum 4 rows'
+              onChange={text => setTermsAndConditionsText(text.target.value)}
+              defaultValue={termsAndConditionsText}
+            />
+          </Grid>
+          <Grid item style={{ width: '100%' }}>
+            <Typography variant='h5' className={classes.font}>
+              اقترح علينا
+            </Typography>
+            <TextareaAutosize
+              style={{ width: '100%', height: 120 }}
+              rowsMax={4}
+              aria-label='maximum height'
+              placeholder='Maximum 4 rows'
+              onChange={text => setSuggestedToUsText(text.target.value)}
+              defaultValue={suggestedToUsText}
+            />
+          </Grid>
+          <Grid item style={{ width: '100%' }}>
+            <Typography variant='h5' className={classes.font}>
+              تواصل معنا
+            </Typography>
+            <TextareaAutosize
+              style={{ width: '100%', height: 120 }}
+              rowsMax={4}
+              aria-label='maximum height'
+              placeholder='Maximum 4 rows'
+              onChange={text => setContactUsText(text.target.value)}
+              defaultValue={contactUsText}
+            />
+          </Grid>
+
           <Grid item>
             <Grid container justify='center'>
               <Grid item>

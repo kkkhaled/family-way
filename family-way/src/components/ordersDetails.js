@@ -171,7 +171,7 @@ const OrdersDetails = props => {
 
   const handleSubmit = e => {
     e.preventDefault()
-    if (order.bill.length > 0) {
+    if (order?.bill?.length > 0) {
       setAlertData({
         open: true,
         message: ' لا يمكن التعديل علي الطلب ',

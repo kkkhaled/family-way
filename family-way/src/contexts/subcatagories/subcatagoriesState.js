@@ -30,7 +30,7 @@ export const SubCatagoriesProvider = ({ children }) => {
     }
   }
 
-  const removeSubCategory = async (id) => {
+  const removeSubCategory = async id => {
     try {
       await server.delete(`/subCategory/${id}`)
       dispatch({
@@ -56,11 +56,21 @@ export const SubCatagoriesProvider = ({ children }) => {
   }
 
   // add new one
-  const addNewSubCatagories = async (file, name, parentCategory, wide) => {
+  const addNewSubCatagories = async (
+    file,
+    name,
+    parentCategory,
+    wide,
+    forSmoking,
+    bio
+  ) => {
     const formData = new FormData()
     Array.from(file).forEach(file => {
       formData.append('file', file)
     })
+    console.log(forSmoking)
+    formData.append('bio', bio)
+    formData.append('forSmoking', forSmoking)
     formData.append('name', name)
     formData.append('parentCategory', parentCategory)
     formData.append('wide', wide)

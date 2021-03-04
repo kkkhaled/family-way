@@ -120,12 +120,12 @@ const AddCatagiories = () => {
         message: 'تم اضافه الصنف  ',
         type: 'success'
       })
-      setName('');
-      setSort('');
-      if(isCompany === true){
-        setIsCompany(false);
+      setName('')
+      setSort('')
+      if (isCompany === true) {
+        setIsCompany(false)
       }
-        }
+    }
   }
 
   const handleUpdate = async () => {
@@ -240,6 +240,9 @@ const AddCatagiories = () => {
         {catagories.length > 0 && !loading ? (
           catagories.map(catag => (
             <Grid item className={classes.cardOfCategories} key={catag._id}>
+              <Typography variant='h5' className={classes.name}>
+                {catag.sort}
+              </Typography>
               <Typography variant='h5' className={classes.name}>
                 {catag.name}
               </Typography>

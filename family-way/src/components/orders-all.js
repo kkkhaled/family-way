@@ -60,10 +60,25 @@ const OrdersTable = ({ isArchived }) => {
       const response = await axios.put(`${url}order/${id}`, {
         isArchived: true
       })
-      console.log(response.data)
       setAlertData({
         open: true,
         message: 'تمت الأرشفه',
+        type: 'success'
+      })
+      loadPagenateOrders()
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
+
+  const unArchiveOrder = async id => {
+    try {
+      const response = await axios.put(`${url}order/${id}`, {
+        isArchived: false
+      })
+      setAlertData({
+        open: true,
+        message: 'تم إلغاء الأرشفه',
         type: 'success'
       })
       loadPagenateOrders()
@@ -100,11 +115,11 @@ const OrdersTable = ({ isArchived }) => {
               <TableCell align='center'>
                 <Typography variant='h5'>مشاهده</Typography>
               </TableCell>
-              {!isArchived ? (
-                <TableCell align='center'>
-                  <Typography variant='h5'>أرشفة الطلب</Typography>
-                </TableCell>
-              ) : null}
+              <TableCell align='center'>
+                <Typography variant='h5'>
+                  أرشفه
+                </Typography>
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -158,16 +173,20 @@ const OrdersTable = ({ isArchived }) => {
                       <VisibilityRoundedIcon />
                     </Button>
                   </TableCell>
-                  {!isArchived ? (
-                    <TableCell align='center'>
-                      <Button
-                        onClick={() => archiveOrder(row._id)}
-                        variant='outlinedPrimary'
-                      >
-                        أرشفه
-                      </Button>
-                    </TableCell>
-                  ) : null}
+                  <TableCell align='center'>
+                    <Button
+                      onClick={() => {
+                        if (isArchived) {
+                          unArchiveOrder(row._id)
+                        } else {
+                          archiveOrder(row._id)
+                        }
+                      }}
+                      variant='outlinedPrimary'
+                    >
+                      {!isArchived ? ' أرشفة الطلب' : 'إلغاء الأرشفه'}
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))
             ) : (

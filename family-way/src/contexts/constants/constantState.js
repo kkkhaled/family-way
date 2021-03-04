@@ -43,7 +43,15 @@ export const ConstantProvider = ({ children }) => {
     daysForReturns,
     mobileNumber,
     giftMessage,
-    formGift
+    formGift,
+    whoUsText,
+    usageAgreementText,
+    privacyPolicyText,
+    commonQuestionsText,
+    termsAndConditionsText,
+    suggestedToUsText,
+    contactUsText,
+    canIOrder
   ) => {
     const data = {
       deliveryPrice: { high, low },
@@ -52,11 +60,19 @@ export const ConstantProvider = ({ children }) => {
       daysForReturns,
       mobileNumber,
       giftMessage,
-      formGift
+      formGift,
+      whoUsText,
+      usageAgreementText,
+      privacyPolicyText,
+      commonQuestionsText,
+      termsAndConditionsText,
+      suggestedToUsText,
+      contactUsText,
+      canIOrder
     }
     console.log(data)
     try {
-      const res = await server.put('/constants', data, {
+      const res = await server.post('/constants', data, {
         headers: {
           Authorization: 'Bearer ' + localStorage.token
         }

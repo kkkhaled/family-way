@@ -24,6 +24,8 @@ import EditProduct from './editproduct'
 import Draggable from 'react-draggable'
 import moment from 'moment'
 import 'moment/locale/ar'
+import { url } from '../constants/constants'
+import axios from 'axios'
 
 function PaperComponent (props) {
   return (
@@ -185,10 +187,19 @@ const GetProducts = () => {
     return `سينتهي العرض ${moment(end).fromNow()}`
   }
 
+  const createCloneFromProducts = async () => {
+    try {
+      const response = await axios.post(`${url}productsRoute`)
+      alert("تم التصدير")
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <React.Fragment>
       <Grid container style={{ flexWrap: 'nowrap', gridGap: 10 }}>
-        <Grid item style={{ width: '50%' }}>
+        <Grid item style={{ width: '33.333%' }}>
           <Typography variant='h4'>بحث عن طريق الاسم</Typography>
           <TextField
             label='اكتب اسم المنتج'
@@ -197,7 +208,7 @@ const GetProducts = () => {
             onChange={handlenameSearch}
           ></TextField>
         </Grid>
-        <Grid item style={{ width: '50%' }}>
+        <Grid item style={{ width: '33.333%' }}>
           <Typography variant='h4'>بحث عن طريق الصنف</Typography>
           <Autocomplete
             style={{ width: '100%', margin: '20px 0px' }}
@@ -213,6 +224,18 @@ const GetProducts = () => {
               />
             )}
           />
+        </Grid>
+        <Grid item style={{ width: '33.333%' }}>
+          <Typography variant='h4'>تصدير الي ملف اكسل</Typography>
+          <Button
+            style={{ width: '100%', margin: '20px 0px' }}
+            variant='contained'
+            onClick={() => {
+              createCloneFromProducts()
+            }}
+          >
+            تصدير
+          </Button>
         </Grid>
       </Grid>
       <Divider className={classes.divider} />

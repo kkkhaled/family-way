@@ -1,5 +1,5 @@
 import { Grid } from '@material-ui/core'
-import React, { useState, useEffect, useContext,useRef } from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import { Typography, TextField, Button, Divider } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
@@ -10,7 +10,7 @@ import DroZone from './DropZone'
 import { Switch } from '@material-ui/core'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import { authContext } from '../contexts/auth/authstate'
-import { Alert } from "@material-ui/lab";
+import { Alert } from '@material-ui/lab'
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -83,31 +83,33 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const GetSubCatagories = () => {
-
-  const autoCom = useRef(null);
+  const autoCom = useRef(null)
 
   // define component state
-  const [alertData, setAlertData] = useState({ open: false });
+  const [alertData, setAlertData] = useState({ open: false })
   //const [text, setText] = useState({ name: 'انتظر تحميل البيانات' })
   const [isWide, setIsWide] = useState(false)
   const [files, setFiles] = useState([])
   const [dropZoneState, setDropZoneState] = useState(false)
   const [name, setName] = useState('')
   const [parentId, setParentId] = useState(null)
+  const [isSmoking, setIsSmoking] = useState(false)
+  const [bio, setBio] = useState(null)
   const [parentName, setParentName] = useState('')
   // render catagories state && func
-  const { getAllCatagories, catagories, loading, getOneCatagory } = useContext(catagoriesContext)
+  const { getAllCatagories, catagories, loading, getOneCatagory } = useContext(
+    catagoriesContext
+  )
 
   // render subcatagories state && func
   const { addNewSubCatagories } = useContext(subcatagoriesContext)
   const { loadUser } = useContext(authContext)
 
-
   // loading catagories
   useEffect(
     () => {
-      loadUser();
-      getAllCatagories();
+      loadUser()
+      getAllCatagories()
     },
     // eslint-disable-next-line
     []
@@ -119,9 +121,9 @@ const GetSubCatagories = () => {
   const handleFilter = (event, item) => {
     if (item) {
       getOneCatagory(item._id)
-      if (item.name === "الشركات") {
-        setIsWide(true);
-        setParentName(item.name);
+      if (item.name === 'الشركات') {
+        setIsWide(true)
+        setParentName(item.name)
       }
       setParentId(item._id)
     }
@@ -141,53 +143,62 @@ const GetSubCatagories = () => {
     if (parentId === null) {
       setAlertData({
         open: true,
-        message: "تاكد من ادخال القسم الرئيسي",
-        type: "error",
-      });
-    } else if (name === '') {
+        message: 'تاكد من ادخال القسم الرئيسي',
+        type: 'error'
+      })
+    } else if (!bio) {
       setAlertData({
         open: true,
-        message: "تاكد من ادخال اسم الصنف الفرعي",
-        type: "error",
-      });
+        message: 'تأكد من ادخال الBIO',
+        type: 'error'
+      })
+    }else if (name === '') {
+      setAlertData({
+        open: true,
+        message: 'تاكد من ادخال اسم الصنف الفرعي',
+        type: 'error'
+      })
     } else if (files.length === 0) {
       setAlertData({
         open: true,
-        message: "تاكد من رفع الصوره  ",
-        type: "error",
-      });
-    }else if(parentName ==='الشركات' && isWide=== false){
-     setIsWide(true);
-     setAlertData({
-      open: true,
-      message: " يجب الموافقه علي عرض الشاشه بالكامل في حاله الشركات ",
-      type: "error",
-    });
-    }
-    else {
-      addNewSubCatagories(files, name, parentId, isWide);
+        message: 'تاكد من رفع الصوره  ',
+        type: 'error'
+      })
+    } else if (parentName === 'الشركات' && isWide === false) {
+      setIsWide(true)
       setAlertData({
         open: true,
-        message: "تم اضافه الصنف ",
-        type: "success",
-      });
-      setName('');
-      setParentId(null);
-      setFiles([]);
-     if(isWide === true){
-      setIsWide(false)
+        message: ' يجب الموافقه علي عرض الشاشه بالكامل في حاله الشركات ',
+        type: 'error'
+      })
+    } else {
+      addNewSubCatagories(files, name, parentId, isWide, isSmoking, bio)
+      setAlertData({
+        open: true,
+        message: 'تم اضافه الصنف ',
+        type: 'success'
+      })
+      setIsSmoking(false)
+      setBio(null)
+      setName('')
+      setParentId(null)
+      setFiles([])
+      if (isWide === true) {
+        setIsWide(false)
       }
-      const ele =autoCom.current.getElementsByClassName('MuiAutocomplete-clearIndicator')[0];
-      if(ele) ele.click();  
+      const ele = autoCom.current.getElementsByClassName(
+        'MuiAutocomplete-clearIndicator'
+      )[0]
+      if (ele) ele.click()
     }
- }
+  }
 
   return (
     <React.Fragment>
       {alertData.open ? (
         <Alert severity={alertData.type}>{alertData.message}</Alert>
       ) : null}
-      <Typography variant='h4' style={{margin:"15px 0px"}}>
+      <Typography variant='h4' style={{ margin: '15px 0px' }}>
         ادخل الاصناف الفرعيه
       </Typography>
       <form onSubmit={handleSubmit}>
@@ -216,7 +227,15 @@ const GetSubCatagories = () => {
               onChange={e => setName(e.target.value)}
             />
           </Grid>
-
+          <Grid item style={{ marginTop: 10 }}>
+            <TextField
+              style={{ flex: 1 }}
+              variant='outlined'
+              label='Bio'
+              value={bio}
+              onChange={e => setBio(e.target.value)}
+            />
+          </Grid>
           <Grid item style={{ marginTop: 10 }}>
             <FormControlLabel
               control={
@@ -228,16 +247,31 @@ const GetSubCatagories = () => {
               }
               label='عرض الشاشه بالكامل ؟'
             />
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={isSmoking}
+                  onChange={() => setIsSmoking(value => !value)}
+                  name='checkedA'
+                />
+              }
+              label='هل هي خاصه بالمدخنين ؟'
+            />
           </Grid>
           <Grid item>
             <Button
               variant='contained'
               color='primary'
               onClick={SelectFilesButtonHandler}
-              style={{color:"#FFF",padding:'10px',margin:"15px 0px",width:220}}
+              style={{
+                color: '#FFF',
+                padding: '10px',
+                margin: '15px 0px',
+                width: 220
+              }}
             >
               ادخل صوره الصنف
-                </Button>
+            </Button>
           </Grid>
           <Grid item>
             <Button
@@ -245,10 +279,10 @@ const GetSubCatagories = () => {
               color='secondary'
               className={classes.button2}
               type='submit'
-              style={{width:"100%"}}
+              style={{ width: '100%' }}
             >
               انشاء
-              </Button>
+            </Button>
           </Grid>
         </Grid>
       </form>

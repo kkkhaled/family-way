@@ -1,6 +1,8 @@
-export const url = 'https://familyway.sa/api/user/'
+// export const url = 'https://familyway.sa/api/user/'
+// export const urlImages = 'https://familyway.sa/uploads/'
 
-export const urlImages = 'https://familyway.sa/uploads/'
+export const url = 'localhost:8080/api/user/'
+export const urlImages = 'localhost:8080/uploads/'
 
 export const convertPaymentText = value => {
   let result

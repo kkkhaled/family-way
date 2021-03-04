@@ -28,6 +28,8 @@ import { Link } from 'react-router-dom'
 import Animations from './loader'
 import Draggable from 'react-draggable'
 import { Alert, Autocomplete } from '@material-ui/lab'
+import { url, urlImages } from '../constants/constants'
+import axios from 'axios'
 
 const useStyle = makeStyles(theme => ({
   head: {
@@ -198,6 +200,15 @@ const UsersTable = () => {
       setRole(item.label)
     }
   }
+
+  const createCloneFromUsers = async () => {
+    try {
+      const response = await axios.post(`${url}exportUsers`)
+      console.log(response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  } 
 
   //console.log(users);
 
@@ -479,18 +490,28 @@ const UsersTable = () => {
             </Table>
             {users == null ? <Animations /> : null}
           </TableContainer>
-          <Button
-            variant='contained'
-            color='primary'
+          <button
             style={{
               color: '#FFF',
               padding: '10px',
               margin: '15px 0px',
-              width: 220
+              width: 220,
+              backgroundColor: '#03A9F4',
+              border: 0,
+              borderRadius: 6,
+              cursor: 'pointer'
             }}
+            onClick={() => createCloneFromUsers()}
           >
+            {/* <a
+              href={`${urlImages}excelFilesForUsers/1613402472534.xls`}
+              target='_blank'
+              style={{color:"#FFF"}}
+            >
+              
+            </a> */}
             نسخ البيانات
-          </Button>
+          </button>
           {users !== null && users.pagination !== null ? (
             <Pagination
               onChange={(i, page) => {
