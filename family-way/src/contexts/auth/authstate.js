@@ -151,7 +151,11 @@ export const AuthProvider = ({ children }) => {
   // search users
   const searchviaPhone = async phone => {
     try {
-      const res = await server.get(`/users?phoneSearch=${phone}`)
+      const res = await server.get(`/users?phoneSearch=${phone}`, {
+        headers: {
+          Authorization: 'Bearer ' + localStorage.token
+        }
+      })
       // console.log(res);
       dispatch({
         type: 'PHONE_SEARCH',
@@ -164,7 +168,11 @@ export const AuthProvider = ({ children }) => {
 
   const searchviaName = async name => {
     try {
-      const res = await server.get(`/users?nameSearch=${name}`)
+      const res = await server.get(`/users?nameSearch=${name}`,{
+        headers: {
+          Authorization: 'Bearer ' + localStorage.token
+        }
+      })
       // console.log(res);
       dispatch({
         type: 'Name_SEARCH',

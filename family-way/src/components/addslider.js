@@ -57,8 +57,8 @@ const AddSlider = () => {
   const [files, setFiles] = useState([]);
   const [isProduct, setisProduct] = useState(false);
   const [sort, setsort] = useState('');
-  const [category, setcategory] = useState('');
-  const [action, setaction] = useState('');
+  const [category, setcategory] = useState(null);
+  const [action, setaction] = useState(null);
   const [isCatagory, setIscatagory] = useState(false);
 
   const { loadUser } = useContext(authContext)
@@ -95,7 +95,7 @@ const AddSlider = () => {
       if(control === false){setControl(true)}
     }
   }
-
+ console.log(nonPagenateProducts);
   const handleProduct = (event, item) => {
     if (item) {
       setaction(item._id)
@@ -122,8 +122,9 @@ const AddSlider = () => {
         message: 'تاكد من رفع الصوره  ',
         type: 'error'
       })
-    }
+    }else {
     if (isProduct) {
+      if(action !== null){
       addNewSliderProduct(files, isProduct, sort, action)
       setAlertData({
         open: true,
@@ -134,17 +135,28 @@ const AddSlider = () => {
       setisProduct(false);
       setIscatagory(false);
       setsort('');
-      setaction('');
-
-      if(control === true){setControl(false)}
-
+      setaction(null);
+     if(control === true){setControl(false)}
       const ele =autoCom.current.getElementsByClassName('MuiAutocomplete-clearIndicator')[0];
       if(ele) ele.click()
-  
       const ele2 =autoCom2.current.getElementsByClassName('MuiAutocomplete-clearIndicator')[0];
       if(ele2) ele2.click()
-
+    }
+      if(action === null){
+       setAlertData({
+        open: true,
+        message: ' تاكد من اختيار منتج  ',
+        type: 'error'
+      })
+   }
     } else if (isCatagory) {
+      if(category === null){
+        setAlertData({
+          open: true,
+          message: ' تاكد من اختيار الصنف  ',
+          type: 'error'
+        })
+      }else{
       addNewSliderCatag(files, category, sort)
       setAlertData({
         open: true,
@@ -154,9 +166,10 @@ const AddSlider = () => {
       setFiles([]);
       setIscatagory(false);
       setsort('');
-      setcategory('');
+      setcategory(null);
       const ele3 =autoCom3.current.getElementsByClassName('MuiAutocomplete-clearIndicator')[0];
       if(ele3) ele3.click()
+    }
     } else if (!isProduct && !isCatagory) {
       addNewSlider(files, sort)
       setAlertData({
@@ -168,6 +181,7 @@ const AddSlider = () => {
       setsort('');
     }
    }
+  }
 
   return (
     <React.Fragment>

@@ -134,18 +134,13 @@ const AddSlider = () => {
         type: 'error'
       })
     } else if (isProduct) {
+      if(action !== null ){
       addNewSliderCatagories(category, files, isProduct, sort, action)
       setAlertData({
         open: true,
         message: 'تم الاضافه',
         type: 'success'
       })
-      setFiles([])
-      setisProduct(false)
-      setsort('')
-      setcategory(null)
-      setaction(null)
-      
       if(control === true){setControl(false)}
 
       const ele =autoCom.current.getElementsByClassName('MuiAutocomplete-clearIndicator')[0];
@@ -153,10 +148,22 @@ const AddSlider = () => {
 
       const ele2 =autoCom2.current.getElementsByClassName('MuiAutocomplete-clearIndicator')[0];
       if(ele2) ele2.click(); 
-
+     
       const ele3 =autoCom3.current.getElementsByClassName('MuiAutocomplete-clearIndicator')[0];
-      if(ele3) ele3.click(); 
+      if(ele3) ele3.click();
 
+      setFiles([])
+      setisProduct(false)
+      setsort('')
+      setcategory(null)
+      setaction(null)
+     }else{
+     setAlertData({
+      open: true,
+      message: 'تاكد من اختيار منتج ',
+      type: 'error'
+    })
+     }
     } else if (!isProduct) {
       addNewSlider(category, files, sort)
       setAlertData({

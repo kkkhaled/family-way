@@ -179,7 +179,7 @@ const GetSubCatagories = () => {
         type: 'success'
       })
       setIsSmoking(false)
-      setBio(null)
+      setBio('')
       setName('')
       setParentId(null)
       setFiles([])

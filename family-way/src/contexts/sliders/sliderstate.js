@@ -45,7 +45,7 @@ export const SliderProvider =({children})=>{
         }
        try {
           const res = await server.post('/homeSlider',formData,config);
-          //console.log(res); 
+          console.log(res); 
        } catch (err) {
            console.log(err);
        }
@@ -67,7 +67,7 @@ export const SliderProvider =({children})=>{
         }
        try {
           const res = await server.post('/homeSlider',formData,config);
-         // console.log(res); 
+           console.log(res); 
        } catch (err) {
            console.log(err);
        }
@@ -89,7 +89,7 @@ export const SliderProvider =({children})=>{
         }
        try {
           const res = await server.post('/homeSlider',formData,config);
-        //  console.log(res); 
+         console.log(res); 
        } catch (err) {
            console.log(err);
        }

@@ -42,6 +42,8 @@ import PrivateRoute from './routing/privateRoute'
 import OrderArchived from './pages/orderArchived'
 import Userdetails from './pages/userDetails'
 import Additaton from './pages/additatons'
+import Email from './pages/emails'
+import EmailDetail from './pages/EmailDetails'
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex'
@@ -206,6 +208,16 @@ export default function MiniDrawer () {
                                           exact
                                           path='/additations'
                                           component={Additaton}
+                                        />
+                                        <PrivateRoute
+                                          exact
+                                          path='/emails'
+                                          component={Email}
+                                        />
+                                         <PrivateRoute
+                                          exact
+                                          path='/email-details/:id'
+                                          component={EmailDetail}
                                         />
                                       </Switch>
                                     </main>

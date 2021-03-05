@@ -459,6 +459,24 @@ const SideBar = () => {
           </ListItem>
         ))}
       </List>
+      <Divider  className={classes.Divider} />
+      <List>
+        {NavData.emails.map((item, index) => (
+          <ListItem
+            onClick={e => handleClick(e, item.id)}
+            selected={selected === item.id}
+            component={Link}
+            to={item.to}
+            button
+            key={item.id}
+          >
+            <ListItemIcon className={classes.sideIcon}>
+              {<item.icon />}
+            </ListItemIcon>
+            <ListItemText className={classes.sideText} primary={item.title} />
+          </ListItem>
+        ))}
+      </List>
 
       <CustomizedButton component={Link} to='/login' onClick={handleLogout}>
         تسجيل الخروج
