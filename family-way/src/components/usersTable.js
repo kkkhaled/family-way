@@ -208,7 +208,7 @@ const UsersTable = () => {
     } catch (error) {
       console.log(error)
     }
-  } 
+  }
 
   //console.log(users);
 
@@ -219,17 +219,6 @@ const UsersTable = () => {
       ) : null}
       <form onSubmit={handleUpate}>
         <Grid container direction='column'>
-          <Grid item>
-            <TextField
-              variant='outlined'
-              label=' المحفظه'
-              value={wallet}
-              style={{ width: '100%', marginBottom: 10 }}
-              onChange={e => {
-                setWallet(e.target.value)
-              }}
-            />
-          </Grid>
           <Grid item>
             {editUser !== null ? (
               <Autocomplete
@@ -272,7 +261,7 @@ const UsersTable = () => {
               علي الدخول الي لوحه التحكم
             </strong>
           </Alert>
-          <Grid item>
+          <Grid item style={{ marginBottom: 12 }}>
             <TextField
               variant='outlined'
               label='النقاط'
@@ -280,6 +269,17 @@ const UsersTable = () => {
               style={{ width: '100%' }}
               onChange={e => {
                 setPoints(e.target.value)
+              }}
+            />
+          </Grid>
+          <Grid item style={{ marginBottom: 12 }}>
+            <TextField
+              variant='outlined'
+              label=' المحفظه'
+              value={wallet}
+              style={{ width: '100%', marginBottom: 10 }}
+              onChange={e => {
+                setWallet(e.target.value)
               }}
             />
           </Grid>

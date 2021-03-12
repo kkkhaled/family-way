@@ -1,5 +1,5 @@
- export const url = 'https://familyway.sa/api/user/'
- export const urlImages = 'https://familyway.sa/uploads/'
+ export const url = 'http://localhost:8080/api/user/'
+ export const urlImages = 'http://localhost:8080/uploads/'
 
 // export const url = 'localhost:8080/api/user/'
 // export const urlImages = 'localhost:8080/uploads/'
