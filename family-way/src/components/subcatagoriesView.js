@@ -1,13 +1,35 @@
 import { Button, FormControlLabel, Grid, Switch } from '@material-ui/core'
 import React, { useState, useEffect, useContext } from 'react'
 import Autocomplete from '@material-ui/lab/Autocomplete'
-import { Card, Typography, TextField } from '@material-ui/core'
+import {
+   Card, 
+  Typography, 
+  TextField ,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Paper,
+ } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { catagoriesContext } from '../contexts/catagories/catagoriesState'
 import { subcatagoriesContext } from '../contexts/subcatagories/subcatagoriesState'
+import EditSub from './editSubCatagories'
 import Alert from '@material-ui/lab/Alert'
 import axios from 'axios'
 import { url } from '../constants/constants'
+import Draggable from 'react-draggable'
+
+function PaperComponent (props) {
+  return (
+    <Draggable
+      handle='#draggable-dialog-title'
+      cancel={'[class*="MuiDialogContent-root"]'}
+    >
+      <Paper {...props} />
+    </Draggable>
+  )
+}
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -57,15 +79,32 @@ const useStyles = makeStyles(theme => ({
     '& > * + *': {
       marginTop: theme.spacing(10)
     }
-  }
+  },
+  delbtn:{
+    marginLeft:"10px",
+    marginRight:"7px",
+    width:"7.5em"
+  },
+  editbtn :{
+    marginLeft:"7px",
+    marginRight :"10px",
+    width:"7.5em"
+  },
+  buttondialogsubmit: {
+    color: 'white',
+    backgroundColor: theme.palette.green.main,
+    border: 5
+  },
 }))
 
 const SubCatagoryView = () => {
   const classes = useStyles()
+  // for pop up
+  const [openDialog, setOpenDialog] = useState(false);
   // define component state
   const [text, setText] = useState({ name: 'انتظر تحميل البيانات' })
   const [name, setName] = useState('')
-  const { getAllCatagories, catagories, loading } = useContext(
+  const { getAllCatagories, catagories} = useContext(
     catagoriesContext
   )
 
@@ -73,7 +112,8 @@ const SubCatagoryView = () => {
   const {
     getFilteredSubSatagories,
     filterdata,
-    removeSubCategory
+    removeSubCategory,
+    setCurrentSub
   } = useContext(subcatagoriesContext)
 
   // loading catagories
@@ -84,6 +124,16 @@ const SubCatagoryView = () => {
     // eslint-disable-next-line
     []
   )
+
+    // handle dialog open
+    const handleOpen = sub => {
+      setOpenDialog(true)
+      setCurrentSub(sub)
+    }
+  // handle dialog closed
+  const handleClose = () => {
+    setOpenDialog(false)
+  }
 
   // handle filter input
   const handleFilter = (event, item) => {
@@ -103,6 +153,7 @@ const SubCatagoryView = () => {
       console.log(error)
     }
   }
+
 
   const subCatagView = (
     <React.Fragment>
@@ -129,17 +180,37 @@ const SubCatagoryView = () => {
                   label='اخفاء'
                 />
                 <h5 style={{ textAlign: 'center', margin: 10 }}>{item.name}</h5>
+                <Grid container direction="row"> 
+                 <Grid item>
                 <Button
+                  className={classes.editbtn}
+                  onClick={() => handleOpen(item)}
+                  variant='contained'
+                  style={{
+                    backgroundColor: '#ffd60a',
+                    color: '#FFF',
+                    marginBottom: 5
+                  }}
+                     >
+                  تعديل
+                     </Button>
+                   </Grid> 
+                  <Grid item>
+                <Button
+                 className={classes.delbtn}
                   onClick={() => removeSubCategory(item._id)}
                   variant='contained'
                   style={{
                     backgroundColor: '#E91E63',
                     color: '#FFF',
-                    marginBottom: 5
-                  }}
+                    marginBottom: 5,
+                   }}
                 >
                   مسح
                 </Button>
+                </Grid> 
+              
+                </Grid>
               </div>
             </Card>
           ))
@@ -177,6 +248,30 @@ const SubCatagoryView = () => {
           />
         </Grid>
       </Grid>
+      <Dialog
+        open={openDialog}
+        onClose={handleClose}
+        PaperComponent={PaperComponent}
+        aria-labelledby='draggable-dialog-title'
+      >
+        <DialogTitle style={{ cursor: 'move' }} id='draggable-dialog-title'>
+          <Typography variant='h5' color='primary'>
+            تعديل بيانات الصنف الفرعي
+          </Typography>
+        </DialogTitle>
+        <DialogContent>
+          <EditSub />
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleClose}
+            variant='contained'
+            className={classes.buttondialogsubmit}
+          >
+            تم
+          </Button>
+        </DialogActions>
+      </Dialog>
     </React.Fragment>
   )
 }

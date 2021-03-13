@@ -20,7 +20,12 @@ export default (state, action) => {
           return {
              ...state,
              filteredthird: state.filteredthird.filter((thirdcatagory) => thirdcatagory._id !== action.payload),
-           }       
+           }
+           case "Set_Current":
+            return{
+              ...state,
+              third: action.payload,
+            }           
       default:
         return state;
     }

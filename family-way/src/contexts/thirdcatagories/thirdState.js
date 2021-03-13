@@ -6,7 +6,8 @@ import server from '../../api/server'
 const initialState = {
   thirdcatagories: [],
   filteredthird: [],
-  isLoad: true
+  isLoad: true,
+  third:null
 }
 
 // create context
@@ -69,6 +70,23 @@ export const ThirdCatagoriesProvider = ({ children }) => {
     }
   }
 
+    // edit sub catagories
+    const editThirdCatagories=async (id,name)=>{
+      try {
+         const data={name};
+         const config ={
+          headers: {
+            "Content-Type": "application/json",
+          }
+         }
+         const res=await server.put(`/thirdCategory/${id}`,data,config);
+         console.log(res);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  
+
   //delete sub catagories
   const removeThird = async _id => {
     try {
@@ -81,17 +99,26 @@ export const ThirdCatagoriesProvider = ({ children }) => {
       console.log(err)
     }
   }
-
+  // set current
+  const setCurrent=(third)=> {
+    dispatch({
+      type: 'Set_Current',
+      payload: third
+    })
+  } 
   return (
     <thirdcatagoriesContext.Provider
       value={{
         thirdcatagories: state.thirdcatagories,
         isLoad: state.isLoad,
         filteredthird: state.filteredthird,
+        third:state.third,
+        editThirdCatagories,
         getAllThirdCatagories,
         getFilteredThirdData,
         addNewThirdCatagories,
-        removeThird
+        removeThird,
+        setCurrent
       }}
     >
       {children}

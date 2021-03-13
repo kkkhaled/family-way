@@ -96,6 +96,7 @@ const GetSubCatagories = () => {
   const [isSmoking, setIsSmoking] = useState(false)
   const [bio, setBio] = useState(null)
   const [parentName, setParentName] = useState('')
+  const [sort,setSort]=useState(null);
   // render catagories state && func
   const { getAllCatagories, catagories, loading, getOneCatagory } = useContext(
     catagoriesContext
@@ -171,8 +172,13 @@ const GetSubCatagories = () => {
         message: ' يجب الموافقه علي عرض الشاشه بالكامل في حاله الشركات ',
         type: 'error'
       })
+    }else if(sort === null || sort === ''){
+      setAlertData({
+        type : true,
+        message :"تاكد من ادخال الترتيب"
+      })
     } else {
-      addNewSubCatagories(files, name, parentId, isWide, isSmoking, bio)
+      addNewSubCatagories(files, name, parentId, isWide, isSmoking, bio,sort)
       setAlertData({
         open: true,
         message: 'تم اضافه الصنف ',
@@ -182,6 +188,7 @@ const GetSubCatagories = () => {
       setBio('')
       setName('')
       setParentId(null)
+      setSort('')
       setFiles([])
       if (isWide === true) {
         setIsWide(false)
@@ -234,8 +241,16 @@ const GetSubCatagories = () => {
               label='Bio'
               value={bio}
               onChange={e => setBio(e.target.value)}
+            /> 
+            <TextField
+              style={{ flex: 1 , marginRight:20}}
+              variant='outlined'
+              label='الترتيب'
+              value={sort}
+              onChange={e => setSort(e.target.value)}
             />
           </Grid>
+           
           <Grid item style={{ marginTop: 10 }}>
             <FormControlLabel
               control={

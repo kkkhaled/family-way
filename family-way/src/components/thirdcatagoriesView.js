@@ -7,12 +7,29 @@ import {
   TextField,
   Button,
   Divider,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Paper,
 } from "@material-ui/core";
 import Alert from '@material-ui/lab/Alert';
 import { makeStyles } from "@material-ui/core/styles";
 import {thirdcatagoriesContext} from '../contexts/thirdcatagories/thirdState';
 import {subcatagoriesContext} from '../contexts/subcatagories/subcatagoriesState';
+import Draggable from 'react-draggable'
+import EditThird from "./editThird";
 
+function PaperComponent (props) {
+  return (
+    <Draggable
+      handle='#draggable-dialog-title'
+      cancel={'[class*="MuiDialogContent-root"]'}
+    >
+      <Paper {...props} />
+    </Draggable>
+  )
+}
 const useStyles = makeStyles((theme) => ({
   card: {
     width: "22em",
@@ -75,23 +92,54 @@ const useStyles = makeStyles((theme) => ({
       marginTop: theme.spacing(10),
     },
   },
+  delbtn:{
+    marginLeft:"10px",
+    marginRight:"7px",
+    width:"7.5em",
+    backgroundColor: '#E91E63',
+    color: '#FFF',
+  },
+  editbtn :{
+    marginLeft:"7px",
+    marginRight :"10px",
+    width:"7.5em"
+  },
+  buttondialogsubmit: {
+    color: 'white',
+    backgroundColor: theme.palette.green.main,
+    border: 5
+  },
 }))
 
 const ThirdCatagoriesView = () => {
     const classes = useStyles();
+       // for pop up
+    const [openDialog, setOpenDialog] = useState(false);
            // define component state
            const [text,setText]=useState({name:"انتظر تحميل البيانات"})
            const [name,setName]=useState("");
      
              // render subcatagories state && func
        const {getAllSubCatagories,subcatagories}=useContext(subcatagoriesContext);
-       const {filteredthird,getFilteredThirdData,removeThird} =useContext(thirdcatagoriesContext); 
+       const {
+         filteredthird
+         ,getFilteredThirdData,removeThird
+           ,setCurrent} =useContext(thirdcatagoriesContext); 
        //loading subcatagories 
        useEffect(() => {
          getAllSubCatagories();
          // eslint-disable-next-line
      }, [])
      
+         // handle dialog open
+    const handleOpen = third => {
+      setOpenDialog(true);
+      setCurrent(third);
+    }
+  // handle dialog closed
+  const handleClose = () => {
+    setOpenDialog(false)
+  }
       // handle filter input
       const handleFilter=(event,item)=>{
        if(item){
@@ -110,12 +158,30 @@ const ThirdCatagoriesView = () => {
                  src={`https://familyway.sa/uploads/thirdCategory/${catag.image}`} 
                   alt="subimg" />
                <h5 style={{textAlign:"center",margin:10}}>{catag.name}</h5>
-               <Button variant="contained"
-                    className={classes.buttondelete}
+               <Grid container direction="row"> 
+                 <Grid item>
+                <Button
+                  className={classes.editbtn}
+                  onClick={() => handleOpen(catag)}
+                  variant='contained'
+                  style={{
+                    backgroundColor: '#ffd60a',
+                    color: '#FFF',
+                    marginBottom: 5
+                  }}
+                     >
+                  تعديل
+                     </Button>
+                   </Grid> 
+                  <Grid item>
+                   <Button variant="contained"
+                    className={classes.delbtn}
                     onClick={()=>removeThird(catag._id)}
                    >
                      مسح
                    </Button>
+                   </Grid>
+                </Grid>   
               </Card>
             )):
             <div style={{ margin: "15px 0px", width: "100%" }}><Alert severity="info">
@@ -151,7 +217,31 @@ const ThirdCatagoriesView = () => {
           />
         </Grid>
       </Grid>
-        </React.Fragment>
+      <Dialog
+        open={openDialog}
+        onClose={handleClose}
+        PaperComponent={PaperComponent}
+        aria-labelledby='draggable-dialog-title'
+      >
+        <DialogTitle style={{ cursor: 'move' }} id='draggable-dialog-title'>
+          <Typography variant='h5' color='primary'>
+            تعديل بيانات الصنف الثالث
+          </Typography>
+        </DialogTitle>
+        <DialogContent>
+          <EditThird />
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleClose}
+            variant='contained'
+            className={classes.buttondialogsubmit}
+          >
+            تم
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </React.Fragment>
     )
 }
 export default ThirdCatagoriesView;

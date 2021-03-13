@@ -6,7 +6,8 @@ import server from '../../api/server'
 const initialState = {
   subcatagories: [],
   filterdata: [],
-  loader: true
+  loader: true,
+  currentSub:null
 }
 
 // create context
@@ -62,7 +63,8 @@ export const SubCatagoriesProvider = ({ children }) => {
     parentCategory,
     wide,
     forSmoking,
-    bio
+    bio,
+    sort
   ) => {
     const formData = new FormData()
     Array.from(file).forEach(file => {
@@ -74,6 +76,7 @@ export const SubCatagoriesProvider = ({ children }) => {
     formData.append('name', name)
     formData.append('parentCategory', parentCategory)
     formData.append('wide', wide)
+    formData.append('sort',sort);
     const config = {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -91,6 +94,22 @@ export const SubCatagoriesProvider = ({ children }) => {
     }
   }
 
+  // edit sub catagories
+  const editSubCatagories=async (id,name,sort,bio,wide)=>{
+    try {
+       const data={name,sort,bio,wide};
+       const config ={
+        headers: {
+          "Content-Type": "application/json",
+        }
+       }
+       const res=await server.put(`/subCategory/${id}`,data,config);
+       console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   //delete sub catagories
   const removeOne = async _id => {
     try {
@@ -103,17 +122,26 @@ export const SubCatagoriesProvider = ({ children }) => {
       console.log(err)
     }
   }
-
+  // set current
+  const setCurrentSub=(sub)=> {
+    dispatch({
+      type: 'Set_Current',
+      payload: sub
+    })
+  } 
   return (
     <subcatagoriesContext.Provider
       value={{
         subcatagories: state.subcatagories,
         loader: state.loader,
         filterdata: state.filterdata,
+        currentSub :state.currentSub,
         getAllSubCatagories,
         removeSubCategory,
         getFilteredSubSatagories,
         addNewSubCatagories,
+        editSubCatagories,
+        setCurrentSub,
         removeOne
       }}
     >
