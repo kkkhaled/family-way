@@ -6,7 +6,8 @@ import {
   TextField,
   Button,
   FormControlLabel,
-  Switch
+  Switch,
+  Divider
 } from '@material-ui/core'
 import Alert from '@material-ui/lab/Alert'
 import { makeStyles } from '@material-ui/core/styles'
@@ -15,6 +16,7 @@ import { thirdcatagoriesContext } from '../contexts/thirdcatagories/thirdState'
 import { productContext } from '../contexts/products/productState'
 import { authContext } from '../contexts/auth/authstate'
 import DroZone from './DropZone'
+import AddCompanies from './addCompanies'
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -297,6 +299,8 @@ const AddSlider = () => {
           </Button>
         </Grid>
       </form>
+      <Divider style={{marginTop :"10px"}} />
+      <AddCompanies />
       <DroZone
         open={dropZoneState}
         setOpen={setDropZoneState}

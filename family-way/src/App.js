@@ -44,6 +44,7 @@ import Userdetails from './pages/userDetails'
 import Additaton from './pages/additatons'
 import Email from './pages/emails'
 import EmailDetail from './pages/EmailDetails'
+import Companies from './pages/companiesView'
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex'
@@ -218,6 +219,11 @@ export default function MiniDrawer () {
                                           exact
                                           path='/email-details/:id'
                                           component={EmailDetail}
+                                        />
+                                         <PrivateRoute
+                                          exact
+                                          path='/companies'
+                                          component={Companies}
                                         />
                                       </Switch>
                                     </main>

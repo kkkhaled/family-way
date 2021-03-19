@@ -5,6 +5,8 @@ import server from '../../api/server';
 //initial State
 const initialState = {
     sliders : [],
+    companies :[],
+    currentslider : null
   }
   // create context
 export const sliderContext = createContext();
@@ -74,7 +76,6 @@ export const SliderProvider =({children})=>{
      }
         
      // add new slider 
-      
      const addNewSlider = async(file,sort)=>{
         const formData = new FormData();
         Array.from(file).forEach((file) => {
@@ -106,15 +107,95 @@ export const SliderProvider =({children})=>{
             console.log(err);
         }
      }
+    // edit sliders 
+    const EditSliders=async(id,sort)=>{
+      try {
+        const res = await server.put(`/homeSlider/${id}`)
+        console.log(res);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    // create camponies 
+     const createCompanies=async(name,image)=>{
+      const formData = new FormData();
+      Array.from(image).forEach((image) => {
+          formData.append("image", image);
+        });
+      formData.append('name',name);
+      const config = {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            'Authorization': 'Bearer ' + localStorage.token
+          },
+      }
+      try {
+         await server.post('/companies',formData,config)
+      } catch (err) {
+         console.log(err);
+      }
+     }
+
+     const getCompanies=async()=>{
+      const config = {
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.token
+        },
+    }
+      try {
+        const res = await server.get('/getCompanies',config);
+          dispatch({
+              type :"GET_COMPANIES",
+              payload : res.data
+          })
+      } catch (err) {
+        console.log(err);
+      }
+     }
+
+         // remove slider
+         const removecompanies = async(_id)=>{
+          const config = {
+            headers: {
+              'Authorization': 'Bearer ' + localStorage.token
+            },
+        }
+          try {
+               await server.delete(`/companies/${_id}`,config)
+              dispatch({
+                  type :"REMOVE_COMPANIES",
+                  payload : _id 
+              })
+          } catch (err) {
+              console.log(err);
+          }
+       }
+    
+         // set current
+  const setCurrent=(slider)=> {
+    dispatch({
+      type: 'Set_Current',
+      payload: slider
+    })
+  } 
+
 
     return(
         <sliderContext.Provider value={{
             sliders:state.sliders,
+            companies :state.companies,
+            currentslider : state.currentslider,
             getslider,
             addNewSliderProduct,
             addNewSlider,
             addNewSliderCatag,
-            removeslider
+            removeslider,
+            createCompanies,
+            getCompanies,
+            removecompanies,
+            EditSliders,
+            setCurrent
         }} >
             {children}
         </sliderContext.Provider>

@@ -16,6 +16,7 @@ import ViewWeekIcon from '@material-ui/icons/ViewWeek'
 import DialpadIcon from '@material-ui/icons/Dialpad'
 import AddBoxSharpIcon from '@material-ui/icons/AddBoxSharp';
 import EmailIcon from '@material-ui/icons/Email';
+import WorkIcon from '@material-ui/icons/Work';
 export default {
   catagiories: [
     {
@@ -172,5 +173,11 @@ export default {
       icon: EmailIcon,
       to: '/emails',
       id: shortid.generate()
+  }],
+  companies :[{
+    title: ' الشركات ',
+    icon: WorkIcon,
+    to: '/companies',
+    id: shortid.generate()
   }]
 }
