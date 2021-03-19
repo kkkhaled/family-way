@@ -109,8 +109,14 @@ export const SliderProvider =({children})=>{
      }
     // edit sliders 
     const EditSliders=async(id,sort)=>{
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          'Authorization': 'Bearer ' + localStorage.token
+        },
+    }
       try {
-        const res = await server.put(`/homeSlider/${id}`)
+        const res = await server.put(`/homeSlider/${id}`,{sort},config)
         console.log(res);
       } catch (err) {
         console.log(err);
